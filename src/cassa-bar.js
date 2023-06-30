@@ -298,10 +298,16 @@ const App = () => {
           </h3></div>
           <div className="product-buttons">
             <button className="product-button" onClick={() => {handleProductClick('Gintonic base', '5');resetIdleTimer();}}>GinTonic base - 5€</button>
-            <button className="product-button" onClick={() => {handleProductClick('Gintonic prem', '7');resetIdleTimer();}}>GinTonic Premium - 7€ </button>
-            <button className="product-button" onClick={() => {handleProductClick('Birra', '3');resetIdleTimer();}}>Birra - 3€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Ginlemon base', '5');resetIdleTimer();}}>GinLemon base - 5€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Wiskey cola', '5');resetIdleTimer();}}>Wiskey cola - 5€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Rum Cola', '5');resetIdleTimer();}}>Rum Cola - 5€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Ginlemon prem', '7');resetIdleTimer();}}>Ginlemon Premium Tanqueray - 7€ </button>
+            <button className="product-button" onClick={() => {handleProductClick('Gintonic prem', '7');resetIdleTimer();}}>GinTonic Premium Tanqueray - 7€ </button>
+            <button className="product-button" onClick={() => {handleProductClick('Negroni', '7');resetIdleTimer();}}>Negroni - 7€ </button>
+            <button className="product-button" onClick={() => {handleProductClick('Special', '7');resetIdleTimer();}}>Special - 7€</button>
             <button className="product-button" onClick={() => {handleProductClick('Spritz', '5');resetIdleTimer();}}>Spritz - 5€</button>
-            <button className="product-button" onClick={() => {handleProductClick('Special', '10');resetIdleTimer();}}>Special - 10€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Birra', '3');resetIdleTimer();}}>Birra - 3€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Cicchetto', '3');resetIdleTimer();}}>Cicchetto - 3€</button>
             <button className="product-button" onClick={() => {handleProductClick('Analcolico', '3');resetIdleTimer();}}>Analcolico - 3€</button>
             <button className="product-button" onClick={() => {handleProductClick('Omaggio', '0');resetIdleTimer();}}>Omaggio - 0€</button>
           </div>
