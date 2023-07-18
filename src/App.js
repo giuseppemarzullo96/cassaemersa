@@ -15,6 +15,7 @@ import Login from './Login';
 import Registration from './Registration';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
+import QRCode from 'react-qr-code';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -47,8 +48,10 @@ const App = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(true);
   const [accessCode, setAccessCode] = useState('');
   const [isIdle, setIsIdle] = useState(false);
+  const [qrCodeText, setQrCodeText] = useState(''); // Aggiunta della variabile di stato qrCodeText
   const idleTimerRef = useRef(null);
-  
+  const qrCodeValue = qrCodeText !== '' ? qrCodeText : 'Nessun prodotto';
+
   const fetchLastOperation = async () => {
     try {
       const snapshot = await database
@@ -114,6 +117,11 @@ const App = () => {
       const newProduct = { name: productName, price: productPrice, quantity: 1, operationCount };
       setProducts([...products, newProduct]);
     }
+
+    const qrCodeProducts = products.map((product) => `${product.name}: ${product.quantity}`);
+    const qrCodeTotal = `Totale: ${total}€`;
+    const qrCode = `${qrCodeProducts.join('\n')}\n${qrCodeTotal}`;
+    setQrCodeText(qrCode); // Aggiornamento dello stato qrCodeText
   };
 
   const handleDeleteProduct = (productName) => {
@@ -186,6 +194,7 @@ const App = () => {
     saveAs(blob, 'report.csv');
   };
   
+  
   const handleMoneyNoteAdd = (noteValue) => {
     const newNote = { value: noteValue };
     setMoneyNotes([...moneyNotes, newNote]);
@@ -214,11 +223,16 @@ const App = () => {
   useEffect(() => {
     const totalAmount = parseFloat(calculateTotal());
     setTotal(totalAmount);
-
+  
     const received = parseFloat(moneyNotes.reduce((sum, note) => sum + parseFloat(note.value), 0));
-
+  
     const calculatedChange = received - totalAmount;
     setChange(calculatedChange.toFixed(2));
+  
+    const qrCodeProducts = products.map((product) => `${product.name}: ${product.quantity}`);
+    const qrCodeTotal = `Totale: ${totalAmount.toFixed(2)}€`;
+    const qrCode = `${qrCodeProducts.join('\n')}\n${qrCodeTotal}`;
+    setQrCodeText(qrCode);
   }, [products, moneyNotes]);
 
   useEffect(() => {
@@ -250,7 +264,9 @@ const App = () => {
       }
     });
     
+    
   }, []);
+  
 
   const moneyValues = [
     { label: '100€', value: 100 },
@@ -395,6 +411,13 @@ const App = () => {
           )}
           content={() => printComponentRef.current}
         />
+                <div className="divider"></div>
+
+        <div className="column-qr-code">
+          <div className="qr-code-container">
+            <QRCode value={qrCodeValue} />
+          </div>
+        </div>
         <div>
         <div className="divider"></div>
   <h5>Operazione</h5>
