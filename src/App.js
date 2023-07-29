@@ -319,7 +319,7 @@ const App = () => {
             <button className="product-button" onClick={() => {handleProductClick('Rum e cola', '5');resetIdleTimer();}}>Rum e cola - 5€</button>
             <button className="product-button" onClick={() => {handleProductClick('Whisky e cola', '5');resetIdleTimer();}}>Whisky e cola- 5€ </button>
             <button className="product-button" onClick={() => {handleProductClick('Whisky e soda', '5');resetIdleTimer();}}>Whisky e soda - 5€</button>
-            <button className="product-button" onClick={() => {handleProductClick('BeesKnees', '5');resetIdleTimer();}}>BeesKness- 5€</button>
+            <button className="product-button" onClick={() => {handleProductClick('Ranchdeverano', '5');resetIdleTimer();}}>Ranch de Verano- 5€</button>
             <button className="product-button" onClick={() => {handleProductClick('Negroni', '7');resetIdleTimer();}}>Negroni - 7€</button>
             <button className="product-button" onClick={() => {handleProductClick('Negroski', '7');resetIdleTimer();}}>Negroski - 7€</button>
             <button className="product-button" onClick={() => {handleProductClick('Boulevardier', '7');resetIdleTimer();}}>Boulevardier - 7€</button>
