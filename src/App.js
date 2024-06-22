@@ -16,6 +16,7 @@ import Registration from './Registration';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import QRCode from 'react-qr-code';
+import { Footer } from './components/Footer';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -137,18 +138,7 @@ const App = () => {
     return totalPrice.toFixed(2);
   };
   
-  const Footer = () => (
-    <footer className="footer">
-      <div className="footer-left">
-        <span className="footer-text">Copyright by Emersa 2023</span>
-        <span className="footer-text">Prodotto da Giuseppe Marzullo</span>
-      </div>
-      <div className="divider"></div>
-      <div className="footer-right">
-        <img src={logo} className="footer-logo" alt="logo" />
-      </div>
-    </footer>
-  );
+  <Footer></Footer>
 
   const saveDataToDatabase = () => {
     const productsRef = ref(database, 'products');
