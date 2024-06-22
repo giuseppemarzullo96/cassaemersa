@@ -48,7 +48,7 @@ const App = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(true);
   const [accessCode, setAccessCode] = useState('');
   const [isIdle, setIsIdle] = useState(false);
-  const [qrCodeText, setQrCodeText] = useState(''); // Aggiunta della variabile di stato qrCodeText
+  const [qrCodeText, setQrCodeText] = useState(''); // Aggiunta della variabile di stato qrCodeText test
   const idleTimerRef = useRef(null);
   const qrCodeValue = qrCodeText !== '' ? qrCodeText : 'Nessun prodotto';
 
