@@ -1,30 +1,48 @@
 import React from 'react';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import { Container } from '@mui/material';
+import Box from '@mui/material/Box';
 
-const ReceivedMoney = ({ moneyNotes, total, change }) => {
+const ReceivedMoney = ({ moneyNotes }) => {
   const receivedTotal = moneyNotes.reduce((sum, note) => sum + note.value, 0);
 
   return (
-<Paper elevation={3} sx={{ p: 2 }}>
+    <Container>
       <Typography variant="h6" gutterBottom>
-        Denaro Ricevuto
+        Banconote Ricevute
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="body1">Totale: €{total}</Typography>
+          <Box display="flex" flexWrap="wrap" gap={2}>
+            {moneyNotes.map((note, index) => (
+              <Paper
+                key={index}
+                elevation={3}
+                sx={{
+                  padding: '8px 16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '80px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f5f5f5',
+                }}
+              >
+                <Typography variant="body1">€{note.value.toFixed(2)}</Typography>
+              </Paper>
+            ))}
+          </Box>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body1">Ricevuto: €{receivedTotal}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">Resto: €{change}</Typography>
+          <Typography variant="h6" gutterBottom>
+            Totale Ricevuto: €{receivedTotal.toFixed(2)}
+          </Typography>
         </Grid>
       </Grid>
-    </Paper>
-    )
+    </Container>
+  );
 };
 
 export default ReceivedMoney;
