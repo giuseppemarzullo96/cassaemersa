@@ -103,42 +103,40 @@ const App = () => {
             />
           )}
           <Header />
-          <Typography variant="h4" component="h1" gutterBottom>
-            Gestione Cassa
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper elevation={3} sx={{ p: 2 }}>
-                <Products products={products} setProducts={setProducts} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper elevation={3} sx={{ p: 2 }}>
-                <MoneyNotes moneyNotes={moneyNotes} setMoneyNotes={setMoneyNotes} />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Paper elevation={3} sx={{ p: 2 }}>
+          {/* Aggiunto Box per spazio sotto l'Header */}
+          <Box mt={4}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper elevation={3} sx={{ p: 2 }}>
+                  <Products products={products} setProducts={setProducts} />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Paper elevation={3} sx={{ p: 2 }}>
+                  <MoneyNotes moneyNotes={moneyNotes} setMoneyNotes={setMoneyNotes} />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
                 <ReceivedMoney moneyNotes={moneyNotes} total={total} change={change} />
-              </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2 }}>
+                  <CashRegister
+                    products={products}
+                    total={total}
+                    change={change}
+                    saveDataToDatabase={saveDataToDatabase}
+                    resetOperation={resetOperation}
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2 }}>
+                  <Report soldProducts={soldProducts} />
+                </Paper>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Paper elevation={3} sx={{ p: 2 }}>
-                <CashRegister
-                  products={products}
-                  total={total}
-                  change={change}
-                  saveDataToDatabase={saveDataToDatabase}
-                  resetOperation={resetOperation}
-                />
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <Paper elevation={3} sx={{ p: 2 }}>
-                <Report soldProducts={soldProducts} />
-              </Paper>
-            </Grid>
-          </Grid>
+          </Box>
           <Footer />
         </Box>
       </Container>
