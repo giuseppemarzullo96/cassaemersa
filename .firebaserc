@@ -1,5 +1,9 @@
 {
   "projects": {
-    "default": "emersa-cassa"
-  }
+    "default": "cassaemersav3",
+    "cassaemersav3": "cassaemersav3"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }
