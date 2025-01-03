@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import LocalBar from '@mui/icons-material/LocalBar';
+import { getProducts } from './apiService';
 
 const Products = ({ products, setProducts }) => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await getProducts();
+      setProducts(data);
+    };
+    fetchProducts();
+  }, [setProducts]);
+
   const handleProductClick = (name, price) => {
     const updatedProducts = [...products];
     const productIndex = updatedProducts.findIndex((product) => product.name === name);
@@ -17,19 +26,6 @@ const Products = ({ products, setProducts }) => {
     setProducts(updatedProducts);
   };
 
-  const productItems = [
-    { name: 'Cocktail A', price: 10 },
-    { name: 'Cocktail B', price: 15 },
-    { name: 'Cocktail C', price: 20 },
-    { name: 'Cocktail D', price: 12 },
-    { name: 'Cocktail E', price: 18 },
-    { name: 'Cocktail F', price: 14 },
-    { name: 'Cocktail G', price: 11 },
-    { name: 'Cocktail H', price: 16 },
-    { name: 'Cocktail I', price: 13 },
-    { name: 'Cocktail J', price: 17 },
-  ];
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -37,7 +33,7 @@ const Products = ({ products, setProducts }) => {
           Seleziona Prodotto
         </Typography>
       </Grid>
-      {productItems.map((product) => (
+      {products.map((product) => (
         <Grid item xs={6} key={product.name}>
           <Button
             variant="contained"
