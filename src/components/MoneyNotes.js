@@ -5,12 +5,24 @@ import { AppContext } from '../context/AppContext';
 const MoneyNotes = ({ moneyNotes = [] }) => {
   const { addNote } = useContext(AppContext);
 
+  // Funzione per gestire il click e assicurarsi che il valore sia in formato corretto
+  const handleAddNote = (note) => {
+    const formattedNote = {
+      ...note,
+      value: parseFloat(note.value.toString().replace(',', '.')), // Sostituisce la virgola con un punto
+    };
+    addNote(formattedNote);
+  };
+
+  // Ordina le banconote in ordine crescente di valore
+  const sortedNotes = [...moneyNotes].sort((a, b) => a.value - b.value);
+
   return (
     <Grid container spacing={2}>
-      {moneyNotes.map((note, index) => (
+      {sortedNotes.map((note, index) => (
         <Grid item xs={4} key={index}>
           <Box
-            onClick={() => addNote(note)}
+            onClick={() => handleAddNote(note)}
             sx={{
               display: 'flex',
               alignItems: 'center',

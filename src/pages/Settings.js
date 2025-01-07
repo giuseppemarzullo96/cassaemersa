@@ -15,10 +15,10 @@ import {
 const Settings = () => {
   const [products, setProducts] = useState([]);
   const [moneyNotes, setMoneyNotes] = useState([]);
-  const [newProductId, setNewProductId] = useState(''); // Campo ID per il prodotto
+  const [newProductId, setNewProductId] = useState('');
   const [newProductName, setNewProductName] = useState('');
   const [newProductPrice, setNewProductPrice] = useState('');
-  const [editingProductIndex, setEditingProductIndex] = useState(null); // Modifica basata su indice
+  const [editingProductIndex, setEditingProductIndex] = useState(null);
   const [newMoneyNoteValue, setNewMoneyNoteValue] = useState('');
 
   // Recupera prodotti e banconote al caricamento
@@ -37,6 +37,9 @@ const Settings = () => {
     fetchData();
   }, []);
 
+  // Funzione per normalizzare i numeri (sostituisce la virgola con il punto)
+  const normalizeNumber = (value) => parseFloat(value.toString().replace(',', '.'));
+
   // Aggiungi o modifica un prodotto
   const handleSaveProduct = async () => {
     if (!newProductName || !newProductPrice) {
@@ -45,20 +48,18 @@ const Settings = () => {
     }
 
     const product = {
-      id: newProductId || '', // Campo opzionale
+      id: newProductId || '',
       name: newProductName,
-      price: parseFloat(newProductPrice),
+      price: normalizeNumber(newProductPrice), // Normalizza il prezzo
     };
 
     console.log('Prodotto da salvare:', product);
 
     try {
       if (editingProductIndex !== null) {
-        // Modifica prodotto esistente
         await updateProduct(editingProductIndex, product);
         alert('Prodotto aggiornato con successo!');
       } else {
-        // Crea nuovo prodotto
         await createProduct(product);
         alert('Prodotto creato con successo!');
       }
@@ -80,7 +81,7 @@ const Settings = () => {
     console.log('Eliminazione prodotto con indice:', index);
     if (window.confirm('Sei sicuro di voler eliminare questo prodotto?')) {
       try {
-        await deleteProduct(index); // Passa l'indice al backend
+        await deleteProduct(index);
         alert('Prodotto eliminato con successo!');
         const productsData = await getProducts();
         setProducts(productsData);
@@ -97,7 +98,7 @@ const Settings = () => {
       return;
     }
 
-    const note = { value: parseFloat(newMoneyNoteValue) };
+    const note = { value: normalizeNumber(newMoneyNoteValue) }; // Normalizza il valore
     console.log('Banconota da salvare:', note);
 
     try {
@@ -147,7 +148,7 @@ const Settings = () => {
                     setNewProductId(product.id);
                     setNewProductName(product.name);
                     setNewProductPrice(product.price.toString());
-                    setEditingProductIndex(index); // Salva l'indice
+                    setEditingProductIndex(index);
                   }}>
                     <EditIcon />
                   </IconButton>

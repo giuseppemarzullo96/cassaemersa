@@ -20,10 +20,9 @@ const TransactionSummary = () => {
   
   // Genera due ID temporanei
   const tempTransactionId = generateTempId();
-  const tempProductId = generateTempId();
   
   console.log("Temporary Transaction ID:", tempTransactionId);
-  console.log("Temporary Product ID:", tempProductId);
+  
   const handleSave = async () => {
     if (selectedProducts.length === 0 || receivedNotes.length === 0) {
       alert('Impossibile salvare: aggiungi almeno un prodotto e una banconota.');
@@ -35,7 +34,7 @@ const TransactionSummary = () => {
         transactionId: tempTransactionId, 
         products: selectedProducts.map(product => ({
           ...product,
-          id: product.id || tempProductId, 
+          id: product.id, // Usa l'ID dal prodotto recuperato
         })),
         moneyNotes: receivedNotes,
         timestamp: new Date().toISOString(),
