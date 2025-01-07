@@ -35,15 +35,6 @@ export const deleteMoneyNote = async (index) => {
   await axios.delete(`${BASE_URL}/moneynotes/${index}`);
 };
 
-export const getSales = async () => {
-  const response = await axios.get(`${BASE_URL}/sales`);
-  return response.data;
-};
-
-export const createSale = async (sale) => {
-  const response = await axios.post(`${BASE_URL}/sales`, sale);
-  return response.data;
-};
 export const saveTransaction = async (transaction) => {
   try {
     console.log('Corpo della richiesta inviato:', transaction);
