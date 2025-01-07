@@ -44,3 +44,12 @@ export const createSale = async (sale) => {
   const response = await axios.post(`${BASE_URL}/sales`, sale);
   return response.data;
 };
+export const saveTransaction = async (transaction) => {
+  try {
+    const response = await axios.post(`${BASE_URL}`, transaction);
+    return response.data; // Restituisce l'ID della transazione
+  } catch (error) {
+    console.error('Errore durante il salvataggio della transazione:', error.response || error);
+    throw error;
+  }
+};

@@ -1,69 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { AppContext } from '../context/AppContext';
 
-const CashRegister = ({
-  products,
-  moneyNotes,
-  saveDataToDatabase,
-  resetOperation,
-  operationCount,
-}) => {
-  const total = (products || []).reduce(
-    (sum, product) => sum + product.price * product.quantity,
-    0
-  );
-  
-  const receivedTotal = (moneyNotes || []).reduce(
-    (sum, note) => sum + note.value,
-    0
-  );
-  
-  const change = receivedTotal - total;
-  
-  // Ottieni data e ora corrente
-  const currentDateTime = new Date();
-  const formattedDate = currentDateTime.toLocaleDateString();
-  const formattedTime = currentDateTime.toLocaleTimeString();
+const CashRegister = () => {
+  const { selectedProducts, total, receivedTotal, change, saveTransaction, resetOperation } = useContext(AppContext);
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h6" gutterBottom>
-          Dettaglio Operazione
-        </Typography>
-        <Typography variant="body1">Data: {formattedDate}</Typography>
-        <Typography variant="body1">Ora: {formattedTime}</Typography>
-        <Typography variant="body1">Numero Operazione: {operationCount}</Typography>
-        <hr />
-        {products.map((product) => (
-          <Typography key={product.name}>
-            {product.name} - {product.quantity} x €{product.price}
-          </Typography>
-        ))}
-        <hr />
-        <Typography variant="h6">Totale da Pagare: €{total.toFixed(2)}</Typography>
-        <Typography variant="h6">Totale Ricevuto: €{receivedTotal.toFixed(2)}</Typography>
-        <Typography variant="h6">Resto: €{change.toFixed(2)}</Typography>
+        <Typography variant="h6">Dettaglio Operazione</Typography>
+      </Grid>
+      {selectedProducts.map((product, index) => (
+        <Grid item xs={12} key={index}>
+          <Typography>{product.name} - {product.quantity} x €{product.price}</Typography>
+        </Grid>
+      ))}
+      <Grid item xs={12}>
+        <Typography>Totale: €{total.toFixed(2)}</Typography>
+        <Typography>Ricevuto: €{receivedTotal.toFixed(2)}</Typography>
+        <Typography>Resto: €{change.toFixed(2)}</Typography>
       </Grid>
       <Grid item xs={6}>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={saveDataToDatabase}
-        >
+        <Button variant="contained" color="primary" onClick={saveTransaction} fullWidth>
           Salva
         </Button>
       </Grid>
       <Grid item xs={6}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          onClick={resetOperation}
-        >
+        <Button variant="outlined" color="secondary" onClick={resetOperation} fullWidth>
           Resetta
         </Button>
       </Grid>

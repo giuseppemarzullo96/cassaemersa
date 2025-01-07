@@ -1,48 +1,28 @@
-import React, { useEffect } from 'react';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import LocalBar from '@mui/icons-material/LocalBar';
-import { getProducts } from './apiService';
+import React, { useContext } from 'react';
+import { Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
+import LocalBarIcon from '@mui/icons-material/LocalBar';
+import { AppContext } from '../context/AppContext';
 
-const Products = ({ products, setProducts }) => {
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const data = await getProducts();
-      setProducts(data);
-    };
-    fetchProducts();
-  }, [setProducts]);
-
-  const handleProductClick = (name, price) => {
-    const updatedProducts = [...products];
-    const productIndex = updatedProducts.findIndex((product) => product.name === name);
-
-    if (productIndex >= 0) {
-      updatedProducts[productIndex].quantity += 1;
-    } else {
-      updatedProducts.push({ name, price, quantity: 1 });
-    }
-    setProducts(updatedProducts);
-  };
+const Products = ({ products = [] }) => {
+  const { addProduct } = useContext(AppContext);
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <Typography variant="h6" component="h2" gutterBottom>
-          Seleziona Prodotto
-        </Typography>
-      </Grid>
-      {products.map((product) => (
-        <Grid item xs={6} key={product.name}>
-          <Button
-            variant="contained"
-            fullWidth
-            startIcon={<LocalBar />}
-            onClick={() => handleProductClick(product.name, product.price)}
-          >
-            {product.name} - €{product.price}
-          </Button>
+    <Grid container spacing={3}>
+      {products.map((product, index) => (
+        <Grid item xs={12} sm={6} md={4} key={index}>
+          <Card>
+            <CardActionArea onClick={() => addProduct(product)}>
+              <CardContent>
+                <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
+                  <LocalBarIcon sx={{ fontSize: 40 }} />
+                </Box>
+                <Typography align="center" variant="h6">
+                  {product.name}
+                </Typography>
+                <Typography align="center">€{product.price.toFixed(2)}</Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         </Grid>
       ))}
     </Grid>
