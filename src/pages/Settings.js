@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Grid, Paper, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { AuthContext } from '../context/AuthContext'; // Importa il contesto AuthContext
+
 import {
   getProducts,
   createProduct,
@@ -11,6 +14,7 @@ import {
   createMoneyNote,
   deleteMoneyNote,
 } from '../services/apiService';
+import AddUserWithRole from '../components/AddUserWithRole';
 
 const Settings = () => {
   const [products, setProducts] = useState([]);
@@ -20,6 +24,16 @@ const Settings = () => {
   const [newProductPrice, setNewProductPrice] = useState('');
   const [editingProductIndex, setEditingProductIndex] = useState(null);
   const [newMoneyNoteValue, setNewMoneyNoteValue] = useState('');
+  const { role } = useContext(AuthContext); // Ottieni il ruolo dal contesto
+  const navigate = useNavigate(); // Hook per la navigazione
+
+ useEffect(() => {
+    // Controlla se l'utente non è admin
+    if (role !== 'admin') {
+      alert('Accesso non autorizzato. Reindirizzamento alla home.');
+      navigate('/'); // Reindirizza alla home
+    }
+  }, [role, navigate]); 
 
   // Recupera prodotti e banconote al caricamento
   useEffect(() => {
@@ -213,6 +227,15 @@ const Settings = () => {
             <Button variant="contained" color="secondary" fullWidth sx={{ mt: 2 }} onClick={handleSaveMoneyNote}>
               Aggiungi Banconota
             </Button>
+          </Paper>
+        </Grid>
+          {/* Sezione Aggiungi Utenti */}
+          <Grid item xs={12} md={6}>
+        <Paper maxWidth="tm" sx={{ m: 4, p: 4}} elevation={3}>
+            <Typography variant="h6" gutterBottom>
+              Gestione Utenti
+            </Typography>
+            <AddUserWithRole/>
           </Paper>
         </Grid>
       </Grid>

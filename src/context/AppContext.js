@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getProducts, getMoneyNotes } from '../services/apiService'; // Importa le funzioni API
-import TransactionSummary from '../components/TransactionSummary';
 
 export const AppContext = createContext();
 
