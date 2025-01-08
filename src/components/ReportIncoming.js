@@ -26,7 +26,7 @@ const ReportIncoming = () => {
   }, []);
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
+    <Container maxWidth="tm" sx={{ mt: 4 }}>
       <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
         <Typography variant="h5" gutterBottom>
           Report Incassi Totali

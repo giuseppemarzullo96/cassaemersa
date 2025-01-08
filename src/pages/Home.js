@@ -1,32 +1,40 @@
-import React from 'react';
+import React, { useContext , useState } from 'react';
 import { Grid, Container, Typography } from '@mui/material';
 import ReportIncoming from '../components/ReportIncoming';
 import TopSellingProducts from '../components/TopSellingProducts';
 import TopSellingHours from '../components/TopSellingHours';
+import LatestTransaction from '../components/LatestTransaction';
+import { AppContext } from '../context/AppContext';
 
-const Home = () => {
+
+const Home = () => {const {
+  } = useContext(AppContext);
+ 
+  const [reloadTransaction, setReloadTransaction] = useState(false);
+
+const refreshLatestTransaction = () => {
+    setReloadTransaction(prev => !prev); // Cambia stato per triggerare il ricaricamento
+  };
+
   return (
     <Container maxWidth="100%" sx={{ mt: 6, mb: 6 }}>
       <Typography variant="h4" gutterBottom align="center">
-        Dashboard
-      </Typography>
+              Dashboard
+            </Typography>
       <Grid container spacing={1}>
-        {/* Report Incassi Totali */}
         <Grid item xs={12} md={4}>
-          <ReportIncoming />
+          <ReportIncoming reload={reloadTransaction}/>
+          <LatestTransaction reload={reloadTransaction}/>
         </Grid>
-
-        {/* Prodotti più venduti */}
         <Grid item xs={12} md={4}>
-          <TopSellingProducts />
+          <TopSellingProducts reload={reloadTransaction}/>
         </Grid>
-
-        {/* Ore di vendita più attive */}
-        <Grid item xs={12}md={4}>
-          <TopSellingHours />
+        <Grid item xs={12} md={4}>
+          <TopSellingHours reload={reloadTransaction}/>
         </Grid>
       </Grid>
     </Container>
+    
   );
 };
 

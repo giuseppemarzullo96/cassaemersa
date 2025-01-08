@@ -128,7 +128,7 @@ const Settings = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="100%" sx={{ mt: 6, mb: 6 }}>
       <Typography variant="h4" gutterBottom align="center">
         Impostazioni
       </Typography>
@@ -136,7 +136,7 @@ const Settings = () => {
       <Grid container spacing={3}>
         {/* Sezione Prodotti */}
         <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+          <Paper maxWidth="tm" sx={{ m: 4, p: 4}} elevation={3}>
             <Typography variant="h6" gutterBottom>
               Gestione Prodotti
             </Typography>
@@ -188,7 +188,7 @@ const Settings = () => {
 
         {/* Sezione Banconote */}
         <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 2 }}>
+        <Paper maxWidth="tm" sx={{ m: 4, p: 4}} elevation={3}>
             <Typography variant="h6" gutterBottom>
               Gestione Banconote
             </Typography>

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { Grid, Typography, Button } from '@mui/material';
+import { Grid, Typography, Button, Container } from '@mui/material';
 import { AppContext } from '../context/AppContext';
 import { saveTransaction } from '../services/apiService';
 
-const TransactionSummary = () => {
+const TransactionSummary = ({ onSave }) => {
   const {
     selectedProducts,
     total,
@@ -43,6 +43,8 @@ const TransactionSummary = () => {
       };
       
       await saveTransaction(transaction);
+      handleReset();
+      onSave();
 
     } catch (error) {
       console.error('Errore durante il salvataggio della transazione:', error.response || error);
@@ -51,15 +53,15 @@ const TransactionSummary = () => {
   };
 
   const handleReset = () => {
-    if (window.confirm('Sei sicuro di voler resettare la transazione?')) {
+     {
       setSelectedProducts([]);
       setReceivedNotes([]);
-      alert('Transazione resettata.');
     }
   };
 
   return (
-    <Grid container spacing={2}>
+    <Container maxWidth="tm">
+      <Grid container spacing={2} >
       <Grid item xs={12}>
         <Typography variant="h6" gutterBottom>
           Riepilogo Transazione
@@ -94,7 +96,7 @@ const TransactionSummary = () => {
           Resetta
         </Button>
       </Grid>
-    </Grid>
+    </Grid></Container>
   );
 };
 

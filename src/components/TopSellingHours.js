@@ -66,8 +66,8 @@ const TopSellingHours = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: 'center', height: 400 }}>
+    <Container maxWidth="tm" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ pb: 8, pr: 4, pl: 4, pt:4, textAlign: 'center', height: 600 }}>
         <Typography variant="h5" gutterBottom>
           Orari con Maggiori Vendite
         </Typography>

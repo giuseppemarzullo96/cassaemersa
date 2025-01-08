@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useMemo } from 'react';
 import { getProducts, getMoneyNotes } from '../services/apiService'; // Importa le funzioni API
+import TransactionSummary from '../components/TransactionSummary';
 
 export const AppContext = createContext();
 
@@ -11,6 +12,11 @@ export const AppProvider = ({ children }) => {
   const [operationCount, setOperationCount] = useState(0);
   const [loading, setLoading] = useState(true); // Per gestire il caricamento iniziale
   const [error, setError] = useState(null); // Per gestire errori durante il recupero
+  const [reloadTransaction, setReloadTransaction] = useState(false);
+
+  const refreshLatestTransaction = () => {
+    setReloadTransaction(prev => !prev); // Cambia stato per triggerare il ricaricamento
+  };
 
   // Calcolo dei totali
   const total = useMemo(
@@ -86,6 +92,8 @@ export const AppProvider = ({ children }) => {
         setOperationCount,
         loading,
         error,
+        refreshLatestTransaction,
+        reloadTransaction
       }}
     >
       {children}

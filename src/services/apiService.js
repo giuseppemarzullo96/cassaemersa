@@ -65,3 +65,8 @@ export const getAllTransactions = async () => {
   const response = await axios.get(`${BASE_URL}/transactions/all`);
   return response.data;
 };
+export const getLatestTransaction = async () => {
+  const response = await axios.get(`${BASE_URL}/transactions/latest`);
+  return response.data;
+};
+
