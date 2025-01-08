@@ -35,9 +35,11 @@ const TransactionSummary = () => {
         products: selectedProducts.map(product => ({
           ...product,
           id: product.id, // Usa l'ID dal prodotto recuperato
+          quantitysold: product.quantity,
         })),
         moneyNotes: receivedNotes,
         timestamp: new Date().toISOString(),
+        value_trans:total,
       };
       
       await saveTransaction(transaction);

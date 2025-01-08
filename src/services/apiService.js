@@ -61,4 +61,7 @@ export const saveTransaction = async (transaction) => {
     throw error; // Rilancia l'errore per gestirlo a livello superiore
   }
 };
-
+export const getAllTransactions = async () => {
+  const response = await axios.get(`${BASE_URL}/transactions/all`);
+  return response.data;
+};
