@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 const AddUserWithRole = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('user'); // Ruolo di default
@@ -38,13 +39,14 @@ const AddUserWithRole = () => {
 
       // Salva l'utente e il ruolo in Firestore
       console.log('Salvataggio dell\'utente nel database Firestore...');
-      await setDoc(doc(db, 'users', user.uid), { email: user.email, role });
+      await setDoc(doc(db, 'users', user.uid), { email: user.email, role, username });
 
       console.log(`Utente salvato con successo in Firestore: Email: ${email}, Ruolo: ${role}`);
       setSuccess(`Utente ${email} creato con ruolo ${role} con successo!`);
       setEmail('');
       setPassword('');
       setRole('user');
+      setUsername('');
     } catch (err) {
       console.error('Errore durante la creazione dell\'utente:', err);
       setError(err.message);
@@ -52,13 +54,19 @@ const AddUserWithRole = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Typography variant="h5" align="center" gutterBottom>
-        Aggiungi Utente
-      </Typography>
+    <Container maxWidth="tm" sx={{ mt: 4 }}>
       <form onSubmit={handleAddUser}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+        <TextField
+          label="Username"
+          type="username"
+          fullWidth
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          sx={{ mb: 2 }}
+        />
         <TextField
           label="Email"
           type="email"
@@ -78,7 +86,7 @@ const AddUserWithRole = () => {
           sx={{ mb: 2 }}
         />
         <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="role-select-label">Ruolo</InputLabel>
+          <InputLabel id="role-select-label"></InputLabel>
           <Select
             labelId="role-select-label"
             value={role}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../services/firebase';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth, db } from '../services/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 import {
   Container,
   TextField,
@@ -8,9 +9,12 @@ import {
   Typography,
   Alert,
   Box,
+  Divider,
+  Paper
 } from '@mui/material';
 
 const Register = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,8 +35,18 @@ const Register = () => {
     try {
       setLoading(true);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('Utente registrato con successo:', userCredential.user);
+      const user = userCredential.user;
+
+      // Salva l'utente su Firestore con il campo username
+      await setDoc(doc(db, 'users', user.uid), {
+        username,
+        email,
+        role: 'user', // Default role
+      });
+
+      console.log('Utente registrato con successo:', user);
       setSuccess('Registrazione avvenuta con successo! Ora puoi effettuare il login.');
+      setUsername('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
@@ -44,8 +58,29 @@ const Register = () => {
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Salva l'utente su Firestore con il nome visualizzato da Google
+      await setDoc(doc(db, 'users', user.uid), {
+        username: user.displayName || 'Google User',
+        email: user.email,
+        role: 'user',
+      });
+
+      console.log('Registrazione tramite Google riuscita:', user);
+      setSuccess('Registrazione tramite Google completata con successo!');
+    } catch (err) {
+      console.error('Errore durante la registrazione tramite Google:', err);
+      setError(err.message);
+    }
+  };
+
   return (
-    <Container maxWidth="sm" sx={{ mt: 6, p: 0}}>
+    <Paper elevation={0}>
         <Typography variant="h5" align="center" gutterBottom>
           Registrazione
         </Typography>
@@ -60,6 +95,14 @@ const Register = () => {
               {success}
             </Alert>
           )}
+          <TextField
+            label="Username"
+            fullWidth
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            sx={{ mb: 2 }}
+          />
           <TextField
             label="Email"
             type="email"
@@ -93,11 +136,21 @@ const Register = () => {
             color="primary"
             fullWidth
             disabled={loading}
+            sx={{ mb: 2 }}
           >
             {loading ? 'Registrazione in corso...' : 'Registrati'}
           </Button>
+          <Divider sx={{ my: 2 }} />
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            onClick={handleGoogleSignUp}
+          >
+            Registrati con Google
+          </Button>
         </form>
-    </Container>
+    </Paper>
   );
 };
 

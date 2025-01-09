@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { AuthContext } from '../context/AuthContext';
 import Register from '../components/Register';
@@ -20,9 +20,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { role } = useContext(AuthContext);
+  const { role, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login'); // Per gestire il cambio tra login e registrazione
+  const [waitingForRole, setWaitingForRole] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,13 +35,7 @@ const Login = () => {
       const user = userCredential.user;
 
       console.log('Utente loggato con successo:', user);
-
-      // Reindirizza in base al ruolo
-      if (role === 'admin') {
-        navigate('/cassabar');
-      } else if (role === 'user') {
-        navigate('/');
-      }
+      setWaitingForRole(true); // Imposta l'attesa per il ruolo
     } catch (err) {
       console.error('Errore durante il login:', err);
       setError('Email o password non corretti.');
@@ -48,6 +43,32 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    setError(null);
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log('Login con Google riuscito:', result.user);
+      setWaitingForRole(true);
+    } catch (err) {
+      console.error('Errore durante il login con Google:', err);
+      setError('Errore durante il login con Google.');
+    }
+  };
+
+  // Reindirizza quando il ruolo è disponibile
+  useEffect(() => {
+    if (waitingForRole && role) {
+      setWaitingForRole(false); // Reset dell'attesa
+      if (role === 'admin') {
+        navigate('/cassabar');
+      } else if (role === 'user') {
+        navigate('/');
+      }
+    }
+  }, [role, waitingForRole, navigate]);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -110,8 +131,17 @@ const Login = () => {
                 color="primary"
                 fullWidth
                 disabled={loading}
+                sx={{ mb: 2 }}
               >
                 {loading ? 'Caricamento...' : 'Accedi'}
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                onClick={handleGoogleLogin}
+              >
+                Accedi con Google
               </Button>
             </form>
           </div>
