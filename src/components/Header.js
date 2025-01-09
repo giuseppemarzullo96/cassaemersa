@@ -40,7 +40,7 @@ const Header = () => {
   const menuItems = [
     { text: 'Home', icon: <HomeIcon />, link: '/', roles: ['admin', 'user'] },
     { text: 'Cassa Bar', icon: <PointOfSaleIcon />, link: '/CassaBar', roles: ['admin'] },
-    { text: 'Impostazioni', icon: <SettingsIcon />, link: '/Settings', roles: ['admin'] },
+    { text: 'Impostazioni', icon: <SettingsIcon />, link: '/Settings', roles: ['admin', 'user'] },
     { 
       text: user ? 'Logout' : 'Login', 
       icon: user ? <LogoutIcon /> : <LoginIcon />, 

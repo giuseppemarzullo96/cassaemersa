@@ -11,12 +11,18 @@ import {
   MenuItem,
   Select,
   FormControl,
+  Box,
   InputLabel,
+  IconButton,
+  Avatar
 } from '@mui/material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+
 
 const AddUserWithRole = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('user'); // Ruolo di default
   const [error, setError] = useState(null);
@@ -39,7 +45,7 @@ const AddUserWithRole = () => {
 
       // Salva l'utente e il ruolo in Firestore
       console.log('Salvataggio dell\'utente nel database Firestore...');
-      await setDoc(doc(db, 'users', user.uid), { email: user.email, role, username });
+      await setDoc(doc(db, 'users', user.uid), { email: user.email, role, username, phone });
 
       console.log(`Utente salvato con successo in Firestore: Email: ${email}, Ruolo: ${role}`);
       setSuccess(`Utente ${email} creato con ruolo ${role} con successo!`);
@@ -47,6 +53,7 @@ const AddUserWithRole = () => {
       setPassword('');
       setRole('user');
       setUsername('');
+      setPhone('');
     } catch (err) {
       console.error('Errore durante la creazione dell\'utente:', err);
       setError(err.message);
@@ -58,6 +65,14 @@ const AddUserWithRole = () => {
       <form onSubmit={handleAddUser}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+        
+        <Box display="flex" justifyContent="center" mb={2}>
+        <Avatar src={'photoURL'} sx={{ width: 100, height: 100, mb: 2 }} />
+        <IconButton component="label" sx={{ width: 50, height: 50, mb: 2, ml:-1 }}>
+          <PhotoCamera/>
+        </IconButton>
+      </Box>
+       
         <TextField
           label="Username"
           type="username"
@@ -74,6 +89,14 @@ const AddUserWithRole = () => {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Phone"
+          type="phone"
+          fullWidth
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
           sx={{ mb: 2 }}
         />
         <TextField

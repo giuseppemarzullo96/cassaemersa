@@ -1,7 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
-import { TextField, Button, Select, MenuItem, Typography, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Select,
+  MenuItem,
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Avatar,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -9,17 +25,45 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 const ManageAccounts = () => {
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [editMode, setEditMode] = useState(null);
   const [editedUser, setEditedUser] = useState({});
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      const usersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setUsers(usersData);
-    };
-    fetchUsers();
+    fetchUsers(); // Carica tutti gli utenti al primo caricamento
   }, []);
+
+  const fetchUsers = async (queryStr = '') => {
+    try {
+      let q;
+      if (queryStr) {
+        q = query(
+          collection(db, 'users'),
+          where('username', '>=', queryStr),
+          where('username', '<=', queryStr + '\uf8ff')
+        );
+      } else {
+        q = collection(db, 'users'); // Nessun filtro, carica tutto
+      }
+
+      const querySnapshot = await getDocs(q);
+      const usersData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setUsers(usersData);
+    } catch (error) {
+      console.error('Errore durante il recupero degli utenti:', error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    setTimeout(() => {
+      if (query === searchQuery) {
+        fetchUsers(query.toLowerCase());
+      }
+    }, 300);
+  };
 
   const handleEdit = (user) => {
     setEditMode(user.id);
@@ -28,20 +72,11 @@ const ManageAccounts = () => {
 
   const handleSave = async (id) => {
     try {
-      const filteredUser = { ...editedUser };
-      Object.keys(filteredUser).forEach(key => {
-        if (filteredUser[key] === undefined) {
-          delete filteredUser[key];
-        }
-      });
-
       const userRef = doc(db, 'users', id);
-      await updateDoc(userRef, filteredUser);
-
+      await updateDoc(userRef, editedUser);
       alert('Utente aggiornato con successo!');
       setEditMode(null);
-      const updatedUsers = users.map(user => (user.id === id ? { ...user, ...filteredUser } : user));
-      setUsers(updatedUsers);
+      fetchUsers(searchQuery); // Ricarica gli utenti aggiornati
     } catch (error) {
       console.error('Errore durante l\'aggiornamento dell\'utente:', error);
     }
@@ -50,16 +85,25 @@ const ManageAccounts = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Sei sicuro di voler eliminare questo utente?')) {
       await deleteDoc(doc(db, 'users', id));
-      setUsers(users.filter(user => user.id !== id));
+      setUsers(users.filter((user) => user.id !== id));
     }
   };
 
   return (
     <Box sx={{ mt: 4 }}>
+      <TextField
+        label="Cerca utente"
+        fullWidth
+        variant="outlined"
+        value={searchQuery}
+        onChange={handleSearch}
+        sx={{ mb: 2 }}
+      />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Foto</TableCell>
               <TableCell>Nome Utente</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Telefono</TableCell>
@@ -69,7 +113,20 @@ const ManageAccounts = () => {
           </TableHead>
           <TableBody>
             {users.map((user) => (
-              <TableRow key={user.id}>
+              <TableRow
+                key={user.id}
+                sx={{
+                  backgroundColor:
+                    user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    user.phone?.toLowerCase().includes(searchQuery.toLowerCase())
+                      ? '#f5f5f5'
+                      : 'transparent',
+                }}
+              >
+                <TableCell>
+                  <Avatar src={user.photoURL} alt={user.username} />
+                </TableCell>
                 <TableCell>
                   {editMode === user.id ? (
                     <TextField
