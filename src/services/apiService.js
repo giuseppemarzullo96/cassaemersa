@@ -70,3 +70,45 @@ export const getLatestTransaction = async () => {
   return response.data;
 };
 
+export const getAllRawMaterials = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/rawmaterials/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Errore durante il recupero della materia prima`);
+    throw error;
+  }
+};
+
+// Crea una nuova materia prima
+export const createRawMaterial = async (rawMaterial) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/RawMaterials`, rawMaterial);
+    return response.data;
+  } catch (error) {
+    console.error('Errore durante la creazione della materia prima:', error);
+    throw error;
+  }
+};
+
+// Aggiorna una materia prima esistente per indice
+export const updateRawMaterial = async (index, rawMaterial) => {
+  try {
+    const response = await axios.put(`${BASE_URL}/RawMaterials/${index}`, rawMaterial);
+    return response.data;
+  } catch (error) {
+    console.error(`Errore durante l'aggiornamento della materia prima all'indice ${index}:`, error);
+    throw error;
+  }
+};
+
+// Elimina una materia prima per indice
+export const deleteRawMaterial = async (index) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/RawMaterials/${index}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Errore durante l'eliminazione della materia prima all'indice ${index}:`, error);
+    throw error;
+  }
+};

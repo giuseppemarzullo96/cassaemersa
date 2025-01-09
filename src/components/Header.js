@@ -7,14 +7,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Importa AuthContext
+import { AuthContext } from '../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../services/firebase'; // Importa Firestore
+import { db } from '../services/firebase';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { role, user, handleLogout } = useContext(AuthContext);
-  const [username, setUsername] = useState(''); // Stato per il nome utente
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -37,48 +37,48 @@ const Header = () => {
     setIsOpen(open);
   };
 
+  const handleLogoutClick = () => {
+    setIsOpen(false); // Chiude il drawer
+    handleLogout(); // Esegue il logout
+  };
+
   const menuItems = [
     { text: 'Home', icon: <HomeIcon />, link: '/', roles: ['admin', 'user'] },
     { text: 'Cassa Bar', icon: <PointOfSaleIcon />, link: '/CassaBar', roles: ['admin'] },
     { text: 'Impostazioni', icon: <SettingsIcon />, link: '/Settings', roles: ['admin', 'user'] },
-    { 
-      text: user ? 'Logout' : 'Login', 
-      icon: user ? <LogoutIcon /> : <LoginIcon />, 
-      link: user ? '/' : '/Login', 
-      roles: ['admin', 'user'], 
-      action: user ? handleLogout : null 
+    {
+      text: user ? 'Logout' : 'Login',
+      icon: user ? <LogoutIcon /> : <LoginIcon />,
+      link: user ? '/' : '/Login',
+      roles: ['admin', 'user'],
+      action: user ? handleLogoutClick : null,
     },
   ];
 
   const filteredMenuItems = menuItems.filter((item) => item.roles.includes(role));
 
   return (
-    <>
-      <AppBar position="static" sx={{ backgroundColor: '#1565c0' }}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-          >
+    <AppBar position="static" sx={{ boxShadow: 'none', backgroundColor: '#1565c0' }}>
+      <Toolbar>
+        {user && ( // Mostra l'icona del menu solo se l'utente è loggato
+          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Gestione Eventi
-          </Typography>
-          {user && (
-            <Box display="flex" alignItems="center" gap={1}>
-              <Avatar sx={{ bgcolor: '#1976d2' }}>
-                {username.charAt(0).toUpperCase()}
-              </Avatar>
-              <Typography variant="body1" sx={{ color: '#fff' }}>
-                {username}
-              </Typography>
-            </Box>
-          )}
-        </Toolbar>
-      </AppBar>
+        )}
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          Gestione Eventi
+        </Typography>
+        {user && (
+          <Box display="flex" alignItems="center" gap={1}>
+            <Avatar sx={{ bgcolor: '#1976d2' }}>
+              {username.charAt(0).toUpperCase()}
+            </Avatar>
+            <Typography variant="body1" sx={{ color: '#fff' }}>
+              {username}
+            </Typography>
+          </Box>
+        )}
+      </Toolbar>
 
       <Drawer
         anchor="left"
@@ -99,7 +99,10 @@ const Header = () => {
               key={index}
               component={Link}
               to={item.link}
-              onClick={item.action || toggleDrawer(false)}
+              onClick={() => {
+                if (item.action) item.action();
+                toggleDrawer(false)(); // Chiude il drawer
+              }}
               sx={{
                 color: '#1565c0',
                 width: '230px',
@@ -117,7 +120,7 @@ const Header = () => {
           ))}
         </List>
       </Drawer>
-    </>
+    </AppBar>
   );
 };
 

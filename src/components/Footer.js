@@ -9,7 +9,7 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        backgroundColor: 'primary.main',
+        backgroundColor:'#1976d2' ,
         color: 'white',
         py: 3,
         px: 2,
@@ -19,7 +19,7 @@ const Footer = () => {
       <Grid container spacing={2} alignItems="center" justifyContent="space-between">
         <Grid item xs={12} sm={12}>
           <Typography variant="body2" align="center">
-            Copyright © 2023 Emersa. Tutti i diritti riservati.
+            Copyright © 2024. Tutti i diritti riservati.
           </Typography>
           <Typography variant="body2" align="center">
             Prodotto da Giuseppe Marzullo

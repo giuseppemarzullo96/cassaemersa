@@ -32,7 +32,7 @@ const AppRoutes = () => {
       <Route
         path="/settings"
         element={
-          <PrivateRoute allowedRoles={['admin']}>
+          <PrivateRoute allowedRoles={['admin','user']}>
             <Settings />
           </PrivateRoute>
         }

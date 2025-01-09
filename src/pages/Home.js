@@ -5,6 +5,8 @@ import TopSellingProducts from '../components/TopSellingProducts';
 import TopSellingHours from '../components/TopSellingHours';
 import LatestTransaction from '../components/LatestTransaction';
 import { AppContext } from '../context/AppContext';
+import TransactionTable from '../components/TransactionTable';
+import ProductHourSelling from '../components/ProductHourSelling';
 
 
 const Home = () => {const {
@@ -25,12 +27,15 @@ const refreshLatestTransaction = () => {
         <Grid item xs={12} md={4}>
           <ReportIncoming reload={reloadTransaction}/>
           <LatestTransaction reload={reloadTransaction}/>
+          <TransactionTable/>
         </Grid>
         <Grid item xs={12} md={4}>
           <TopSellingProducts reload={reloadTransaction}/>
+          
         </Grid>
         <Grid item xs={12} md={4}>
           <TopSellingHours reload={reloadTransaction}/>
+          <ProductHourSelling/>
         </Grid>
       </Grid>
     </Container>
