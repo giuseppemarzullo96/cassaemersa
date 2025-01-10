@@ -41,7 +41,7 @@ const LatestTransaction = ({ reload }) => {
           {transaction.products.map((product, index) => (
             <ListItem key={index}>
               <ListItemText
-                primary={`${product.name} - ${product.quantitysold} x €${product.price.toFixed(2)}`}
+                primary={`${product.name} - ${product.quantitySold} x €${product.price.toFixed(2)}`}
               />
             </ListItem>
           ))}

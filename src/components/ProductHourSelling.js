@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getAllTransactions } from '../services/apiService';
+import { getHourlyProductSales } from '../services/apiService';
 
 // Registrazione dei componenti ChartJS
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
@@ -21,24 +21,10 @@ const ProductHourSelling = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const transactions = await getAllTransactions();
-        const salesData = {};
-
-        transactions.forEach(transaction => {
-          const hour = new Date(transaction.timestamp).getHours();
-          transaction.products.forEach(product => {
-            const key = `${hour}:00 - ${product.name}`;
-            salesData[key] = (salesData[key] || 0) + product.quantitysold;
-          });
-        });
-
-        const sortedSalesData = Object.entries(salesData)
-          .sort(([, a], [, b]) => b - a)
-          .slice(0, 10); // Prendi solo i top 10
-
-        setHourlyProductSales(sortedSalesData);
+        const salesData = await getHourlyProductSales();
+        setHourlyProductSales(Object.entries(salesData));
       } catch (error) {
-        console.error('Errore durante il recupero delle transazioni:', error);
+        console.error('Errore durante il recupero delle vendite orarie:', error);
       }
     };
 

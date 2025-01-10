@@ -119,7 +119,7 @@ const TransactionTable = () => {
                     {transaction.products && transaction.products.length > 0
                       ? transaction.products.map((product, i) => (
                           <Typography key={i} variant="body2">
-                            {product.name} (Quantità: {product.quantitysold || 0})
+                            {product.name} (Quantità: {product.quantitySold || 0})
                           </Typography>
                         ))
                       : 'Nessun prodotto'}

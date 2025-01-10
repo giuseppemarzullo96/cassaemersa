@@ -10,9 +10,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { getAllTransactions } from '../services/apiService';
+import { getHourlySalesSummary } from '../services/apiService'; // Assicurati che l'API sia corretta
 
-// Registrazione dei componenti necessari
 ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
 
 const TopSellingHours = () => {
@@ -21,18 +20,10 @@ const TopSellingHours = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const transactions = await getAllTransactions();
-        const salesByHour = Array(24).fill(0);
-
-        transactions.forEach(transaction => {
-          const hour = new Date(transaction.timestamp).getHours();
-          const totalProducts = transaction.products.reduce((sum, product) => sum + product.quantitysold, 0);
-          salesByHour[hour] += totalProducts;
-        });
-
-        setHourlySales(salesByHour);
+        const data = await getHourlySalesSummary();
+        setHourlySales(data);
       } catch (error) {
-        console.error('Errore durante il recupero delle transazioni:', error);
+        console.error('Errore durante il recupero delle vendite orarie:', error);
       }
     };
 
@@ -40,11 +31,11 @@ const TopSellingHours = () => {
   }, []);
 
   const data = {
-    labels: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+    labels: hourlySales.map((item) => `${item.hour}:00`),
     datasets: [
       {
         label: 'Prodotti Venduti',
-        data: hourlySales,
+        data: hourlySales.map((item) => item.totalSales),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
@@ -66,8 +57,8 @@ const TopSellingHours = () => {
   };
 
   return (
-    <Container maxWidth="tm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ pb: 8, pr: 4, pl: 4, pt:4, textAlign: 'center', height: 600 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4, textAlign: 'center', height: 600 }}>
         <Typography variant="h5" gutterBottom>
           Orari con Maggiori Vendite
         </Typography>

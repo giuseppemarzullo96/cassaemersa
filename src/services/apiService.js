@@ -89,3 +89,23 @@ export const deleteRawMaterial = async (index) => {
     throw error;
   }
 };
+
+export const getHourlyProductSales = async () => {
+  const response = await axios.get(`${BASE_URL}/transactions/hourly-sales`);
+  return response.data;
+};
+
+export const getTopSellingProducts = async () => {
+  const response = await axios.get(`${BASE_URL}/transactions/top-products`);
+  return response.data;
+};
+
+export const getHourlySalesSummary = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/transactions/hourly-sales-summary`);
+    return response.data; // Array con { Hour, TotalSales }
+  } catch (error) {
+    console.error('Errore durante il recupero del riepilogo delle vendite orarie:', error);
+    throw error;
+  }
+};
