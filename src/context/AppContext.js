@@ -1,23 +1,24 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react';
-import { getProducts, getMoneyNotes } from '../services/apiService'; // Importa le funzioni API
+import React, { createContext, useState, useEffect, useMemo } from 'react'; 
+import { getProducts, getMoneyNotes, getMaxProduction, getAllRawMaterials } from '../services/apiService'; // Importa getMaxProduction
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
+  const [maxProduction, setMaxProduction] = useState([]); // Per memorizzare maxQuantity
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [moneyNotes, setMoneyNotes] = useState([]);
   const [receivedNotes, setReceivedNotes] = useState([]);
   const [operationCount, setOperationCount] = useState(0);
-  const [loading, setLoading] = useState(true); // Per gestire il caricamento iniziale
-  const [error, setError] = useState(null); // Per gestire errori durante il recupero
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [reloadTransaction, setReloadTransaction] = useState(false);
 
+
   const refreshLatestTransaction = () => {
-    setReloadTransaction(prev => !prev); // Cambia stato per triggerare il ricaricamento
+    setReloadTransaction((prev) => !prev);
   };
 
-  // Calcolo dei totali
   const total = useMemo(
     () => selectedProducts.reduce((sum, product) => sum + product.price * product.quantity, 0),
     [selectedProducts]
@@ -30,18 +31,20 @@ export const AppProvider = ({ children }) => {
 
   const change = useMemo(() => receivedTotal - total, [receivedTotal, total]);
 
-  // Recupera i dati al caricamento iniziale
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const [productsData, moneyNotesData] = await Promise.all([
-          getProducts(), // Recupera i prodotti dall'API
-          getMoneyNotes(), // Recupera le banconote dall'API
+        const [productsData, moneyNotesData, maxProductionData] = await Promise.all([
+          getProducts(),
+          getMoneyNotes(),
+          getMaxProduction(), // Ottieni maxQuantity dall'API
+          getAllRawMaterials(),
         ]);
 
         setProducts(productsData || []);
         setMoneyNotes(moneyNotesData || []);
+        setMaxProduction(maxProductionData || []);
       } catch (err) {
         setError('Errore durante il recupero dei dati. Riprova più tardi.');
         console.error('Errore API:', err);
@@ -53,20 +56,28 @@ export const AppProvider = ({ children }) => {
     fetchInitialData();
   }, []);
 
-  // Aggiungi un prodotto selezionato o incrementa la quantità
   const addProduct = (product) => {
     setSelectedProducts((prev) => {
-      const existingProduct = prev.find((p) => p.name === product.name);
+      const existingProduct = prev.find((p) => p.id === product.id);
       if (existingProduct) {
+        if (existingProduct.quantity + 1 > product.stock) {
+          alert('Stock insufficiente per questo prodotto.');
+          return prev;
+        }
         return prev.map((p) =>
-          p.name === product.name ? { ...p, quantity: p.quantity + 1 } : p
+          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
         );
       }
+  
+      if (product.stock <= 0) {
+        alert('Stock esaurito per questo prodotto.');
+        return prev;
+      }
+  
       return [...prev, { ...product, quantity: 1 }];
     });
   };
 
-  // Aggiungi una banconota ricevuta
   const addNote = (note) => {
     setReceivedNotes((prev) => [...prev, note]);
   };
@@ -76,6 +87,7 @@ export const AppProvider = ({ children }) => {
       value={{
         products,
         setProducts,
+        maxProduction, // Passa maxProduction
         selectedProducts,
         setSelectedProducts,
         addProduct,
@@ -92,7 +104,7 @@ export const AppProvider = ({ children }) => {
         loading,
         error,
         refreshLatestTransaction,
-        reloadTransaction
+        reloadTransaction,
       }}
     >
       {children}

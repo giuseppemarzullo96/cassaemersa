@@ -7,6 +7,7 @@ import LatestTransaction from '../components/LatestTransaction';
 import { AppContext } from '../context/AppContext';
 import TransactionTable from '../components/TransactionTable';
 import ProductHourSelling from '../components/ProductHourSelling';
+import MaxProduction from '../components/MaxProduction';
 
 
 const Home = () => {const {
@@ -25,16 +26,16 @@ const refreshLatestTransaction = () => {
             </Typography>
       <Grid container spacing={1}>
         <Grid item xs={12} md={4}>
-          <ReportIncoming reload={reloadTransaction}/>
-          <LatestTransaction reload={reloadTransaction}/>
+          <ReportIncoming />
+          <LatestTransaction/>
           <TransactionTable/>
         </Grid>
         <Grid item xs={12} md={4}>
-          <TopSellingProducts reload={reloadTransaction}/>
-          
+          <TopSellingProducts/>
+          <MaxProduction/>
         </Grid>
         <Grid item xs={12} md={4}>
-          <TopSellingHours reload={reloadTransaction}/>
+          <TopSellingHours />
           <ProductHourSelling/>
         </Grid>
       </Grid>

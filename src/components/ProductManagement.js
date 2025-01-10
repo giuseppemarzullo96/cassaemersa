@@ -3,20 +3,42 @@ import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CalculateIcon from '@mui/icons-material/Calculate';
 
 const ProductManagement = ({ products, setProducts, getProducts, createProduct, updateProduct, deleteProduct, rawMaterials }) => {
   const [newProductId, setNewProductId] = useState('');
   const [newProductName, setNewProductName] = useState('');
   const [newProductPrice, setNewProductPrice] = useState('');
+  const [newProductStock, setNewProductStock] = useState(0); // Campo Stock
   const [rawMaterialList, setRawMaterialList] = useState([]);
   const [selectedRawMaterial, setSelectedRawMaterial] = useState('');
   const [rawMaterialQuantity, setRawMaterialQuantity] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
 
+  // Calcolo automatico dello stock in base alle materie prime
+  const calculateStock = () => {
+    if (rawMaterialList.length === 0) {
+      alert('Aggiungi almeno una materia prima per calcolare lo stock.');
+      return;
+    }
+
+    const calculatedStock = rawMaterialList.reduce((minStock, material) => {
+      const rawMaterial = rawMaterials.find((rm) => rm.id === material.rawMaterialId);
+      if (!rawMaterial || rawMaterial.stock <= 0) {
+        return 0; // Se una materia prima non è disponibile, lo stock è 0
+      }
+      const possibleStock = Math.floor(rawMaterial.stock / material.quantity);
+      return Math.min(minStock, possibleStock);
+    }, Infinity);
+
+    setNewProductStock(calculatedStock || 0);
+  };
+
   const handleEditProduct = (index, product) => {
     setNewProductId(product.id);
     setNewProductName(product.name);
     setNewProductPrice(product.price.toString());
+    setNewProductStock(product.stock || 0);
     setRawMaterialList(product.rawMaterials || []);
     setEditingIndex(index);
   };
@@ -65,6 +87,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
       id: newProductId || '',
       name: newProductName,
       price: parseFloat(newProductPrice),
+      stock: newProductStock,
       rawMaterials: rawMaterialList,
     };
 
@@ -80,6 +103,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
       setNewProductId('');
       setNewProductName('');
       setNewProductPrice('');
+      setNewProductStock(0);
       setRawMaterialList([]);
       setEditingIndex(null);
       const productsData = await getProducts();
@@ -97,7 +121,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
       <List>
         {products.map((product, index) => (
           <ListItem key={index}>
-            <ListItemText primary={`${product.name} - €${product.price.toFixed(2)}`} />
+            <ListItemText primary={`${product.name} - €${product.price.toFixed(2)} - Stock: ${product.stock || 0}`} />
             <IconButton onClick={() => handleEditProduct(index, product)}>
               <EditIcon />
             </IconButton>
@@ -166,6 +190,18 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
           </ListItem>
         ))}
       </List>
+      <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+        <TextField
+          label="Stock Prodotto"
+          type="number"
+          fullWidth
+          value={newProductStock}
+          onChange={(e) => setNewProductStock(parseFloat(e.target.value) || 0)}
+        />
+        <Button variant="outlined" startIcon={<CalculateIcon />} onClick={calculateStock}>
+          Calcola automaticamente
+        </Button>
+      </Box>
       <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveProduct}>
         {editingIndex !== null ? 'Aggiorna Prodotto' : 'Aggiungi Prodotto'}
       </Button>

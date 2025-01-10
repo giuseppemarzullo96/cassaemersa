@@ -109,3 +109,7 @@ export const getHourlySalesSummary = async () => {
     throw error;
   }
 };
+export const getMaxProduction = async () => {
+  const response = await axios.get(`${BASE_URL}/products/max-production`);
+  return response.data;
+};
