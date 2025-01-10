@@ -1,45 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials, createRawMaterial, updateRawMaterial, deleteRawMaterial }) => {
-  const [newMaterial, setNewMaterial] = useState({ id: '', name: '', cost: '', unit: '', stock: '' });
+  const [newRawMaterialId, setNewRawMaterialId] = useState('');
+  const [newRawMaterialName, setNewRawMaterialName] = useState('');
+  const [newRawMaterialCost, setNewRawMaterialCost] = useState('');
+  const [newRawMaterialUnit, setNewRawMaterialUnit] = useState('');
+  const [newRawMaterialStock, setNewRawMaterialStock] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
 
   const handleSaveMaterial = async () => {
-    if (!newMaterial.id || !newMaterial.name || !newMaterial.cost || !newMaterial.unit || !newMaterial.stock) {
+    if (!newRawMaterialName || !newRawMaterialCost || !newRawMaterialUnit || !newRawMaterialStock) {
       alert('Compila tutti i campi richiesti.');
       return;
     }
 
+    const rawMaterial = {
+      id: newRawMaterialId || '',
+      name: newRawMaterialName,
+      cost: parseFloat(newRawMaterialCost),
+      unit: newRawMaterialUnit,
+      stock: parseFloat(newRawMaterialStock),
+    };
+
     try {
       if (editingIndex !== null) {
-        await updateRawMaterial(newMaterial.id, newMaterial);
+        await updateRawMaterial(editingIndex, rawMaterial);
         alert('Materia prima aggiornata con successo!');
       } else {
-        await createRawMaterial(newMaterial);
+        await createRawMaterial(rawMaterial);
         alert('Materia prima creata con successo!');
       }
 
-      setNewMaterial({ id: '', name: '', cost: '', unit: '', stock: '' });
+      // Reset form e aggiorna la lista
+      setNewRawMaterialId('');
+      setNewRawMaterialName('');
+      setNewRawMaterialCost('');
+      setNewRawMaterialUnit('');
+      setNewRawMaterialStock('');
       setEditingIndex(null);
-      const materials = await getRawMaterials();
-      setRawMaterials(materials);
+      const materialsData = await getRawMaterials();
+      setRawMaterials(materialsData);
     } catch (error) {
       console.error('Errore durante il salvataggio della materia prima:', error);
     }
   };
 
-  const handleDeleteMaterial = async (id) => {
+  const handleEditMaterial = (index, material) => {
+    setNewRawMaterialId(material.id);
+    setNewRawMaterialName(material.name);
+    setNewRawMaterialCost(material.cost.toString());
+    setNewRawMaterialUnit(material.unit);
+    setNewRawMaterialStock(material.stock.toString());
+    setEditingIndex(index);
+  };
+
+  const handleDeleteMaterial = async (index) => {
     if (window.confirm('Sei sicuro di voler eliminare questa materia prima?')) {
       try {
-        await deleteRawMaterial(id);
+        await deleteRawMaterial(index);
         alert('Materia prima eliminata con successo!');
-        const materials = await getRawMaterials();
-        setRawMaterials(materials);
+        const materialsData = await getRawMaterials();
+        setRawMaterials(materialsData);
       } catch (error) {
-        console.error("Errore durante l'eliminazione della materia prima:", error);
+        console.error('Errore durante l\'eliminazione della materia prima:', error);
       }
     }
   };
@@ -51,56 +77,53 @@ const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials,
       </Typography>
       <List>
         {rawMaterials.map((material, index) => (
-          <ListItem key={material.id}>
-            <ListItemText primary={`ID: ${material.id} - ${material.name} - Costo: €${material.cost.toFixed(2)} / ${material.unit} - Stock: ${material.stock}`} />
-            <IconButton onClick={() => {
-              setNewMaterial(material);
-              setEditingIndex(index);
-            }}>
+          <ListItem key={index}>
+            <ListItemText primary={`${material.name} - Costo: €${material.cost.toFixed(2)} / ${material.unit} - Stock: ${material.stock}`} />
+            <IconButton onClick={() => handleEditMaterial(index, material)}>
               <EditIcon />
             </IconButton>
-            <IconButton onClick={() => handleDeleteMaterial(material.id)}>
+            <IconButton onClick={() => handleDeleteMaterial(index)}>
               <DeleteIcon />
             </IconButton>
           </ListItem>
         ))}
       </List>
       <TextField
-        label="ID"
+        label="ID Materia Prima (opzionale)"
         fullWidth
-        value={newMaterial.id}
-        onChange={(e) => setNewMaterial({ ...newMaterial, id: e.target.value })}
+        value={newRawMaterialId}
+        onChange={(e) => setNewRawMaterialId(e.target.value)}
         sx={{ mt: 2 }}
-        disabled={editingIndex !== null} // Disabilita l'ID se stai modificando
+        disabled={editingIndex !== null}
       />
       <TextField
-        label="Nome"
+        label="Nome Materia Prima"
         fullWidth
-        value={newMaterial.name}
-        onChange={(e) => setNewMaterial({ ...newMaterial, name: e.target.value })}
+        value={newRawMaterialName}
+        onChange={(e) => setNewRawMaterialName(e.target.value)}
         sx={{ mt: 2 }}
       />
       <TextField
         label="Costo (€)"
         type="number"
         fullWidth
-        value={newMaterial.cost}
-        onChange={(e) => setNewMaterial({ ...newMaterial, cost: e.target.value })}
+        value={newRawMaterialCost}
+        onChange={(e) => setNewRawMaterialCost(e.target.value)}
         sx={{ mt: 2 }}
       />
       <TextField
         label="Unità"
         fullWidth
-        value={newMaterial.unit}
-        onChange={(e) => setNewMaterial({ ...newMaterial, unit: e.target.value })}
+        value={newRawMaterialUnit}
+        onChange={(e) => setNewRawMaterialUnit(e.target.value)}
         sx={{ mt: 2 }}
       />
       <TextField
         label="Stock"
         type="number"
         fullWidth
-        value={newMaterial.stock}
-        onChange={(e) => setNewMaterial({ ...newMaterial, stock: e.target.value })}
+        value={newRawMaterialStock}
+        onChange={(e) => setNewRawMaterialStock(e.target.value)}
         sx={{ mt: 2 }}
       />
       <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveMaterial}>

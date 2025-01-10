@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react'; 
 import { Container, Typography, Tabs, Tab, Paper } from '@mui/material';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -9,29 +9,46 @@ import MoneyNoteManagement from '../components/MoneyNoteManagement';
 import AddUserWithRole from '../components/AddUserWithRole';
 import MenageAccounts from '../components/MenageAccounts';
 import { AuthContext } from '../context/AuthContext';
-import { getAllRawMaterials as getRawMaterials, createRawMaterial, updateRawMaterial, deleteRawMaterial, getProducts, createProduct, updateProduct, deleteProduct, getMoneyNotes, createMoneyNote, deleteMoneyNote} from '../services/apiService';
+import { 
+  getAllRawMaterials as getRawMaterials, 
+  createRawMaterial, 
+  updateRawMaterial, 
+  deleteRawMaterial, 
+  getProducts, 
+  createProduct, 
+  updateProduct, 
+  deleteProduct, 
+  getMoneyNotes, 
+  createMoneyNote, 
+  deleteMoneyNote 
+} from '../services/apiService';
 import AccountSettings from '../components/AccountSettings';
 import RawMaterialManagement from '../components/RawMaterialManagement';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { role } = useContext(AuthContext); // Ruolo dell'utente
+  const { role } = useContext(AuthContext); 
   const [products, setProducts] = useState([]);
-  const [RawMaterials, setRawMaterials] = useState([]);
+  const [rawMaterials, setRawMaterials] = useState([]);
   const [moneyNotes, setMoneyNotes] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsData, moneyNotesData, RawMaterials] = await Promise.all([getProducts(), getMoneyNotes(), getRawMaterials()]);
+        const [productsData, moneyNotesData, rawMaterialsData] = await Promise.all([
+          getProducts(), 
+          getMoneyNotes(), 
+          getRawMaterials()
+        ]);
         setProducts(productsData);
         setMoneyNotes(moneyNotesData);
-        setRawMaterials(RawMaterials);
+        setRawMaterials(rawMaterialsData || []); // Garantisce un array
       } catch (error) {
         console.error('Errore durante il caricamento dei dati:', error);
       }
     };
-    if (role === 'admin') fetchData(); // Carica solo per admin
+
+    if (role === 'admin') fetchData(); 
   }, [role]);
 
   const handleTabChange = (event, newValue) => {
@@ -62,24 +79,28 @@ const Settings = () => {
 
       {role === 'admin' && activeTab === 1 && (
         <Container>
-          <Paper sx={{ p: 4 }} elevation={0} ><ProductManagement
-          products={products}
-          setProducts={setProducts}
-          getProducts={getProducts}
-          createProduct={createProduct}
-          updateProduct={updateProduct}
-          deleteProduct={deleteProduct}
-         /></Paper>
-         <Paper sx={{mt:4, p: 4 }} elevation={0} ><RawMaterialManagement
-         rawMaterials={RawMaterials}
-         setRawMaterials={setRawMaterials} 
-         getRawMaterials={getRawMaterials} 
-         createRawMaterial={createRawMaterial}
-         updateRawMaterial={updateRawMaterial}
-         deleteRawMaterial={deleteRawMaterial}
-         /></Paper>
-          </Container>
-      
+          <Paper sx={{ p: 4 }} elevation={0}>
+            <ProductManagement
+              products={products}
+              setProducts={setProducts}
+              getProducts={getProducts}
+              createProduct={createProduct}
+              updateProduct={updateProduct}
+              deleteProduct={deleteProduct}
+              rawMaterials={rawMaterials} 
+            />
+          </Paper>
+          <Paper sx={{ mt: 4, p: 4 }} elevation={0}>
+            <RawMaterialManagement
+              rawMaterials={rawMaterials} 
+              setRawMaterials={setRawMaterials} 
+              getRawMaterials={getRawMaterials} 
+              createRawMaterial={createRawMaterial}
+              updateRawMaterial={updateRawMaterial}
+              deleteRawMaterial={deleteRawMaterial}
+            />
+          </Paper>
+        </Container>
       )}
 
       {role === 'admin' && activeTab === 2 && (
