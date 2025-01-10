@@ -8,6 +8,7 @@ import { AppContext } from '../context/AppContext';
 import TransactionTable from '../components/TransactionTable';
 import ProductHourSelling from '../components/ProductHourSelling';
 import MaxProduction from '../components/MaxProduction';
+import RawMaterialDashboard from '../components/RawMaterialsDashboard';
 
 
 const Home = () => {const {
@@ -33,6 +34,7 @@ const refreshLatestTransaction = () => {
         <Grid item xs={12} md={4}>
           <TopSellingProducts/>
           <MaxProduction/>
+          <RawMaterialDashboard/>
         </Grid>
         <Grid item xs={12} md={4}>
           <TopSellingHours />
