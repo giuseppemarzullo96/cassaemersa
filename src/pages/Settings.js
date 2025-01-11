@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react'; 
-import { Container, Typography, Tabs, Tab, Paper } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { Container, Typography, Tabs, Tab, Box, Paper } from '@mui/material';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import GroupIcon from '@mui/icons-material/Group';
@@ -8,6 +8,8 @@ import ProductManagement from '../components/ProductManagement';
 import MoneyNoteManagement from '../components/MoneyNoteManagement';
 import AddUserWithRole from '../components/AddUserWithRole';
 import MenageAccounts from '../components/MenageAccounts';
+import AccountSettings from '../components/AccountSettings';
+import RawMaterialManagement from '../components/RawMaterialManagement';
 import { AuthContext } from '../context/AuthContext';
 import { 
   getAllRawMaterials as getRawMaterials, 
@@ -22,9 +24,28 @@ import {
   createMoneyNote, 
   deleteMoneyNote 
 } from '../services/apiService';
-import AccountSettings from '../components/AccountSettings';
-import RawMaterialManagement from '../components/RawMaterialManagement';
 
+// Tab personalizzato con design a pillola
+const PillTab = ({ icon, selected, onClick }) => (
+  <Box
+    onClick={onClick}
+    sx={{
+      width: 60,
+      height: 60,
+      borderRadius: '100%',
+      backgroundColor: selected ? 'primary.main' : 'transparent',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: selected ? 'white' : 'primary.main',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      boxShadow: selected ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
+    }}
+  >
+    {icon}
+  </Box>
+);
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -43,7 +64,7 @@ const Settings = () => {
         ]);
         setProducts(productsData);
         setMoneyNotes(moneyNotesData);
-        setRawMaterials(rawMaterialsData || []); // Garantisce un array
+        setRawMaterials(rawMaterialsData || []);
       } catch (error) {
         console.error('Errore durante il caricamento dei dati:', error);
       }
@@ -52,60 +73,95 @@ const Settings = () => {
     if (role === 'admin') fetchData(); 
   }, [role]);
 
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
+  const handleTabChange = (index) => {
+    setActiveTab(index);
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
-      <Typography variant="h4" gutterBottom align="center">
-        Impostazioni
-      </Typography>
-
-      <Tabs
-        value={activeTab}
-        onChange={handleTabChange}
-        centered
-        textColor="primary"
-        indicatorColor="primary"
-        sx={{ mb: 3 }}
+    <Container sx={{
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems:'center',
+      maxWidth: '-webkit-fill-available',
+      alignItems: 'center', 
+      mt: 6, mb: 6 }}>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: 3, 
+          mb: 4,
+          padding: '10px',
+          backgroundColor: '#f5f5f5', 
+          borderRadius: '60px',
+          width:'fit-content',
+        }}
       >
-        <Tab label="Informazioni Utente" icon={<UserIcon />} />
-        {role === 'admin' && <Tab label="Prodotti" icon={<InventoryIcon />} />}
-        {role === 'admin' && <Tab label="Utenti" icon={<GroupIcon />} />}
-        {role === 'admin' && <Tab label="Banconote" icon={<MonetizationOnIcon />} />}
-      </Tabs>
+        <PillTab 
+          icon={<UserIcon fontSize="large" />} 
+          selected={activeTab === 0} 
+          onClick={() => handleTabChange(0)} 
+        />
+        {role === 'admin' && (
+          <PillTab 
+            icon={<InventoryIcon fontSize="large" />} 
+            selected={activeTab === 1} 
+            onClick={() => handleTabChange(1)} 
+          />
+        )}
+        {role === 'admin' && (
+          <PillTab 
+            icon={<GroupIcon fontSize="large" />} 
+            selected={activeTab === 2} 
+            onClick={() => handleTabChange(2)} 
+          />
+        )}
+        {role === 'admin' && (
+          <PillTab 
+            icon={<MonetizationOnIcon fontSize="large" />} 
+            selected={activeTab === 3} 
+            onClick={() => handleTabChange(3)} 
+          />
+        )}
+      </Box>
 
       {activeTab === 0 && <AccountSettings />}
-
       {role === 'admin' && activeTab === 1 && (
-        <Container>
-          <Paper sx={{ p: 4 }} elevation={0}>
-            <ProductManagement
-              products={products}
-              setProducts={setProducts}
-              getProducts={getProducts}
-              createProduct={createProduct}
-              updateProduct={updateProduct}
-              deleteProduct={deleteProduct}
-              rawMaterials={rawMaterials} 
-            />
-          </Paper>
-          <Paper sx={{ mt: 4, p: 4 }} elevation={0}>
-            <RawMaterialManagement
-              rawMaterials={rawMaterials} 
-              setRawMaterials={setRawMaterials} 
-              getRawMaterials={getRawMaterials} 
-              createRawMaterial={createRawMaterial}
-              updateRawMaterial={updateRawMaterial}
-              deleteRawMaterial={deleteRawMaterial}
-            />
-          </Paper>
-        </Container>
+        <Paper sx={{
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems:'center',
+          maxWidth:'-webkit-fill-available;',
+          mt: 6, mb: 6 }} elevation={3}>
+          <ProductManagement
+            products={products}
+            setProducts={setProducts}
+            getProducts={getProducts}
+            createProduct={createProduct}
+            updateProduct={updateProduct}
+            deleteProduct={deleteProduct}
+            rawMaterials={rawMaterials} 
+          />
+          <RawMaterialManagement
+            rawMaterials={rawMaterials} 
+            setRawMaterials={setRawMaterials} 
+            getRawMaterials={getRawMaterials} 
+            createRawMaterial={createRawMaterial}
+            updateRawMaterial={updateRawMaterial}
+            deleteRawMaterial={deleteRawMaterial}
+          />
+        </Paper>
       )}
-
       {role === 'admin' && activeTab === 2 && (
-        <Paper sx={{ p: 4 }} elevation={3}>
+        <Paper sx={{
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: '', 
+          alignItems:'',
+          maxWidth:'-webkit-fill-available;',
+          mt: 6, mb: 6 }} elevation={3}>
           <Typography variant="h6" gutterBottom>
             Gestione Utenti
           </Typography>
@@ -113,15 +169,19 @@ const Settings = () => {
           <MenageAccounts />
         </Paper>
       )}
-
       {role === 'admin' && activeTab === 3 && (
-        <MoneyNoteManagement
+     <Paper sx={{ display: 'flex', 
+      flexDirection: 'row', 
+      justifyContent: '', 
+      alignItems:'', 
+      mt: 6, mb: 6 }} elevation={3}>
+         <MoneyNoteManagement
           moneyNotes={moneyNotes}
           setMoneyNotes={setMoneyNotes}
           getMoneyNotes={getMoneyNotes}
           createMoneyNote={createMoneyNote}
           deleteMoneyNote={deleteMoneyNote}
-        />
+        /></Paper>
       )}
     </Container>
   );

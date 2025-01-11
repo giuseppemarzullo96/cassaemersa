@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper } from '@mui/material';
+import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper, Container } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -71,7 +71,7 @@ const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials,
   };
 
   return (
-    <Paper sx={{ p: 4 }} elevation={3}>
+    <Container maxWidth="sm"  sx={{ p: 4, m: 4 }}>
       <Typography variant="h6" gutterBottom>
         Gestione Materie Prime
       </Typography>
@@ -129,7 +129,7 @@ const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials,
       <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveMaterial}>
         {editingIndex !== null ? 'Aggiorna Materia Prima' : 'Aggiungi Materia Prima'}
       </Button>
-    </Paper>
+    </Container>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper } from '@mui/material';
+import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper, Container } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const MoneyNoteManagement = ({ moneyNotes = [], setMoneyNotes, getMoneyNotes, createMoneyNote, deleteMoneyNote }) => {
@@ -40,8 +40,8 @@ const MoneyNoteManagement = ({ moneyNotes = [], setMoneyNotes, getMoneyNotes, cr
   };
 
   return (
-    <Paper sx={{ p: 4 }} elevation={3}>
-      <Typography variant="h6" gutterBottom>
+<Container maxWidth="1"  sx={{ p: 4, m: 4 }}>
+        <Typography variant="h6" gutterBottom>
         Gestione Banconote
       </Typography>
       <List>
@@ -65,7 +65,7 @@ const MoneyNoteManagement = ({ moneyNotes = [], setMoneyNotes, getMoneyNotes, cr
       <Button variant="contained" color="secondary" fullWidth sx={{ mt: 2 }} onClick={handleSaveMoneyNote}>
         Aggiungi Banconota
       </Button>
-    </Paper>
+    </Container>
   );
 };
 

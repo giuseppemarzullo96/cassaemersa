@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper, Select, MenuItem, Box } from '@mui/material';
+import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper, Select, MenuItem, Box, Container } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -114,7 +114,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
   };
 
   return (
-    <Paper sx={{ p: 4 }} elevation={3}>
+    <Container maxWidth="sm"  sx={{ p: 4, m: 4 }}>
       <Typography variant="h6" gutterBottom>
         Gestione Prodotti
       </Typography>
@@ -199,13 +199,12 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
           onChange={(e) => setNewProductStock(parseFloat(e.target.value) || 0)}
         />
         <Button variant="outlined" startIcon={<CalculateIcon />} onClick={calculateStock}>
-          Calcola automaticamente
         </Button>
       </Box>
-      <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveProduct}>
+      <Button variant="contained" color="primary" maxWidth="sm" sx={{ mt: 2 }} onClick={handleSaveProduct}>
         {editingIndex !== null ? 'Aggiorna Prodotto' : 'Aggiungi Prodotto'}
       </Button>
-    </Paper>
+    </Container>
   );
 };
 
