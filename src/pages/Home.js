@@ -1,48 +1,123 @@
-import React, { useContext , useState } from 'react';
-import { Grid, Container, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Container, Box, Paper, Typography, Grid } from '@mui/material';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import LocalBarIcon from '@mui/icons-material/LocalBar';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import ReportIncoming from '../components/ReportIncoming';
 import TopSellingProducts from '../components/TopSellingProducts';
 import TopSellingHours from '../components/TopSellingHours';
 import LatestTransaction from '../components/LatestTransaction';
-import { AppContext } from '../context/AppContext';
 import TransactionTable from '../components/TransactionTable';
 import ProductHourSelling from '../components/ProductHourSelling';
 import MaxProduction from '../components/MaxProduction';
 import RawMaterialDashboard from '../components/RawMaterialsDashboard';
 
+// Tab personalizzato con stile a pillola
+const PillTab = ({ icon, selected, onClick }) => (
+  <Box
+    onClick={onClick}
+    sx={{
+      width: 60,
+      height: 60,
+      borderRadius: '100%',
+      backgroundColor: selected ? 'primary.main' : 'transparent',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: selected ? 'white' : 'primary.main',
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+      boxShadow: selected ? '0px 4px 10px rgba(0, 0, 0, 0.2)' : 'none',
+    }}
+  >
+    {icon}
+  </Box>
+);
 
-const Home = () => {const {
-  } = useContext(AppContext);
- 
-  const [reloadTransaction, setReloadTransaction] = useState(false);
+const Home = () => {
+  const [activeTab, setActiveTab] = useState(0);
 
-const refreshLatestTransaction = () => {
-    setReloadTransaction(prev => !prev); // Cambia stato per triggerare il ricaricamento
+  const handleTabChange = (index) => {
+    setActiveTab(index);
   };
 
   return (
-    <Container maxWidth="100%" sx={{ mt: 6, mb: 6 }}>
-      <Typography variant="h4" gutterBottom align="center">
-              Dashboard
-            </Typography>
-      <Grid container spacing={1}>
-        <Grid item xs={12} md={4}>
-          <ReportIncoming />
-          <LatestTransaction/>
-          <TransactionTable/>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <TopSellingProducts/>
-          <MaxProduction/>
-          <RawMaterialDashboard/>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <TopSellingHours />
-          <ProductHourSelling/>
-        </Grid>
-      </Grid>
+    <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 6, mb: 6 }}>
+
+      {/* Navigatore a Tab con stile a pillola */}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 3,
+          mb: 4,
+          padding: '10px',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '60px',
+          width: 'fit-content',
+        }}
+      >
+        <PillTab 
+          icon={<PointOfSaleIcon fontSize="large" />} 
+          selected={activeTab === 0} 
+          onClick={() => handleTabChange(0)} 
+        />
+        <PillTab 
+          icon={<LocalBarIcon fontSize="large" />} 
+          selected={activeTab === 1} 
+          onClick={() => handleTabChange(1)} 
+        />
+        <PillTab 
+          icon={<BarChartIcon fontSize="large" />} 
+          selected={activeTab === 2} 
+          onClick={() => handleTabChange(2)} 
+        />
+      </Box>
+
+      {/* Contenuti delle tab */}
+      {activeTab === 0 && (
+        <Paper sx={{ p: 4, width: '100%' }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <ReportIncoming />
+              <LatestTransaction />
+            </Grid>
+             <Grid item xs={12} md={6}>
+              <TransactionTable />
+            </Grid>
+          </Grid>
+        </Paper>
+      )}
+
+      {activeTab === 1 && (
+        <Paper sx={{ p: 4, width: '100%' }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TopSellingProducts />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <MaxProduction />
+            </Grid>
+            <Grid item xs={12}>
+              <RawMaterialDashboard />
+            </Grid>
+          </Grid>
+        </Paper>
+      )}
+
+      {activeTab === 2 && (
+        <Paper sx={{ p: 4, width: '100%' }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <TopSellingHours />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <ProductHourSelling />
+            </Grid>
+          </Grid>
+        </Paper>
+      )}
     </Container>
-    
   );
 };
 

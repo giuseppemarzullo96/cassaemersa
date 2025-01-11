@@ -162,18 +162,17 @@ const Settings = () => {
           alignItems:'',
           maxWidth:'-webkit-fill-available;',
           mt: 6, mb: 6 }} elevation={3}>
-          <Typography variant="h6" gutterBottom>
-            Gestione Utenti
-          </Typography>
           <AddUserWithRole />
           <MenageAccounts />
         </Paper>
       )}
       {role === 'admin' && activeTab === 3 && (
-     <Paper sx={{ display: 'flex', 
-      flexDirection: 'row', 
-      justifyContent: '', 
-      alignItems:'', 
+     <Paper sx={{
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center', 
+      alignItems:'center',
+      maxWidth:'-webkit-fill-available;',
       mt: 6, mb: 6 }} elevation={3}>
          <MoneyNoteManagement
           moneyNotes={moneyNotes}

@@ -75,10 +75,7 @@ const AccountSettings = () => {
 
   return (
     <Container maxWidth="sm" sx={{ mt: 6, p: 4, boxShadow: 3, borderRadius: 2 }}>
-      <Typography variant="h5" align="center" gutterBottom>
-        Impostazioni Account
-      </Typography>
-
+     
       {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 

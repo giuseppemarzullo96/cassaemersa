@@ -61,12 +61,11 @@ const AddUserWithRole = () => {
   };
 
   return (
-    <Container maxWidth="tm" sx={{ mt: 4 }}>
-      <form onSubmit={handleAddUser}>
+    <Container maxWidth="tm" sx={{ p: 4, mt: 4 }}>
+        <form onSubmit={handleAddUser}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-        
-        <Box display="flex" justifyContent="center" mb={2}>
+         <Box display="flex" justifyContent="center" mb={2}>
         <Avatar src={'photoURL'} sx={{ width: 100, height: 100, mb: 2 }} />
         <IconButton component="label" sx={{ width: 50, height: 50, mb: 2, ml:-1 }}>
           <PhotoCamera/>

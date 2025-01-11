@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { AppBar, Toolbar, Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Typography, Box, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Drawer, IconButton, Typography, Box, Avatar } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -43,11 +43,10 @@ const Header = () => {
   };
 
   const menuItems = [
-    { text: 'Home', icon: <HomeIcon />, link: '/', roles: ['admin', 'user'] },
-    { text: 'Cassa Bar', icon: <PointOfSaleIcon />, link: '/CassaBar', roles: ['admin'] },
-    { text: 'Impostazioni', icon: <SettingsIcon />, link: '/Settings', roles: ['admin', 'user'] },
+    { icon: <HomeIcon />, link: '/', roles: ['admin', 'user'] },
+    { icon: <PointOfSaleIcon />, link: '/CassaBar', roles: ['admin'] },
+    { icon: <SettingsIcon />, link: '/Settings', roles: ['admin', 'user'] },
     {
-      text: user ? 'Logout' : 'Login',
       icon: user ? <LogoutIcon /> : <LoginIcon />,
       link: user ? '/' : '/Login',
       roles: ['admin', 'user'],
@@ -60,7 +59,7 @@ const Header = () => {
   return (
     <AppBar position="static" sx={{ boxShadow: 'none', backgroundColor: '#1565c0' }}>
       <Toolbar>
-        {user && ( // Mostra l'icona del menu solo se l'utente è loggato
+        {user && (
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
             <MenuIcon />
           </IconButton>
@@ -73,7 +72,13 @@ const Header = () => {
             <Avatar sx={{ bgcolor: '#1976d2' }}>
               {username.charAt(0).toUpperCase()}
             </Avatar>
-            <Typography variant="body1" sx={{ color: '#fff' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                color: '#fff',
+                display: { xs: 'none', sm: 'block' }, // Nasconde il nome su schermi piccoli
+              }}
+            >
               {username}
             </Typography>
           </Box>
@@ -86,39 +91,46 @@ const Header = () => {
         onClose={toggleDrawer(false)}
         PaperProps={{
           sx: {
-            width: '250px',
+            width: '80px',
             backgroundColor: '#f5f5f5',
             borderRadius: '0 20px 20px 0',
           },
         }}
       >
-        <List>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            mt: 4,
+          }}
+        >
           {filteredMenuItems.map((item, index) => (
-            <ListItem
-              button
+            <IconButton
               key={index}
               component={Link}
               to={item.link}
               onClick={() => {
                 if (item.action) item.action();
-                toggleDrawer(false)(); // Chiude il drawer
+                toggleDrawer(false)();
               }}
               sx={{
+                backgroundColor: '#fff',
+                borderRadius: '50%',
+                width: 60,
+                height: 60,
+                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
                 color: '#1565c0',
-                width: '230px',
-                borderRadius: '20px',
-                margin: '10px',
-                backgroundColor: '#ffffff',
                 '&:hover': {
                   backgroundColor: '#e0e0e0',
                 },
               }}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
+              {item.icon}
+            </IconButton>
           ))}
-        </List>
+        </Box>
       </Drawer>
     </AppBar>
   );

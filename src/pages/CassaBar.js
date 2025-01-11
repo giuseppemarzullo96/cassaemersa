@@ -35,20 +35,24 @@ const refreshLatestTransaction = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={6}>
-          <Paper maxWidth="tm" sx={{ m: 4, p: 4}} elevation={3}>
-            <Typography variant="h6" gutterBottom>
-                      Riepilogo Transazione
-                    </Typography>
+          <Paper maxWidth="tm" sx={{ m: 0, p: 2}} elevation={0}>
+            <Typography 
+            variant="h6" gutterBottom>
+Prodotti
+ </Typography>
             <Products products={products} />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6} md={6}>
-          <Paper maxWidth="tm" sx={{ m: 4, p: 4}} elevation={3}>
+          <Paper maxWidth="tm" sx={{ m: 0, p: 2}} elevation={0}>
+          <Typography 
+            variant="h6" gutterBottom>
+Banconote </Typography>
             <MoneyNotes moneyNotes={moneyNotes} />
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper maxWidth="tm" sx={{ m: 4, p: 4}} elevation={3}>
+          <Paper maxWidth="tm" sx={{ m: 0, p: 2}} elevation={3}>
             <TransactionSummary
               products={selectedProducts}
               total={total}

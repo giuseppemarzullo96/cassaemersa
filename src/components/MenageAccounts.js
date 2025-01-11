@@ -90,7 +90,7 @@ const ManageAccounts = () => {
   };
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box sx={{ mt: 4 , p:4}}>
       <TextField
         label="Cerca utente"
         fullWidth

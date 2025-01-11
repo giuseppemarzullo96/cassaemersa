@@ -14,42 +14,98 @@ const Products = ({ products = [] }) => {
   const { addProduct } = useContext(AppContext);
 
   const handleProductClick = (product) => {
-    if (localStock[product.id] <= 0) return; // Non fare nulla se lo stock è 0
+    if (localStock[product.id] <= 0) return;
 
-    // Aggiorna temporaneamente lo stock
     setLocalStock((prevStock) => ({
       ...prevStock,
       [product.id]: prevStock[product.id] - 1,
     }));
 
-    addProduct({ ...product, stock: localStock[product.id] - 1 }); // Aggiungi al carrello
+    addProduct({ ...product, stock: localStock[product.id] - 1 });
   };
 
   return (
     <Grid container spacing={3}>
-      {products.map((product, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
-          <Card>
-            <CardActionArea
-              onClick={() => handleProductClick(product)}
-              disabled={localStock[product.id] <= 0} // Disabilita se lo stock è 0
+      {products.map((product, index) => {
+        const stockPercentage = Math.max(0, (localStock[product.id] / product.stock) * 100);
+
+        return (
+          <Grid
+            item
+            xs={6} // 2 card per riga su smartphone
+            sm={4}
+            md={3} // 4 card per riga su desktop
+            key={index}
+          >
+            <Card
+              sx={{
+                position: 'relative',
+                overflow: 'hidden',
+                borderRadius: '12px', // Angoli arrotondati
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                height: 200, // Altezza fissa per card quadrata
+              }}
             >
-              <CardContent>
-                <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
-                  <LocalBarIcon sx={{ fontSize: 40 }} />
-                </Box>
-                <Typography align="center" variant="h6">
+              {/* Layer per il livello "liquido" */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',
+                  height: `${stockPercentage}%`,
+                  backgroundColor: 'rgba(216, 216, 216, 0.5)', // Colore liquido
+                  transition: 'height 0.3s ease',
+                  zIndex: 0,
+                }}
+              />
+
+              <CardActionArea
+                onClick={() => handleProductClick(product)}
+                disabled={localStock[product.id] <= 0}
+                sx={{
+                  position: 'relative',
+                  zIndex: 1,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: 2,
+                  textAlign: 'center',
+                }}
+              >
+                <LocalBarIcon sx={{ fontSize: { xs: 40, md: 50 }, color: 'primary.main', mb: 1 }} />
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontSize: { xs: '1rem', md: '1.25rem' },
+                    fontWeight: 'bold',
+                  }}
+                >
                   {product.name}
                 </Typography>
-                <Typography align="center">€{product.price.toFixed(2)}</Typography>
-                <Typography align="center" variant="body2" color="textSecondary">
+                <Typography
+                  sx={{
+                    fontSize: { xs: '0.85rem', md: '1rem' },
+                  }}
+                >
+                  €{product.price.toFixed(2)}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{
+                    fontSize: { xs: '0.75rem', md: '0.9rem' },
+                  }}
+                >
                   Stock: {localStock[product.id]}
                 </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </Grid>
-      ))}
+              </CardActionArea>
+            </Card>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 };

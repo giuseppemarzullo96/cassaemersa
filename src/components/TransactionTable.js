@@ -11,15 +11,21 @@ import {
   TableRow,
   TablePagination,
   TableSortLabel,
+  IconButton,
+  Collapse,
+  Box,
 } from '@mui/material';
 import { getAllTransactions } from '../services/apiService';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const TransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('timestamp');
+  const [openRow, setOpenRow] = useState(null); // Per gestire l'espansione dei dettagli
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -77,10 +83,11 @@ const TransactionTable = () => {
         <Typography variant="h5" gutterBottom>
           Elenco delle Transazioni
         </Typography>
-        <TableContainer component={Paper}>
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell />
                 <TableCell>ID Transazione</TableCell>
                 <TableCell>
                   <TableSortLabel
@@ -91,7 +98,6 @@ const TransactionTable = () => {
                     Data
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>Prodotti</TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={orderBy === 'value_trans'}
@@ -108,32 +114,62 @@ const TransactionTable = () => {
                 transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
                 getComparator(order, orderBy)
               ).map((transaction, index) => (
-                <TableRow key={index}>
-                  <TableCell>{transaction.transactionId}</TableCell>
-                  <TableCell>
-                    {transaction.timestamp
-                      ? new Date(transaction.timestamp).toLocaleString()
-                      : 'Data non disponibile'}
-                  </TableCell>
-                  <TableCell>
-                    {transaction.products && transaction.products.length > 0
-                      ? transaction.products.map((product, i) => (
-                          <Typography key={i} variant="body2">
-                            {product.name} (Quantità: {product.quantitySold || 0})
+                <React.Fragment key={index}>
+                  <TableRow>
+                    <TableCell>
+                      <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() =>
+                          setOpenRow(openRow === index ? null : index)
+                        }
+                      >
+                        {openRow === index ? (
+                          <KeyboardArrowUpIcon />
+                        ) : (
+                          <KeyboardArrowDownIcon />
+                        )}
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>{transaction.transactionId}</TableCell>
+                    <TableCell>
+                      {transaction.timestamp
+                        ? new Date(transaction.timestamp).toLocaleString()
+                        : 'Data non disponibile'}
+                    </TableCell>
+                    <TableCell>
+                      €{transaction.value_trans ? transaction.value_trans.toFixed(2) : '0.00'}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell colSpan={4} style={{ paddingBottom: 0, paddingTop: 0 }}>
+                      <Collapse in={openRow === index} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                          <Typography variant="h6" gutterBottom component="div">
+                            Prodotti
                           </Typography>
-                        ))
-                      : 'Nessun prodotto'}
-                  </TableCell>
-                  <TableCell>
-                    €{transaction.value_trans ? transaction.value_trans.toFixed(2) : '0.00'}
-                  </TableCell>
-                </TableRow>
+                          {transaction.products && transaction.products.length > 0 ? (
+                            transaction.products.map((product, i) => (
+                              <Typography key={i} variant="body2">
+                                {product.name} (Quantità: {product.quantitySold || 0})
+                              </Typography>
+                            ))
+                          ) : (
+                            <Typography variant="body2" color="textSecondary">
+                              Nessun prodotto
+                            </Typography>
+                          )}
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 1000]}
+          rowsPerPageOptions={[5, 10, 25, 100]}
           component="div"
           count={transactions.length}
           rowsPerPage={rowsPerPage}
