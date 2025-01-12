@@ -85,7 +85,7 @@ const Settings = () => {
       alignItems:'center',
       maxWidth: '-webkit-fill-available',
       alignItems: 'center', 
-      mt: 6, mb: 6 }}>
+      mt: 4, mb: 6 }}>
       <Box 
         sx={{ 
           display: 'flex', 
@@ -134,7 +134,7 @@ const Settings = () => {
           justifyContent: 'center', 
           alignItems:'center',
           maxWidth:'-webkit-fill-available;',
-          mt: 6, mb: 6 }} elevation={3}>
+          mt: 2, mb: 6 }} elevation={0}>
           <ProductManagement
             products={products}
             setProducts={setProducts}
@@ -161,7 +161,7 @@ const Settings = () => {
           justifyContent: '', 
           alignItems:'',
           maxWidth:'-webkit-fill-available;',
-          mt: 6, mb: 6 }} elevation={3}>
+          mt: 2, mb: 6 }} elevation={0}>
           <AddUserWithRole />
           <MenageAccounts />
         </Paper>
@@ -173,7 +173,7 @@ const Settings = () => {
       justifyContent: 'center', 
       alignItems:'center',
       maxWidth:'-webkit-fill-available;',
-      mt: 6, mb: 6 }} elevation={3}>
+      mt: 2, mb: 6 }} elevation={0}>
          <MoneyNoteManagement
           moneyNotes={moneyNotes}
           setMoneyNotes={setMoneyNotes}

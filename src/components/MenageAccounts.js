@@ -17,6 +17,7 @@ import {
   Paper,
   IconButton,
   Avatar,
+  Container,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -90,7 +91,16 @@ const ManageAccounts = () => {
   };
 
   return (
-    <Box sx={{ mt: 4 , p:4}}>
+    <Container maxWidth="tm" sx={{ mt: 4, mb:4}}>
+      <Box
+    sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 2,
+      boxShadow: 1,
+    }}
+  >
+    <Box sx={{ mt: 4}}>
       <TextField
         label="Cerca utente"
         fullWidth
@@ -197,6 +207,8 @@ const ManageAccounts = () => {
         </Table>
       </TableContainer>
     </Box>
+    </Box>
+    </Container>
   );
 };
 

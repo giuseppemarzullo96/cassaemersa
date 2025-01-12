@@ -1,5 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper, Select, MenuItem, Box, Container } from '@mui/material';
+import React, { useState } from 'react';
+import { 
+  List, 
+  ListItem, 
+  ListItemText, 
+  IconButton, 
+  TextField, 
+  Button, 
+  Typography, 
+  Select, 
+  MenuItem, 
+  Box, 
+  Container 
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -9,13 +21,13 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
   const [newProductId, setNewProductId] = useState('');
   const [newProductName, setNewProductName] = useState('');
   const [newProductPrice, setNewProductPrice] = useState('');
-  const [newProductStock, setNewProductStock] = useState(0); // Campo Stock
+  const [newProductStock, setNewProductStock] = useState(0);
   const [rawMaterialList, setRawMaterialList] = useState([]);
   const [selectedRawMaterial, setSelectedRawMaterial] = useState('');
   const [rawMaterialQuantity, setRawMaterialQuantity] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
 
-  // Calcolo automatico dello stock in base alle materie prime
+  // Funzione per calcolare automaticamente lo stock basato sulle materie prime
   const calculateStock = () => {
     if (rawMaterialList.length === 0) {
       alert('Aggiungi almeno una materia prima per calcolare lo stock.');
@@ -34,6 +46,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
     setNewProductStock(calculatedStock || 0);
   };
 
+  // Funzione per modificare un prodotto
   const handleEditProduct = (index, product) => {
     setNewProductId(product.id);
     setNewProductName(product.name);
@@ -43,6 +56,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
     setEditingIndex(index);
   };
 
+  // Funzione per eliminare un prodotto
   const handleDeleteProduct = async (index) => {
     if (window.confirm('Sei sicuro di voler eliminare questo prodotto?')) {
       try {
@@ -56,6 +70,7 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
     }
   };
 
+  // Funzione per aggiungere una nuova materia prima
   const handleAddRawMaterial = () => {
     if (!selectedRawMaterial || !rawMaterialQuantity) {
       alert('Seleziona una materia prima e specifica la quantità.');
@@ -73,10 +88,12 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
     setRawMaterialQuantity('');
   };
 
+  // Funzione per rimuovere una materia prima dalla lista
   const handleRemoveRawMaterial = (index) => {
     setRawMaterialList((prevList) => prevList.filter((_, i) => i !== index));
   };
 
+  // Funzione per salvare il prodotto
   const handleSaveProduct = async () => {
     if (!newProductName || !newProductPrice) {
       alert('Inserisci un nome e un prezzo validi.');
@@ -114,96 +131,117 @@ const ProductManagement = ({ products, setProducts, getProducts, createProduct, 
   };
 
   return (
-    <Container maxWidth="sm"  sx={{ p: 4, m: 4 }}>
-      <Typography variant="h6" gutterBottom>
-        Gestione Prodotti
-      </Typography>
-      <List>
-        {products.map((product, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={`${product.name} - €${product.price.toFixed(2)} - Stock: ${product.stock || 0}`} />
-            <IconButton onClick={() => handleEditProduct(index, product)}>
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={() => handleDeleteProduct(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItem>
-        ))}
-      </List>
-      <TextField
-        label="ID Prodotto (opzionale)"
-        fullWidth
-        value={newProductId}
-        onChange={(e) => setNewProductId(e.target.value)}
-        sx={{ mt: 2 }}
-        disabled={editingIndex !== null}
-      />
-      <TextField
-        label="Nome Prodotto"
-        fullWidth
-        value={newProductName}
-        onChange={(e) => setNewProductName(e.target.value)}
-        sx={{ mt: 2 }}
-      />
-      <TextField
-        label="Prezzo Prodotto (€)"
-        type="number"
-        fullWidth
-        value={newProductPrice}
-        onChange={(e) => setNewProductPrice(e.target.value)}
-        sx={{ mt: 2 }}
-      />
-      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mt: 2 }}>
-        <Select
-          value={selectedRawMaterial}
-          onChange={(e) => setSelectedRawMaterial(e.target.value)}
-          displayEmpty
-          fullWidth
-        >
-          <MenuItem value="" disabled>
-            Seleziona una materia prima
-          </MenuItem>
-          {rawMaterials.map((rm) => (
-            <MenuItem key={rm.id} value={rm.id}>
-              {rm.name}
-            </MenuItem>
+<Container maxWidth="tm" sx={{ mt: 4, mb:4}}>
+      <Box
+        sx={{
+          backgroundColor: '#f5f5f5',
+          borderRadius: '30px',
+          p: 4,
+          boxShadow: 1,
+        }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Gestione Prodotti
+        </Typography>
+        <List>
+          {products.map((product, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={`${product.name} - €${product.price.toFixed(2)} - Stock: ${product.stock || 0}`} />
+              <IconButton onClick={() => handleEditProduct(index, product)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => handleDeleteProduct(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
           ))}
-        </Select>
+        </List>
         <TextField
-          label="Quantità (once)"
-          type="number"
-          value={rawMaterialQuantity}
-          onChange={(e) => setRawMaterialQuantity(e.target.value)}
+          label="ID Prodotto (opzionale)"
+          fullWidth
+          value={newProductId}
+          onChange={(e) => setNewProductId(e.target.value)}
+          sx={{ mt: 2 }}
+          disabled={editingIndex !== null}
         />
-        <IconButton onClick={handleAddRawMaterial} color="primary">
-          <AddCircleIcon />
-        </IconButton>
-      </Box>
-      <List>
-        {rawMaterialList.map((material, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={`${material.rawMaterialName} - Quantità: ${material.quantity} once`} />
-            <IconButton onClick={() => handleRemoveRawMaterial(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItem>
-        ))}
-      </List>
-      <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
         <TextField
-          label="Stock Prodotto"
+          label="Nome Prodotto"
+          fullWidth
+          value={newProductName}
+          onChange={(e) => setNewProductName(e.target.value)}
+          sx={{ mt: 2 }}
+        />
+        <TextField
+          label="Prezzo Prodotto (€)"
           type="number"
           fullWidth
-          value={newProductStock}
-          onChange={(e) => setNewProductStock(parseFloat(e.target.value) || 0)}
+          value={newProductPrice}
+          onChange={(e) => setNewProductPrice(e.target.value)}
+          sx={{ mt: 2 }}
         />
-        <Button variant="outlined" startIcon={<CalculateIcon />} onClick={calculateStock}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mt: 2 }}>
+          <Select
+            value={selectedRawMaterial}
+            onChange={(e) => setSelectedRawMaterial(e.target.value)}
+            displayEmpty
+            fullWidth
+          >
+            <MenuItem value="" disabled>
+              Materia prima
+            </MenuItem>
+            {rawMaterials.map((rm) => (
+              <MenuItem key={rm.id} value={rm.id}>
+                {rm.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <TextField
+            label="Quantità (once)"
+            type="number"
+            value={rawMaterialQuantity}
+            onChange={(e) => setRawMaterialQuantity(e.target.value)}
+          />
+          <IconButton onClick={handleAddRawMaterial} color="primary">
+            <AddCircleIcon />
+          </IconButton>
+        </Box>
+        <List>
+          {rawMaterialList.map((material, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={`${material.rawMaterialName} - Quantità: ${material.quantity} once`} />
+              <IconButton onClick={() => handleRemoveRawMaterial(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
+          ))}
+        </List>
+        <Box sx={{ mt: 2 }}>
+          <Button
+            variant="outlined"
+            fullWidth
+            startIcon={<CalculateIcon />}
+            sx={{
+              height: 56,
+              mb: 2,
+            }}
+            onClick={calculateStock}
+          >
+            Calcola Stock
+          </Button>
+        </Box>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{
+            mt: 2,
+            height: 56,
+          }}
+          onClick={handleSaveProduct}
+        >
+          {editingIndex !== null ? 'Aggiorna Prodotto' : 'Aggiungi Prodotto'}
         </Button>
       </Box>
-      <Button variant="contained" color="primary" maxWidth="sm" sx={{ mt: 2 }} onClick={handleSaveProduct}>
-        {editingIndex !== null ? 'Aggiorna Prodotto' : 'Aggiungi Prodotto'}
-      </Button>
     </Container>
   );
 };

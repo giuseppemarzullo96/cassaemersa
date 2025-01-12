@@ -9,6 +9,7 @@ const TopSellingProducts = () => {
     const fetchData = async () => {
       try {
         const productSales = await getTopSellingProducts();
+        console.log('Dati prodotti più venduti:', productSales);
         const sortedProducts = Object.entries(productSales).map(([name, totalSold]) => ({
           name,
           totalSold,
@@ -18,13 +19,19 @@ const TopSellingProducts = () => {
         console.error('Errore durante il recupero dei prodotti più venduti:', error);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
+      <Paper sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 4,
+      boxShadow: 1,
+    }}>
         <Typography variant="h5" gutterBottom>
           Prodotti più venduti
         </Typography>

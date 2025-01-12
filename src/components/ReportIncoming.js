@@ -27,7 +27,12 @@ const ReportIncoming = () => {
 
   return (
     <Container maxWidth="tm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
+      <Paper sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 4,
+      boxShadow: 1,
+    }}>
         <Typography variant="h5" gutterBottom>
           Report Incassi Totali
         </Typography>

@@ -45,6 +45,9 @@ const LatestTransaction = ({ reload }) => {
           border: '1px solid #ddd',
           marginTop: '10px',
           marginBottom: '10px',
+          display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           '&:before, &:after': {
             content: '""',
             display: 'block',

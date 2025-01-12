@@ -79,7 +79,12 @@ const TransactionTable = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
+      <Paper sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 2,
+      boxShadow: 1,
+    }}>
         <Typography variant="h5" gutterBottom>
           Elenco delle Transazioni
         </Typography>

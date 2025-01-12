@@ -1,52 +1,70 @@
-import React, { useState, useContext } from 'react';
-import { Grid, Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { Grid, Card, CardActionArea, Typography, Box } from '@mui/material';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import { AppContext } from '../context/AppContext';
 
 const Products = ({ products = [] }) => {
-  const [localStock, setLocalStock] = useState(
-    products.reduce((acc, product) => {
+  const { addProduct } = useContext(AppContext);
+  const [localStock, setLocalStock] = useState({});
+
+  // Inizializza lo stock locale all'avvio
+  useEffect(() => {
+    console.log('Inizializzazione stock locale con prodotti:', products);
+    const initialStock = products.reduce((acc, product) => {
       acc[product.id] = product.stock;
       return acc;
-    }, {})
-  );
+    }, {});
+    console.log('Stock iniziale:', initialStock);
+    setLocalStock(initialStock);
+  }, [products]);
 
-  const { addProduct } = useContext(AppContext);
+  // Aggiorna lo stock locale solo per il prodotto cliccato
+  const recalculateStock = (productClicked) => {
+    console.log(`Ricalcolo stock per prodotto cliccato: ${productClicked.name}`);
 
+    setLocalStock((prevStock) => {
+      const updatedStock = { ...prevStock };
+      updatedStock[productClicked.id] -= 1; // Decrementa solo il prodotto selezionato
+      console.log('Stock locale aggiornato:', updatedStock);
+      return updatedStock;
+    });
+  };
+
+  // Gestisce il click su un prodotto
   const handleProductClick = (product) => {
-    if (localStock[product.id] <= 0) return;
+    console.log(`Prodotto cliccato: ${product.name}`);
 
-    setLocalStock((prevStock) => ({
-      ...prevStock,
-      [product.id]: prevStock[product.id] - 1,
-    }));
+    if (localStock[product.id] <= 0) {
+      console.log(`Stock insufficiente per ${product.name}. Azione annullata.`);
+      return;
+    }
 
-    addProduct({ ...product, stock: localStock[product.id] - 1 });
+    // Aggiunge il prodotto al carrello
+    addProduct({ ...product, quantity: 1 });
+    console.log(`Prodotto aggiunto al carrello: ${product.name}`);
+
+    // Aggiorna lo stock locale
+    recalculateStock(product);
   };
 
   return (
     <Grid container spacing={3}>
-      {products.map((product, index) => {
+      {products.map((product) => {
         const stockPercentage = Math.max(0, (localStock[product.id] / product.stock) * 100);
+        console.log(`Renderizzo ${product.name} con stock locale:`, localStock[product.id]);
 
         return (
-          <Grid
-            item
-            xs={6} // 2 card per riga su smartphone
-            sm={4}
-            md={3} // 4 card per riga su desktop
-            key={index}
-          >
+          <Grid item xs={6} sm={4} md={3} key={product.id}>
             <Card
               sx={{
                 position: 'relative',
                 overflow: 'hidden',
-                borderRadius: '12px', // Angoli arrotondati
+                borderRadius: '12px',
                 boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-                height: 200, // Altezza fissa per card quadrata
+                height: 200,
               }}
             >
-              {/* Layer per il livello "liquido" */}
+              {/* Layer visivo dello stock */}
               <Box
                 sx={{
                   position: 'absolute',
@@ -54,7 +72,7 @@ const Products = ({ products = [] }) => {
                   left: 0,
                   width: '100%',
                   height: `${stockPercentage}%`,
-                  backgroundColor: 'rgba(216, 216, 216, 0.5)', // Colore liquido
+                  backgroundColor: 'rgba(216, 216, 216, 0.5)',
                   transition: 'height 0.3s ease',
                   zIndex: 0,
                 }}

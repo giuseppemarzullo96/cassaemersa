@@ -61,8 +61,18 @@ const AddUserWithRole = () => {
   };
 
   return (
-    <Container maxWidth="tm" sx={{ p: 4, mt: 4 }}>
-        <form onSubmit={handleAddUser}>
+    <Container maxWidth="tm" sx={{ mt: 4, mb:4}}>
+         <Box
+    sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 4,
+      boxShadow: 1,
+    }}
+  ><Typography variant="h6" gutterBottom>
+  Aggiungi Account 
+</Typography>
+    <form onSubmit={handleAddUser}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
          <Box display="flex" justifyContent="center" mb={2}>
@@ -123,6 +133,7 @@ const AddUserWithRole = () => {
           Aggiungi Utente
         </Button>
       </form>
+      </Box>
     </Container>
   );
 };

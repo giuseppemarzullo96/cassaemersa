@@ -21,7 +21,12 @@ const MaxProduction = () => {
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
+      <Paper sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 4,
+      boxShadow: 1,
+    }}>
         <Typography variant="h5" gutterBottom>
           Produzione Massima per Prodotto
         </Typography>

@@ -42,7 +42,7 @@ const Home = () => {
   };
 
   return (
-    <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 6, mb: 6 }}>
+    <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4, mb: 6 }}>
 
       {/* Navigatore a Tab con stile a pillola */}
       <Box
@@ -76,7 +76,7 @@ const Home = () => {
 
       {/* Contenuti delle tab */}
       {activeTab === 0 && (
-        <Paper sx={{ p: 4, width: '100%' }}>
+        <Paper sx={{ width: '100%' }} elevation={0}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <ReportIncoming />
@@ -90,7 +90,7 @@ const Home = () => {
       )}
 
       {activeTab === 1 && (
-        <Paper sx={{ p: 4, width: '100%' }}>
+        <Paper sx={{ width: '100%' }} elevation={0}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TopSellingProducts />
@@ -106,7 +106,7 @@ const Home = () => {
       )}
 
       {activeTab === 2 && (
-        <Paper sx={{ p: 4, width: '100%' }}>
+        <Paper sx={{ width: '100%' }} elevation={0}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TopSellingHours />

@@ -58,11 +58,18 @@ const TopSellingHours = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: 'center', height: 600 }}>
+      <Paper elevation={0} sx={{  backgroundColor: '#f5f5f5',
+          borderRadius: '30px',
+          p: 4,
+          boxShadow: 1,
+          height: '600px',
+          overflow: 'hidden', }}>
         <Typography variant="h5" gutterBottom>
           Orari con Maggiori Vendite
         </Typography>
+        <div style={{ height: '600px' }}>
         <Bar data={data} options={options} />
+        </div>
       </Paper>
     </Container>
   );

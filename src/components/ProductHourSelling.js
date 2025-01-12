@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Paper } from '@mui/material';
-import { Bar } from 'react-chartjs-2';
+import { Scatter } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
-  BarElement,
   CategoryScale,
   LinearScale,
+  PointElement,
   Title,
   Tooltip,
   Legend,
@@ -13,16 +13,19 @@ import {
 import { getHourlyProductSales } from '../services/apiService';
 
 // Registrazione dei componenti ChartJS
-ChartJS.register(BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, Title, Tooltip, Legend);
 
 const ProductHourSelling = () => {
-  const [hourlyProductSales, setHourlyProductSales] = useState([]);
+  const [scatterData, setScatterData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const salesData = await getHourlyProductSales();
-        setHourlyProductSales(Object.entries(salesData));
+        console.log('Dati originali:', salesData);
+        const transformedData = transformToScatterData(salesData);
+        console.log('Dati trasformati per Scatter Chart:', transformedData);
+        setScatterData(transformedData);
       } catch (error) {
         console.error('Errore durante il recupero delle vendite orarie:', error);
       }
@@ -31,15 +34,38 @@ const ProductHourSelling = () => {
     fetchData();
   }, []);
 
-  const data = {
-    labels: hourlyProductSales.map(([key]) => key),
+  // Trasforma i dati per il grafico Scatter
+  const transformToScatterData = (salesData) => {
+    const data = [];
+    
+    // Genera tutte le fasce orarie da 00:00 a 23:30
+    for (let hour = 0; hour < 24; hour++) {
+      for (let minute of [0, 30]) {
+        const time = `${hour.toString().padStart(2, '0')}:${minute === 0 ? '00' : '30'}`;
+        
+        // Filtra i dati per questa fascia oraria
+        Object.entries(salesData).forEach(([key, value]) => {
+          const [dataTime, product] = key.split(' - ');
+          if (dataTime === time) {
+            data.push({
+              x: hour + minute / 60, // Converti in formato decimale
+              y: product,
+              r: value, // Quantità venduta
+            });
+          }
+        });
+      }
+    }
+  
+    return data;
+  };
+
+  const chartData = {
     datasets: [
       {
-        label: 'Quantità Venduta',
-        data: hourlyProductSales.map(([, value]) => value),
+        label: 'Vendite per prodotto e orario',
+        data: scatterData,
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
       },
     ],
   };
@@ -49,20 +75,30 @@ const ProductHourSelling = () => {
     maintainAspectRatio: false,
     scales: {
       x: {
+        type: 'linear',
+        position: 'bottom',
         title: {
           display: true,
-          text: 'Orario - Prodotto',
+          text: 'Orario (formato decimale)',
+        },
+        ticks: {
+          callback: (value) => `${Math.floor(value)}:${(value % 1) * 60 === 0 ? '00' : '30'}`,
         },
       },
       y: {
-        beginAtZero: true,
+        type: 'category',
         title: {
           display: true,
-          text: 'Quantità Venduta',
+          text: 'Prodotti',
         },
       },
     },
     plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context) => `Venduto: ${context.raw.r} pezzi`,
+        },
+      },
       legend: {
         display: true,
         position: 'top',
@@ -72,11 +108,22 @@ const ProductHourSelling = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, textAlign: 'center', height: 600 }}>
+      <Paper
+        sx={{
+          backgroundColor: '#f5f5f5',
+          borderRadius: '30px',
+          p: 4,
+          boxShadow: 1,
+          height: '600px',
+          overflow: 'hidden',
+        }}
+      >
         <Typography variant="h5" gutterBottom>
-          Top 10 Prodotti Venduti per Orario
+          Vendite Orarie per Prodotto
         </Typography>
-        <Bar data={data} options={options} />
+        <div style={{ height: '600px' }}>
+          <Scatter data={chartData} options={options} />
+        </div>
       </Paper>
     </Container>
   );

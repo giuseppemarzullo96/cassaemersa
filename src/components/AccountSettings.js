@@ -74,52 +74,62 @@ const AccountSettings = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 6, p: 4, boxShadow: 3, borderRadius: 2 }}>
-     
-      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+    <Container maxWidth="tm" sx={{ mt: 4, mb:4}}>
+  <Box
+    sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 4,
+      boxShadow: 1,
+    }}
+  ><Typography variant="h6" gutterBottom>
+  Modifica il tuo Account
+</Typography>
+    {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-      <Box display="flex" justifyContent="center" mb={2}>
-        <Avatar src={photoURL} sx={{ width: 100, height: 100, mb: 2 }} />
-        <IconButton component="label" sx={{ width: 50, height: 50, mb: 2, ml:-1 }}>
-          <PhotoCamera/>
-          <input type="file" hidden onChange={handlePhotoUpload} accept="image/*" />
-        </IconButton>
-      </Box>
+    <Box display="flex" justifyContent="center" mb={2}>
+      <Avatar src={photoURL} sx={{ width: 100, height: 100, mb: 2 }} />
+      <IconButton component="label" sx={{ width: 50, height: 50, mb: 2, ml: -1 }}>
+        <PhotoCamera />
+        <input type="file" hidden onChange={handlePhotoUpload} accept="image/*" />
+      </IconButton>
+    </Box>
 
-      <TextField
-        label="Username"
-        fullWidth
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        sx={{ mb: 2 }}
-      />
+    <TextField
+      label="Username"
+      fullWidth
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      sx={{ mb: 2 }}
+    />
 
-      <TextField
-        label="Email"
-        fullWidth
-        disabled
-        value={email}
-        sx={{ mb: 2 }}
-      />
+    <TextField
+      label="Email"
+      fullWidth
+      disabled
+      value={email}
+      sx={{ mb: 2 }}
+    />
 
-      <TextField
-        label="Numero di Telefono"
-        fullWidth
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-        sx={{ mb: 2 }}
-      />
+    <TextField
+      label="Numero di Telefono"
+      fullWidth
+      value={phoneNumber}
+      onChange={(e) => setPhoneNumber(e.target.value)}
+      sx={{ mb: 2 }}
+    />
 
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        onClick={handleUpdate}
-      >
-        Aggiorna Informazioni
-      </Button>
-    </Container>
+    <Button
+      variant="contained"
+      color="primary"
+      fullWidth
+      onClick={handleUpdate}
+    >
+      Aggiorna Informazioni
+    </Button>
+  </Box>
+</Container>
   );
 };
 

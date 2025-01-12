@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Card, CardContent, Typography, Box, LinearProgress, Paper } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, LinearProgress, Paper, Container } from '@mui/material';
 import { getAllRawMaterials } from '../services/apiService';
 import LocalDrinkIcon from '@mui/icons-material/LocalDrink';
 
@@ -27,7 +27,13 @@ const RawMaterialsDashboard = () => {
   };
 
   return (
-    <Paper sx={{ p: 4 , mt:4 }}><Box sx={{ mt: 4 }}>
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
+    <Paper sx={{
+      backgroundColor: '#f5f5f5',
+      borderRadius: '30px',
+      p: 4,
+      boxShadow: 1,
+    }}><Box sx={{ mt: 4 }}>
       <Typography variant="h5" gutterBottom align="center">
       Materie Prime
       </Typography>
@@ -69,7 +75,7 @@ const RawMaterialsDashboard = () => {
           </Grid>
         ))}
       </Grid>
-    </Box></Paper>
+    </Box></Paper></Container>
   );
 };
 
