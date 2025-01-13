@@ -4,12 +4,14 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import GroupIcon from '@mui/icons-material/Group';
 import UserIcon from '@mui/icons-material/AccountCircle';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber'; // Icona del biglietto
 import ProductManagement from '../components/ProductManagement';
 import MoneyNoteManagement from '../components/MoneyNoteManagement';
 import AddUserWithRole from '../components/AddUserWithRole';
 import MenageAccounts from '../components/MenageAccounts';
 import AccountSettings from '../components/AccountSettings';
 import RawMaterialManagement from '../components/RawMaterialManagement';
+import EventManagement from '../components/EventManagement'; // Import del componente EventManagement
 import { AuthContext } from '../context/AuthContext';
 import { 
   getAllRawMaterials as getRawMaterials, 
@@ -82,10 +84,10 @@ const Settings = () => {
       display: 'flex', 
       flexDirection: 'column', 
       justifyContent: 'center', 
-      alignItems:'center',
+      alignItems: 'center',
       maxWidth: '-webkit-fill-available',
-      alignItems: 'center', 
-      mt: 4, mb: 6 }}>
+      mt: 4, mb: 6 
+    }}>
       <Box 
         sx={{ 
           display: 'flex', 
@@ -95,7 +97,7 @@ const Settings = () => {
           padding: '10px',
           backgroundColor: '#f5f5f5', 
           borderRadius: '60px',
-          width:'fit-content',
+          width: 'fit-content',
         }}
       >
         <PillTab 
@@ -124,6 +126,13 @@ const Settings = () => {
             onClick={() => handleTabChange(3)} 
           />
         )}
+        {role === 'admin' && (
+          <PillTab 
+            icon={<ConfirmationNumberIcon fontSize="large" />} 
+            selected={activeTab === 4} 
+            onClick={() => handleTabChange(4)} 
+          />
+        )}
       </Box>
 
       {activeTab === 0 && <AccountSettings />}
@@ -132,9 +141,10 @@ const Settings = () => {
           display: 'flex', 
           flexDirection: 'column', 
           justifyContent: 'center', 
-          alignItems:'center',
-          maxWidth:'-webkit-fill-available;',
-          mt: 2, mb: 6 }} elevation={0}>
+          alignItems: 'center',
+          maxWidth: '-webkit-fill-available',
+          mt: 2, mb: 6 
+        }} elevation={0}>
           <ProductManagement
             products={products}
             setProducts={setProducts}
@@ -159,28 +169,43 @@ const Settings = () => {
           display: 'flex', 
           flexDirection: 'column', 
           justifyContent: '', 
-          alignItems:'',
-          maxWidth:'-webkit-fill-available;',
-          mt: 2, mb: 6 }} elevation={0}>
+          alignItems: '',
+          maxWidth: '-webkit-fill-available',
+          mt: 2, mb: 6 
+        }} elevation={0}>
           <AddUserWithRole />
           <MenageAccounts />
         </Paper>
       )}
       {role === 'admin' && activeTab === 3 && (
-     <Paper sx={{
-      display: 'flex', 
-      flexDirection: 'column', 
-      justifyContent: 'center', 
-      alignItems:'center',
-      maxWidth:'-webkit-fill-available;',
-      mt: 2, mb: 6 }} elevation={0}>
-         <MoneyNoteManagement
-          moneyNotes={moneyNotes}
-          setMoneyNotes={setMoneyNotes}
-          getMoneyNotes={getMoneyNotes}
-          createMoneyNote={createMoneyNote}
-          deleteMoneyNote={deleteMoneyNote}
-        /></Paper>
+        <Paper sx={{
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          maxWidth: '-webkit-fill-available',
+          mt: 2, mb: 6 
+        }} elevation={0}>
+          <MoneyNoteManagement
+            moneyNotes={moneyNotes}
+            setMoneyNotes={setMoneyNotes}
+            getMoneyNotes={getMoneyNotes}
+            createMoneyNote={createMoneyNote}
+            deleteMoneyNote={deleteMoneyNote}
+          />
+        </Paper>
+      )}
+      {role === 'admin' && activeTab === 4 && (
+        <Paper sx={{
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          maxWidth: '-webkit-fill-available',
+          mt: 2, mb: 6 
+        }} elevation={0}>
+          <EventManagement />
+        </Paper>
       )}
     </Container>
   );

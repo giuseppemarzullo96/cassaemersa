@@ -4,16 +4,17 @@ import Home from '../pages/Home';
 import CassaBar from '../pages/CassaBar';
 import Settings from '../pages/Settings';
 import Login from '../pages/Login';
+import Ticket from '../pages/Ticket';
 import PrivateRoute from '../routes/PrivateRoutes';
 
 const AppRoutes = () => {
   return (
-    <Routes>
+    <Routes future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       {/* Rotta per Login: Accessibile a tutti */}
       <Route path="/login" element={<Login />} />
       
       {/* Rotte protette */}
-      <Route
+      <Route 
         path="/"
         element={
           <PrivateRoute allowedRoles={['admin', 'user']}>
@@ -34,6 +35,14 @@ const AppRoutes = () => {
         element={
           <PrivateRoute allowedRoles={['admin','user']}>
             <Settings />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/Ticket"
+        element={
+          <PrivateRoute allowedRoles={['admin','user']}>
+            <Ticket/>
           </PrivateRoute>
         }
       />

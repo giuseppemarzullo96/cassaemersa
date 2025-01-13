@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,6 +46,7 @@ const Header = () => {
   const menuItems = [
     { icon: <HomeIcon />, link: '/', roles: ['admin', 'user'] },
     { icon: <PointOfSaleIcon />, link: '/CassaBar', roles: ['admin'] },
+    { icon: <ConfirmationNumberIcon />, link: '/Ticket', roles: ['admin', 'user'] },
     { icon: <SettingsIcon />, link: '/Settings', roles: ['admin', 'user'] },
     {
       icon: user ? <LogoutIcon /> : <LoginIcon />,
