@@ -1,57 +1,50 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid, Card, CardActionArea, Typography, Box } from '@mui/material';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import { AppContext } from '../context/AppContext';
 
 const Products = ({ products = [] }) => {
-  const { addProduct } = useContext(AppContext);
-  const [localStock, setLocalStock] = useState({});
+  const { addProduct, selectedProducts, rawMaterials, initialStock, setInitialStock } = useContext(AppContext);
+  
+  const calculateStock = () => {
+    const newStock = products.reduce((acc, product) => {
+      if (!product.rawMaterials || !Array.isArray(product.rawMaterials)) {
+        acc[product.id] = product.stock;
+        return acc;
+      }
 
-  // Inizializza lo stock locale all'avvio
-  useEffect(() => {
-    console.log('Inizializzazione stock locale con prodotti:', products);
-    const initialStock = products.reduce((acc, product) => {
-      acc[product.id] = product.stock;
+      const stockByMaterial = product.rawMaterials.map((material) => {
+        const rawMaterial = rawMaterials.find((rm) => rm.id === material.rawMaterialId);
+        if (!rawMaterial) return 0;
+        return Math.floor(rawMaterial.stock / material.quantity);
+      });
+
+      acc[product.id] = Math.min(...stockByMaterial, product.stock);
       return acc;
     }, {});
-    console.log('Stock iniziale:', initialStock);
-    setLocalStock(initialStock);
-  }, [products]);
 
-  // Aggiorna lo stock locale solo per il prodotto cliccato
-  const recalculateStock = (productClicked) => {
-    console.log(`Ricalcolo stock per prodotto cliccato: ${productClicked.name}`);
-
-    setLocalStock((prevStock) => {
-      const updatedStock = { ...prevStock };
-      updatedStock[productClicked.id] -= 1; // Decrementa solo il prodotto selezionato
-      console.log('Stock locale aggiornato:', updatedStock);
-      return updatedStock;
-    });
+    return newStock;
   };
 
-  // Gestisce il click su un prodotto
+  useEffect(() => {
+    const updatedStock = calculateStock();
+    setInitialStock((prevStock) => ({ ...prevStock, ...updatedStock }));
+  }, [products]); // Esegui calcolo iniziale al caricamento dei prodotti
+
+  useEffect(() => {
+    const updatedStock = calculateStock();
+    setInitialStock((prevStock) => ({ ...prevStock, ...updatedStock }));
+  }, [selectedProducts, rawMaterials]); // Ricalcola quando cambiano i prodotti selezionati o le materie prime
+
   const handleProductClick = (product) => {
-    console.log(`Prodotto cliccato: ${product.name}`);
-
-    if (localStock[product.id] <= 0) {
-      console.log(`Stock insufficiente per ${product.name}. Azione annullata.`);
-      return;
-    }
-
-    // Aggiunge il prodotto al carrello
+    if (initialStock[product.id] <= 0) return;
     addProduct({ ...product, quantity: 1 });
-    console.log(`Prodotto aggiunto al carrello: ${product.name}`);
-
-    // Aggiorna lo stock locale
-    recalculateStock(product);
   };
 
   return (
     <Grid container spacing={3}>
       {products.map((product) => {
-        const stockPercentage = Math.max(0, (localStock[product.id] / product.stock) * 100);
-        console.log(`Renderizzo ${product.name} con stock locale:`, localStock[product.id]);
+        const stockPercentage = Math.max(0, (initialStock[product.id] / product.stock) * 100);
 
         return (
           <Grid item xs={6} sm={4} md={3} key={product.id}>
@@ -64,7 +57,6 @@ const Products = ({ products = [] }) => {
                 height: 200,
               }}
             >
-              {/* Layer visivo dello stock */}
               <Box
                 sx={{
                   position: 'absolute',
@@ -80,7 +72,7 @@ const Products = ({ products = [] }) => {
 
               <CardActionArea
                 onClick={() => handleProductClick(product)}
-                disabled={localStock[product.id] <= 0}
+                disabled={initialStock[product.id] <= 0}
                 sx={{
                   position: 'relative',
                   zIndex: 1,
@@ -117,7 +109,7 @@ const Products = ({ products = [] }) => {
                     fontSize: { xs: '0.75rem', md: '0.9rem' },
                   }}
                 >
-                  Stock: {localStock[product.id]}
+                  Stock: {initialStock[product.id]}
                 </Typography>
               </CardActionArea>
             </Card>

@@ -13,6 +13,31 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reloadTransaction, setReloadTransaction] = useState(false);
+  const [rawMaterials, setRawMaterials] = useState([]);
+  const [initialStock, setInitialStock] = useState([]);
+  const [initialRawMaterials, setInitialRawMaterials] = useState([]);
+  
+
+   // Funzione che setta lo stock iniziale sia di prodotti che di materie
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const productsData = await getProducts();
+        const rawMaterialsData = await getAllRawMaterials();
+        setProducts(productsData);
+        setRawMaterials(rawMaterialsData);
+  
+        // Salva lo stock iniziale
+        setInitialStock(productsData.map((p) => ({ id: p.id, stock: p.stock })));
+        setInitialRawMaterials(rawMaterialsData.map((rm) => ({ id: rm.id, stock: rm.stock })));
+      } catch (error) {
+        console.error('Errore durante il caricamento dei dati:', error);
+      }
+    };
+  
+    fetchInitialData();
+  }, []);
+
 
 
   const refreshLatestTransaction = () => {
@@ -35,7 +60,7 @@ export const AppProvider = ({ children }) => {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const [productsData, moneyNotesData, maxProductionData] = await Promise.all([
+        const [productsData, moneyNotesData, maxProductionData, rawMaterialsData] = await Promise.all([
           getProducts(),
           getMoneyNotes(),
           getMaxProduction(), // Ottieni maxQuantity dall'API
@@ -45,6 +70,7 @@ export const AppProvider = ({ children }) => {
         setProducts(productsData || []);
         setMoneyNotes(moneyNotesData || []);
         setMaxProduction(maxProductionData || []);
+        setRawMaterials (rawMaterialsData || []);
       } catch (err) {
         setError('Errore durante il recupero dei dati. Riprova più tardi.');
         console.error('Errore API:', err);
@@ -76,6 +102,24 @@ export const AppProvider = ({ children }) => {
   
       return [...prev, { ...product, quantity: 1 }];
     });
+  
+    // Decrementa le materie prime
+    setRawMaterials((prevRawMaterials) => {
+      const updatedRawMaterials = prevRawMaterials.map((rm) => {
+        const requiredMaterial = product.rawMaterials.find(
+          (material) => material.rawMaterialId === rm.id
+        );
+        if (requiredMaterial) {
+          return {
+            ...rm,
+            stock: Math.max(0, rm.stock - requiredMaterial.quantity),
+          };
+        }
+        return rm;
+      });
+      console.log('Materie prime aggiornate:', updatedRawMaterials);
+      return updatedRawMaterials;
+    });
   };
 
   const addNote = (note) => {
@@ -105,6 +149,11 @@ export const AppProvider = ({ children }) => {
         error,
         refreshLatestTransaction,
         reloadTransaction,
+        rawMaterials,
+        setRawMaterials,
+        initialStock,
+        setInitialStock,
+        initialRawMaterials,
       }}
     >
       {children}

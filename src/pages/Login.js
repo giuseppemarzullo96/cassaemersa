@@ -58,22 +58,21 @@ const Login = () => {
     }
   };
 
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
-  
   // Reindirizza quando il ruolo è disponibile
   useEffect(() => {
     if (waitingForRole && role) {
       setWaitingForRole(false); // Reset dell'attesa
       if (role === 'admin') {
-        navigate('/home');
+        navigate('/cassabar');
       } else if (role === 'user') {
-        navigate('/home');
+        navigate('/');
       }
     }
   }, [role, waitingForRole, navigate]);
 
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
 
   return (
     <Container maxWidth="sm" sx={{ mt: 6, p: 0 }}>

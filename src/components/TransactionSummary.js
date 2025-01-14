@@ -12,6 +12,10 @@ const TransactionSummary = ({ onSave }) => {
     receivedNotes,
     setSelectedProducts,
     setReceivedNotes,
+    setProducts,
+    setRawMaterials,
+    initialRawMaterials,
+    initialStock,
   } = useContext(AppContext);
 
   const generateTempId = () => {
@@ -105,6 +109,41 @@ const TransactionSummary = ({ onSave }) => {
   const handleReset = () => {
     setSelectedProducts([]);
     setReceivedNotes([]);
+  
+    // Controlla che initialStock e initialRawMaterials siano definiti
+    if (!initialStock || !Array.isArray(initialStock)) {
+      console.warn('initialStock non è definito o non è un array.');
+      return;
+    }
+  
+    if (!initialRawMaterials || !Array.isArray(initialRawMaterials)) {
+      console.warn('initialRawMaterials non è definito o non è un array.');
+      return;
+    }
+  
+    // Ripristina lo stock iniziale dei prodotti
+    setProducts((prevProducts) =>
+      prevProducts.map((product) => {
+        const initialProduct = initialStock.find((p) => p.id === product.id);
+        if (!initialProduct) {
+          console.warn(`Prodotto con ID ${product.id} non trovato in initialStock.`);
+          return product; // Ritorna il prodotto senza modificarlo se non trovato
+        }
+        return { ...product, stock: initialProduct.stock };
+      })
+    );
+  
+    // Ripristina lo stock iniziale delle materie prime
+    setRawMaterials((prevRawMaterials) =>
+      prevRawMaterials.map((rm) => {
+        const initialMaterial = initialRawMaterials.find((material) => material.id === rm.id);
+        if (!initialMaterial) {
+          console.warn(`Materia prima con ID ${rm.id} non trovata in initialRawMaterials.`);
+          return rm; // Ritorna la materia prima senza modificarla se non trovata
+        }
+        return { ...rm, stock: initialMaterial.stock };
+      })
+    );
   };
 
   return (
