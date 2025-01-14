@@ -5,46 +5,46 @@ import { AppContext } from '../context/AppContext';
 
 const Products = ({ products = [] }) => {
   const { addProduct, selectedProducts, rawMaterials, initialStock, setInitialStock } = useContext(AppContext);
-  
+
   const calculateStock = () => {
-    const newStock = products.reduce((acc, product) => {
+    return products.reduce((acc, product) => {
       if (!product.rawMaterials || !Array.isArray(product.rawMaterials)) {
-        acc[product.id] = product.stock;
+        acc[product.id] = product.stock || 0; // Default to 0 if stock is missing
         return acc;
       }
 
       const stockByMaterial = product.rawMaterials.map((material) => {
         const rawMaterial = rawMaterials.find((rm) => rm.id === material.rawMaterialId);
-        if (!rawMaterial) return 0;
+        if (!rawMaterial) return 0; // Default to 0 if raw material is missing
         return Math.floor(rawMaterial.stock / material.quantity);
       });
 
-      acc[product.id] = Math.min(...stockByMaterial, product.stock);
+      acc[product.id] = Math.min(...stockByMaterial, product.stock || 0);
       return acc;
     }, {});
-
-    return newStock;
   };
 
   useEffect(() => {
     const updatedStock = calculateStock();
     setInitialStock((prevStock) => ({ ...prevStock, ...updatedStock }));
-  }, [products]); // Esegui calcolo iniziale al caricamento dei prodotti
+  }, [products]);
 
   useEffect(() => {
     const updatedStock = calculateStock();
     setInitialStock((prevStock) => ({ ...prevStock, ...updatedStock }));
-  }, [selectedProducts, rawMaterials]); // Ricalcola quando cambiano i prodotti selezionati o le materie prime
+  }, [selectedProducts, rawMaterials]);
 
   const handleProductClick = (product) => {
-    if (initialStock[product.id] <= 0) return;
+    const stockValue = initialStock[product.id] || 0; // Default to 0 if undefined
+    if (stockValue <= 0) return;
     addProduct({ ...product, quantity: 1 });
   };
 
   return (
     <Grid container spacing={3}>
       {products.map((product) => {
-        const stockPercentage = Math.max(0, (initialStock[product.id] / product.stock) * 100);
+        const stockValue = initialStock[product.id] || 0; // Default to 0 if undefined
+        const stockPercentage = Math.max(0, (stockValue / (product.stock || 1)) * 100);
 
         return (
           <Grid item xs={6} sm={4} md={3} key={product.id}>
@@ -72,7 +72,7 @@ const Products = ({ products = [] }) => {
 
               <CardActionArea
                 onClick={() => handleProductClick(product)}
-                disabled={initialStock[product.id] <= 0}
+                disabled={stockValue <= 0}
                 sx={{
                   position: 'relative',
                   zIndex: 1,
@@ -109,7 +109,7 @@ const Products = ({ products = [] }) => {
                     fontSize: { xs: '0.75rem', md: '0.9rem' },
                   }}
                 >
-                  Stock: {initialStock[product.id]}
+                  Stock: {stockValue}
                 </Typography>
               </CardActionArea>
             </Card>

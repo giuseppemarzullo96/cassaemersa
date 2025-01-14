@@ -157,17 +157,49 @@ export const deleteEvent = async (id) => {
     throw error;
   }
 };
+// Recupera i biglietti prenotati da un utente specifico
+export const getUserTickets = async (userId) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Ticket/user-tickets/${userId}`);
+    return response.data.data; // Restituisce la lista dei biglietti dell'utente
+  } catch (error) {
+    console.error(`Errore durante il recupero dei biglietti per l'utente ${userId}:`, error);
+    throw error;
+  }
+};
 
+// Prenota un biglietto per un evento
 export const bookTicket = async (ticketRequest) => {
   try {
-    const response = await axios.post(`${BASE_URL}/Event/book-ticket`, ticketRequest);
-    if (response.data?.success) {
-      return response.data.data;
+    const response = await axios.post(`${BASE_URL}/Ticket/book-ticket`, ticketRequest);
+    return response.data; // Restituisce i dettagli del biglietto creato
+  } catch (error) {
+    console.error('Errore durante la prenotazione del biglietto:', error);
+    throw error;
+  }
+};
+
+// Cancella un biglietto per un evento
+export const cancelTicket = async (ticketId) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/Ticket/${ticketId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Errore durante l\'annullamento della prenotazione:', error);
+    throw error;
+  }
+};
+export const getAllTickets = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Ticket/all`);
+    if (response.data?.success && Array.isArray(response.data.data)) {
+      return response.data.data; // Restituisce tutti i biglietti
     } else {
-      throw new Error(response.data?.message || 'Errore sconosciuto.');
+      console.error('Risposta API non valida:', response.data);
+      return [];
     }
   } catch (error) {
-    console.error('Errore durante la prenotazione:', error);
+    console.error('Errore durante il recupero di tutti i biglietti:', error);
     throw error;
   }
 };

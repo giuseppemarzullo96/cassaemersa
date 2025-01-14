@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useMemo } from 'react'; 
-import { getProducts, getMoneyNotes, getMaxProduction, getAllRawMaterials } from '../services/apiService'; // Importa getMaxProduction
+import { getProducts, getMoneyNotes, getMaxProduction, getAllRawMaterials, getUserTickets } from '../services/apiService'; // Importa getMaxProduction
+import UserTickets from '../components/UserTickets';
 
 export const AppContext = createContext();
 
@@ -16,6 +17,7 @@ export const AppProvider = ({ children }) => {
   const [rawMaterials, setRawMaterials] = useState([]);
   const [initialStock, setInitialStock] = useState([]);
   const [initialRawMaterials, setInitialRawMaterials] = useState([]);
+  const [UserTickets, setUserTickets] = useState([]);
   
 
    // Funzione che setta lo stock iniziale sia di prodotti che di materie
@@ -24,8 +26,10 @@ export const AppProvider = ({ children }) => {
       try {
         const productsData = await getProducts();
         const rawMaterialsData = await getAllRawMaterials();
+        const UserTickets = await getUserTickets();
         setProducts(productsData);
         setRawMaterials(rawMaterialsData);
+        setUserTickets(UserTickets);
   
         // Salva lo stock iniziale
         setInitialStock(productsData.map((p) => ({ id: p.id, stock: p.stock })));
@@ -65,12 +69,14 @@ export const AppProvider = ({ children }) => {
           getMoneyNotes(),
           getMaxProduction(), // Ottieni maxQuantity dall'API
           getAllRawMaterials(),
+          setUserTickets(),
         ]);
 
         setProducts(productsData || []);
         setMoneyNotes(moneyNotesData || []);
         setMaxProduction(maxProductionData || []);
         setRawMaterials (rawMaterialsData || []);
+
       } catch (err) {
         setError('Errore durante il recupero dei dati. Riprova più tardi.');
         console.error('Errore API:', err);
@@ -131,7 +137,7 @@ export const AppProvider = ({ children }) => {
       value={{
         products,
         setProducts,
-        maxProduction, // Passa maxProduction
+        maxProduction,
         selectedProducts,
         setSelectedProducts,
         addProduct,
@@ -154,6 +160,8 @@ export const AppProvider = ({ children }) => {
         initialStock,
         setInitialStock,
         initialRawMaterials,
+        setUserTickets,
+        UserTickets,
       }}
     >
       {children}
