@@ -26,24 +26,31 @@ const EventList = ({ reloadTickets }) => {
   const [buttonLoading, setButtonLoading] = useState({});
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const reloadEventsAndTickets = async () => {
-    try {
-      const [fetchedEvents, fetchedTickets] = await Promise.all([getAllEvents(), reloadTickets()]);
-      setEvents(fetchedEvents);
-      setUserTickets(fetchedTickets || []);
-    } catch (error) {
-      console.error('Errore durante il ricaricamento degli eventi e biglietti:', error);
-    }
-  };
-
   useEffect(() => {
     if (user) reloadEventsAndTickets();
   }, [user]);
+  
+  const reloadEventsAndTickets = async () => {
+    try {
+      console.log("Fetching events and tickets...");
+      const fetchedEvents = await getAllEvents();
+      const fetchedTickets = await reloadTickets(); // reloadTickets deve restituire i biglietti
+  
+      console.log("Fetched Events:", fetchedEvents);
+      console.log("Fetched User Tickets:", fetchedTickets);
+  
+      setEvents(fetchedEvents);
+      setUserTickets(fetchedTickets || []);
+    } catch (error) {
+      console.error("Errore durante il ricaricamento degli eventi e biglietti:", error);
+    }
+  };
 
   const handleBookTicket = async (eventId) => {
     setButtonLoading((prev) => ({ ...prev, [eventId]: true }));
 
     try {
+      console.log('Booking ticket for event:', eventId);
       await bookTicket({ eventId, userId: user.uid });
       alert('Biglietto prenotato con successo!');
       await reloadEventsAndTickets();
@@ -59,6 +66,7 @@ const EventList = ({ reloadTickets }) => {
     setButtonLoading((prev) => ({ ...prev, [ticketId]: true }));
 
     try {
+      console.log('Cancelling ticket:', ticketId);
       await cancelTicket(ticketId);
       alert('Prenotazione annullata con successo!');
       await reloadEventsAndTickets();
@@ -77,10 +85,15 @@ const EventList = ({ reloadTickets }) => {
     }));
   };
 
-  const isBooked = (eventId) => userTickets.some(ticket => ticket.object.eventId === eventId);
+  const isBooked = (eventId) => {
+    const booked = userTickets.some(ticket => ticket?.object?.eventId === eventId && ticket?.object?.userId === user?.uid);
+    console.log(`Event ID ${eventId} is booked:`, booked);
+    return booked;
+  };
 
   const getTicketId = (eventId) => {
-    const ticket = userTickets.find(ticket => ticket.object.eventId === eventId);
+    const ticket = userTickets.find(ticket => ticket?.object?.eventId === eventId && ticket?.object?.userId === user?.uid);
+    console.log(`Ticket ID for event ${eventId}:`, ticket?.object?.ticketId);
     return ticket ? ticket.object.ticketId : null;
   };
 

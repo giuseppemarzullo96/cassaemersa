@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5030/api'; // Sostituisci con l'URL del tuo backend https://backend-cassaemersa-789784471101.us-central1.run.app/api
+const BASE_URL = 'https://backend-cassaemersa-789784471101.us-central1.run.app/api'; // Sostituisci con l'URL del tuo backend https://backend-cassaemersa-789784471101.us-central1.run.app/api
 
 export const getProducts = async () => {
   const response = await axios.get(`${BASE_URL}/products`);
@@ -161,6 +161,7 @@ export const deleteEvent = async (id) => {
 export const getUserTickets = async (userId) => {
   try {
     const response = await axios.get(`${BASE_URL}/Ticket/user-tickets/${userId}`);
+    console.log('Risposta API getUserTickets:', response.data);
     return response.data.data; // Restituisce la lista dei biglietti dell'utente
   } catch (error) {
     console.error(`Errore durante il recupero dei biglietti per l'utente ${userId}:`, error);

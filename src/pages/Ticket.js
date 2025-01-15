@@ -12,23 +12,18 @@ const Ticket = () => {
   const [error, setError] = useState(null);
 
   const reloadTickets = async () => {
-    if (!user || !user.uid) {
-      setError('Utente non autenticato.');
-      setLoading(false);
-      return;
-    }
-
     try {
-      setLoading(true);
       const userTickets = await getUserTickets(user.uid);
+      console.log("User tickets:", userTickets); // Log per verificare i dati
       setTickets(userTickets);
+      return userTickets; // Assicurati di ritornare i dati
     } catch (err) {
-      console.error('Errore durante il recupero dei biglietti:', err);
-      setError('Errore durante il recupero dei biglietti.');
-    } finally {
-      setLoading(false);
+      console.error("Errore durante il recupero dei biglietti:", err);
+      setError("Errore durante il recupero dei biglietti.");
+      return [];
     }
   };
+  
 
   useEffect(() => {
     reloadTickets();
