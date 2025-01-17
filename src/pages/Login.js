@@ -65,7 +65,7 @@ const Login = () => {
       if (role === 'admin') {
         navigate('/cassabar');
       } else if (role === 'user') {
-        navigate('/');
+        navigate('/ticket');
       }
     }
   }, [role, waitingForRole, navigate]);

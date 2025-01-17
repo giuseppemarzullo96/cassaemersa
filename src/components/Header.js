@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   const menuItems = [
-    { icon: <HomeIcon />, link: '/', roles: ['admin', 'user'] },
+    { icon: <HomeIcon />, link: '/', roles: ['admin'] },
     { icon: <PointOfSaleIcon />, link: '/CassaBar', roles: ['admin'] },
     { icon: <ConfirmationNumberIcon />, link: '/Ticket', roles: ['admin', 'user'] },
     { icon: <SettingsIcon />, link: '/Settings', roles: ['admin', 'user'] },

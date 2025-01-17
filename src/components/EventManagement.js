@@ -8,15 +8,29 @@ import {
   Button, 
   Typography, 
   Box, 
-  Container 
+  Container, 
+  Dialog, 
+  DialogTitle, 
+  DialogContent, 
+  DialogActions, 
+  CircularProgress, 
+  Card, 
+  CardMedia 
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import PeopleIcon from '@mui/icons-material/People';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { getAllEvents, createEvent, updateEvent, deleteEvent } from '../services/apiService';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage } from '../services/firebase';
+import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import { getAllEvents, createEvent, updateEvent, deleteEvent, getAllTickets, cancelTicket } from '../services/apiService';
 
 const EventManagement = () => {
   const [events, setEvents] = useState([]);
+  const [tickets, setTickets] = useState([]);
   const [newEvent, setNewEvent] = useState({
     id: '',
     name: '',
@@ -26,16 +40,19 @@ const EventManagement = () => {
     totalTickets: '',
     availableTickets: '',
     photoUrl: '',
-    description:'',
+    description: '',
   });
   const [editingIndex, setEditingIndex] = useState(null);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [loadingTickets, setLoadingTickets] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        console.log('Fetching all events...'); // Log iniziale
         const data = await getAllEvents();
-        console.log('Events retrieved:', data); // Log dei dati recuperati
         setEvents(data);
       } catch (error) {
         console.error('Errore durante il caricamento degli eventi:', error);
@@ -46,15 +63,14 @@ const EventManagement = () => {
   }, []);
 
   const handleEditEvent = (index, event) => {
-    console.log('Editing event:', event); // Log dettagliato
     setNewEvent(event);
     setEditingIndex(index);
+    setPreviewImage(event.photoUrl || null); // Mostra l'anteprima immagine corrente
   };
 
   const handleDeleteEvent = async (id) => {
     if (window.confirm('Sei sicuro di voler eliminare questo evento?')) {
       try {
-        console.log(`Deleting event with ID: ${id}`); // Log dell'ID eliminato
         await deleteEvent(id);
         const updatedEvents = await getAllEvents();
         setEvents(updatedEvents);
@@ -63,44 +79,101 @@ const EventManagement = () => {
       }
     }
   };
-  
 
-  const handleSaveEvent = async () => {
-    if (!newEvent.name || !newEvent.date || !newEvent.location || !newEvent.price || !newEvent.totalTickets || !newEvent.description) {
-      alert('Completa tutti i campi obbligatori.');
-      return;
-    }
-  
-    try {
-      if (editingIndex !== null) {
-        console.log('Attempting to update event:', newEvent); // Log dettagliato
-        await updateEvent(newEvent.id, newEvent);
-      } else {
-        console.log('Creating new event:', newEvent); // Log dettagliato
-        await createEvent(newEvent);
+  const handleViewTickets = async (eventId) => {
+  setSelectedEvent(eventId);
+  setLoadingTickets(true);
+  setOpenDialog(true);
+
+  try {
+    const allTickets = await getAllTickets();
+    console.log('DEBUG: Biglietti recuperati:', allTickets);
+
+    // Filtra i biglietti per l'evento selezionato
+    const eventTickets = allTickets.filter((ticket) => 
+      ticket?.eventId === eventId // Controlla direttamente su eventId
+    );
+    console.log('DEBUG: Biglietti per l\'evento:', eventTickets);
+
+    setTickets(eventTickets);
+  } catch (error) {
+    console.error('Errore durante il caricamento dei biglietti:', error);
+  } finally {
+    setLoadingTickets(false);
+  }
+};
+
+  const handleCancelTicket = async (ticketId) => {
+    if (window.confirm('Sei sicuro di voler cancellare questo biglietto?')) {
+      try {
+        await cancelTicket(ticketId);
+        setTickets((prev) => prev.filter((ticket) => ticket.key !== ticketId));
+      } catch (error) {
+        console.error('Errore durante la cancellazione del biglietto:', error);
       }
-  
-      setNewEvent({
-        id: '',
-        name: '',
-        date: '',
-        location: '',
-        price: '',
-        totalTickets: '',
-        availableTickets: '',
-        photoUrl: '',
-        description:'',
-      });
-      setEditingIndex(null);
-  
-      const updatedEvents = await getAllEvents();
-      console.log('Updated events list after save:', updatedEvents); // Log lista aggiornata
-      setEvents(updatedEvents);
-    } catch (error) {
-      console.error('Errore durante il salvataggio dell\'evento:', error);
     }
   };
-  
+
+  const handleImageUpload = (file) => {
+    if (!file) return;
+    setPreviewImage(URL.createObjectURL(file)); // Mostra l'anteprima dell'immagine caricata
+
+    const storageRef = ref(storage, `event-images/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        console.log(`Caricamento immagine: ${progress}%`);
+      },
+      (error) => {
+        console.error('Errore durante il caricamento dell\'immagine:', error);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        setNewEvent((prev) => ({ ...prev, photoUrl: downloadURL }));
+        console.log('URL immagine caricata:', downloadURL);
+      }
+    );
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setTickets([]);
+    setSelectedEvent(null);
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(12);
+    doc.text('Elenco Biglietti', 10, 10);
+
+    tickets.forEach((ticket, index) => {
+      doc.text(
+        `#${index + 1} Utente: ${ticket.username}, Biglietto ID: ${ticket.ticketId}, Data: ${new Date(ticket.timestamp).toLocaleString()}`,
+        10,
+        20 + index * 10
+      );
+    });
+
+    doc.save(`biglietti.pdf`);
+  };
+
+  const handleDownloadExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      tickets.map((ticket) => ({
+        Utente: ticket.username,
+        'Biglietto ID': ticket.ticketId,
+        Data: new Date(ticket.timestamp).toLocaleString(),
+      }))
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Biglietti');
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+    saveAs(blob, `biglietti.xlsx`);
+  };
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
@@ -109,21 +182,42 @@ const EventManagement = () => {
           Gestione Eventi
         </Typography>
         <List>
-  {events.map((event, index) => (
-    <ListItem key={index}>
-      <ListItemText
-        primary={`${event.object.name} - ${new Date(event.object.date).toLocaleDateString()} - €${event.object.price}`}
-        secondary={`Biglietti disponibili: ${event.object.availableTickets}/${event.object.totalTickets}`}
-      />
-      <IconButton onClick={() => handleEditEvent(index, event.object)}>
-        <EditIcon />
-      </IconButton>
-      <IconButton onClick={() => handleDeleteEvent(event.object.id)}>
-        <DeleteIcon />
-      </IconButton>
-    </ListItem>
-  ))}
-</List>
+          {events.map((event, index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={`${event.object.name} - ${new Date(event.object.date).toLocaleDateString()} - €${event.object.price}`}
+                secondary={`Biglietti disponibili: ${event.object.availableTickets}/${event.object.totalTickets}`}
+              />
+              {event.object.photoUrl && (
+                <img
+                  src={event.object.photoUrl}
+                  alt={event.object.name}
+                  style={{ width: 50, height: 50, borderRadius: '8px', marginRight: '10px' }}
+                />
+              )}
+              <IconButton onClick={() => handleEditEvent(index, event.object)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => handleDeleteEvent(event.object.id)}>
+                <DeleteIcon />
+              </IconButton>
+              <IconButton onClick={() => handleViewTickets(event.object.id)}>
+                <PeopleIcon />
+              </IconButton>
+            </ListItem>
+          ))}
+        </List>
+
+        {previewImage && (
+          <Card sx={{ mt: 2, mb: 2 }}>
+            <CardMedia
+              component="img"
+              height="140"
+              image={previewImage}
+              alt="Anteprima Immagine"
+            />
+          </Card>
+        )}
 
         <TextField
           label="Nome Evento"
@@ -161,14 +255,9 @@ const EventManagement = () => {
           type="number"
           fullWidth
           value={newEvent.totalTickets}
-          onChange={(e) => setNewEvent({ ...newEvent, totalTickets: e.target.value, availableTickets: e.target.value })}
-          sx={{ mt: 2 }}
-        />
-        <TextField
-          label="Description"
-          fullWidth
-          value={newEvent.description}
-          onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+          onChange={(e) =>
+            setNewEvent({ ...newEvent, totalTickets: e.target.value, availableTickets: e.target.value })
+          }
           sx={{ mt: 2 }}
         />
         <TextField
@@ -179,16 +268,67 @@ const EventManagement = () => {
           sx={{ mt: 2 }}
           InputProps={{
             endAdornment: (
-              <IconButton>
+              <IconButton component="label">
                 <AddPhotoAlternateIcon />
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={(e) => handleImageUpload(e.target.files[0])}
+                />
               </IconButton>
             ),
           }}
         />
-        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveEvent}>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+          onClick={() => {
+            if (editingIndex !== null) {
+              updateEvent(newEvent.id, newEvent);
+            } else {
+              createEvent(newEvent);
+            }
+          }}
+        >
           {editingIndex !== null ? 'Aggiorna Evento' : 'Crea Evento'}
         </Button>
       </Box>
+
+      {/* Dialogo per i biglietti */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Biglietti per l'evento</DialogTitle>
+        <DialogContent>
+          {loadingTickets ? (
+            <CircularProgress />
+          ) : (
+            <List>
+             {tickets.map((ticket) => (
+  <ListItem key={ticket.ticketId}>
+    <ListItemText
+      primary={`Utente: ${ticket.username || 'Utente sconosciuto'}`}
+      secondary={`Biglietto ID: ${ticket.ticketId} - Data: ${new Date(ticket.timestamp).toLocaleString()}`}
+    />
+    <IconButton onClick={() => handleCancelTicket(ticket.ticketId)}>
+      <DeleteIcon />
+    </IconButton>
+  </ListItem>
+))}
+
+            </List>
+          )}
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleDownloadPDF} color="primary" variant="contained">
+          Scarica PDF
+        </Button>
+        <Button onClick={handleDownloadExcel} color="secondary" variant="contained">
+          Scarica Excel
+        </Button>
+      </DialogActions>
+      </Dialog>
     </Container>
   );
 };
