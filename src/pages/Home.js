@@ -3,6 +3,7 @@ import { Container, Box, Paper, Typography, Grid } from '@mui/material';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import LocalBarIcon from '@mui/icons-material/LocalBar';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import ReportIncoming from '../components/ReportIncoming';
 import TopSellingProducts from '../components/TopSellingProducts';
 import TopSellingHours from '../components/TopSellingHours';
@@ -11,8 +12,10 @@ import TransactionTable from '../components/TransactionTable';
 import ProductHourSelling from '../components/ProductHourSelling';
 import MaxProduction from '../components/MaxProduction';
 import RawMaterialDashboard from '../components/RawMaterialsDashboard';
+import QrReader from '../components/QrReader'; 
+import AccessLog from '../components/AccessLog'; 
+import AccessLogChart from '../components/AccessLogChart';
 
-// Tab personalizzato con stile a pillola
 const PillTab = ({ icon, selected, onClick }) => (
   <Box
     onClick={onClick}
@@ -43,7 +46,6 @@ const Home = () => {
 
   return (
     <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4, mb: 6 }}>
-
       {/* Navigatore a Tab con stile a pillola */}
       <Box
         sx={{
@@ -57,20 +59,25 @@ const Home = () => {
           width: 'fit-content',
         }}
       >
-        <PillTab 
-          icon={<PointOfSaleIcon fontSize="large" />} 
-          selected={activeTab === 0} 
-          onClick={() => handleTabChange(0)} 
+        <PillTab
+          icon={<PointOfSaleIcon fontSize="large" />}
+          selected={activeTab === 0}
+          onClick={() => handleTabChange(0)}
         />
-        <PillTab 
-          icon={<LocalBarIcon fontSize="large" />} 
-          selected={activeTab === 1} 
-          onClick={() => handleTabChange(1)} 
+        <PillTab
+          icon={<LocalBarIcon fontSize="large" />}
+          selected={activeTab === 1}
+          onClick={() => handleTabChange(1)}
         />
-        <PillTab 
-          icon={<BarChartIcon fontSize="large" />} 
-          selected={activeTab === 2} 
-          onClick={() => handleTabChange(2)} 
+        <PillTab
+          icon={<BarChartIcon fontSize="large" />}
+          selected={activeTab === 2}
+          onClick={() => handleTabChange(2)}
+        />
+        <PillTab
+          icon={<QrCodeScannerIcon fontSize="large" />}
+          selected={activeTab === 3}
+          onClick={() => handleTabChange(3)}
         />
       </Box>
 
@@ -82,7 +89,7 @@ const Home = () => {
               <ReportIncoming />
               <LatestTransaction />
             </Grid>
-             <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6}>
               <TransactionTable />
             </Grid>
           </Grid>
@@ -114,8 +121,20 @@ const Home = () => {
             <Grid item xs={12} md={6}>
               <ProductHourSelling />
             </Grid>
+            <Grid item xs={12} md={6}>
+              <AccessLogChart />
+            </Grid>
           </Grid>
         </Paper>
+      )}
+
+      {activeTab === 3 && (
+         <Paper sx={{ width: '100%' }} elevation={0}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center', p: 3 }}>
+      <QrReader />
+      <AccessLog />
+    </Box>
+  </Paper>
       )}
     </Container>
   );

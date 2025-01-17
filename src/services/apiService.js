@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://backend-cassaemersa-789784471101.us-central1.run.app/api'; // Sostituisci con l'URL del tuo backend https://backend-cassaemersa-789784471101.us-central1.run.app/api
+ const BASE_URL = 'http://localhost:5030/api';
+
+/*const BASE_URL = 'https://backend-cassaemersa-789784471101.us-central1.run.app/api';*/ 
 
 export const getProducts = async () => {
   const response = await axios.get(`${BASE_URL}/products`);
@@ -202,5 +204,28 @@ export const getAllTickets = async () => {
   } catch (error) {
     console.error('Errore durante il recupero di tutti i biglietti:', error);
     throw error;
+  }
+};
+export const validateAccess = async (ticketId) => {
+  console.log("DEBUG: Payload inviato a /api/Access/validate:", ticketId); // Log del payload
+  try {
+    const response = await axios.post(`${BASE_URL}/Access/validate`, ticketId, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Errore durante la validazione dell'accesso:", error);
+    throw error.response?.data || { success: false, message: "Errore di connessione" };
+  }
+};
+export const getAccessLogs = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/Access/logs`, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Errore durante il recupero dei log di accesso:", error);
+    throw error.response?.data || { success: false, message: "Errore di connessione" };
   }
 };

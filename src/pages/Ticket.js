@@ -8,7 +8,6 @@ import { AuthContext } from '../context/AuthContext';
 const Ticket = () => {
   const { user } = useContext(AuthContext);
   const [tickets, setTickets] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const reloadTickets = async () => {
@@ -48,7 +47,7 @@ const Ticket = () => {
 
         {/* I miei biglietti */}
         <Grid item xs={12} md={3}>
-          <UserTickets tickets={tickets} loading={loading} error={error} />
+          <UserTickets tickets={tickets} error={error} />
         </Grid>
       </Grid>
     </Container>

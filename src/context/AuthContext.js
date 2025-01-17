@@ -12,12 +12,41 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
       if (currentUser) {
-        const docRef = doc(db, 'users', currentUser.uid);
-        const docSnap = await getDoc(docRef);
-        setRole(docSnap.exists() ? docSnap.data().role : null);
+        console.log('DEBUG: Utente autenticato:', currentUser);
+
+        try {
+          // Recupera il documento Firestore
+          const docRef = doc(db, 'users', currentUser.uid);
+          const docSnap = await getDoc(docRef);
+
+          let username = currentUser.displayName || 'Utente sconosciuto';
+
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            console.log('DEBUG: Dati utente da Firestore:', userData);
+            username = userData.username || username;
+
+            setRole(userData.role || 'user');
+          }
+
+          setUser({
+            uid: currentUser.uid,
+            email: currentUser.email,
+            username, // Usa il valore da Firestore o il displayName
+          });
+        } catch (error) {
+          console.error('Errore durante il recupero dei dati utente da Firestore:', error);
+          setUser({
+            uid: currentUser.uid,
+            email: currentUser.email,
+            username: 'Errore nel caricamento del nome',
+          });
+          setRole('user');
+        }
       } else {
+        console.log('DEBUG: Nessun utente autenticato');
+        setUser(null);
         setRole(null);
       }
       setLoading(false);

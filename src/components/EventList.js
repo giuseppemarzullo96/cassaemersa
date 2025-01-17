@@ -21,7 +21,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const EventList = ({ reloadTickets }) => {
   const [events, setEvents] = useState([]);
   const [userTickets, setUserTickets] = useState([]);
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext); // Contesto
   const [expanded, setExpanded] = useState({});
   const [buttonLoading, setButtonLoading] = useState({});
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -29,16 +29,16 @@ const EventList = ({ reloadTickets }) => {
   useEffect(() => {
     if (user) reloadEventsAndTickets();
   }, [user]);
-  
+
   const reloadEventsAndTickets = async () => {
     try {
       console.log("Fetching events and tickets...");
       const fetchedEvents = await getAllEvents();
       const fetchedTickets = await reloadTickets(); // reloadTickets deve restituire i biglietti
-  
+
       console.log("Fetched Events:", fetchedEvents);
       console.log("Fetched User Tickets:", fetchedTickets);
-  
+
       setEvents(fetchedEvents);
       setUserTickets(fetchedTickets || []);
     } catch (error) {
@@ -51,7 +51,9 @@ const EventList = ({ reloadTickets }) => {
 
     try {
       console.log('Booking ticket for event:', eventId);
-      await bookTicket({ eventId, userId: user.uid });
+      const username = user?.username || 'Utente sconosciuto';
+      console.log('nomeutente', username) // Recupera il nome utente
+      await bookTicket({ eventId, userId: user.uid, username }); // Invia il nome utente nel payload
       alert('Biglietto prenotato con successo!');
       await reloadEventsAndTickets();
     } catch (error) {
@@ -66,13 +68,14 @@ const EventList = ({ reloadTickets }) => {
     setButtonLoading((prev) => ({ ...prev, [ticketId]: true }));
 
     try {
-      console.log('Cancelling ticket:', ticketId);
       await cancelTicket(ticketId);
-      alert('Prenotazione annullata con successo!');
+      alert("Prenotazione annullata con successo!");
+
+      // Ricarica gli eventi e i biglietti aggiornati
       await reloadEventsAndTickets();
     } catch (error) {
-      console.error('Errore durante l\'annullamento della prenotazione:', error);
-      alert('Errore durante l\'annullamento.');
+      console.error("Errore durante l'annullamento della prenotazione:", error);
+      alert("Errore durante l'annullamento.");
     } finally {
       setButtonLoading((prev) => ({ ...prev, [ticketId]: false }));
     }
