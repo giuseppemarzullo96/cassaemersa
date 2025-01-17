@@ -177,159 +177,182 @@ const EventManagement = () => {
 
   return (
     <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
-      <Box sx={{ backgroundColor: '#f5f5f5', borderRadius: '30px', p: 4, boxShadow: 1 }}>
-        <Typography variant="h6" gutterBottom>
-          Gestione Eventi
-        </Typography>
-        <List>
-          {events.map((event, index) => (
-            <ListItem key={index}>
-              <ListItemText
-                primary={`${event.object.name} - ${new Date(event.object.date).toLocaleDateString()} - €${event.object.price}`}
-                secondary={`Biglietti disponibili: ${event.object.availableTickets}/${event.object.totalTickets}`}
+  <Box 
+    sx={{ 
+      backgroundColor: '#f5f5f5', 
+      borderRadius: '30px', 
+      p: 4, 
+      boxShadow: 1,
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: 2 
+    }}
+  >
+    <Typography variant="h6" gutterBottom textAlign="center">
+      Gestione Eventi
+    </Typography>
+
+    <List sx={{ gap: 1, display: 'flex', flexDirection: 'column' }}>
+      {events.map((event, index) => (
+        <ListItem 
+          key={index} 
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 1,
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+            {event.object.photoUrl && (
+              <img
+                src={event.object.photoUrl}
+                alt={event.object.name}
+                style={{ width: 50, height: 50, borderRadius: '8px' }}
               />
-              {event.object.photoUrl && (
-                <img
-                  src={event.object.photoUrl}
-                  alt={event.object.name}
-                  style={{ width: 50, height: 50, borderRadius: '8px', marginRight: '10px' }}
-                />
-              )}
-              <IconButton onClick={() => handleEditEvent(index, event.object)}>
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => handleDeleteEvent(event.object.id)}>
+            )}
+            <ListItemText
+              primary={`${event.object.name} - ${new Date(event.object.date).toLocaleDateString()}`}
+              secondary={`Biglietti disponibili: ${event.object.availableTickets}/${event.object.totalTickets}`}
+              sx={{ flex: 1 }}
+            />
+          </Box>
+
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton onClick={() => handleEditEvent(index, event.object)}>
+              <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => handleDeleteEvent(event.object.id)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton onClick={() => handleViewTickets(event.object.id)}>
+              <PeopleIcon />
+            </IconButton>
+          </Box>
+        </ListItem>
+      ))}
+    </List>
+
+    {previewImage && (
+      <Card sx={{ mt: 2, mb: 2 }}>
+        <CardMedia component="img" height="140" image={previewImage} alt="Anteprima Immagine" />
+      </Card>
+    )}
+
+    {/* Modifica del form */}
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <TextField
+        label="Nome Evento"
+        fullWidth
+        value={newEvent.name}
+        onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
+      />
+      <TextField
+        label="Data Evento"
+        type="datetime-local"
+        fullWidth
+        value={newEvent.date}
+        onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+        InputLabelProps={{ shrink: true }}
+      />
+      <TextField
+        label="Luogo"
+        fullWidth
+        value={newEvent.location}
+        onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
+      />
+      <TextField
+        label="Prezzo (€)"
+        type="number"
+        fullWidth
+        value={newEvent.price}
+        onChange={(e) => setNewEvent({ ...newEvent, price: e.target.value })}
+      />
+      <TextField
+        label="Biglietti Totali"
+        type="number"
+        fullWidth
+        value={newEvent.totalTickets}
+        onChange={(e) =>
+          setNewEvent({ ...newEvent, totalTickets: e.target.value, availableTickets: e.target.value })
+        }
+      />
+      <TextField
+        label="Descrizione"
+        fullWidth
+        value={newEvent.description}
+        onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+      />
+      <TextField
+        label="URL Foto Evento"
+        fullWidth
+        value={newEvent.photoUrl}
+        onChange={(e) => setNewEvent({ ...newEvent, photoUrl: e.target.value })}
+        InputProps={{
+          endAdornment: (
+            <IconButton component="label">
+              <AddPhotoAlternateIcon />
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e.target.files[0])}
+              />
+            </IconButton>
+          ),
+        }}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        onClick={() => {
+          if (editingIndex !== null) {
+            updateEvent(newEvent.id, newEvent);
+          } else {
+            createEvent(newEvent);
+          }
+        }}
+      >
+        {editingIndex !== null ? 'Aggiorna Evento' : 'Crea Evento'}
+      </Button>
+    </Box>
+  </Box>
+
+  {/* Dialog per biglietti */}
+  <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
+    <DialogTitle>Biglietti per l'evento</DialogTitle>
+    <DialogContent>
+      {loadingTickets ? (
+        <CircularProgress />
+      ) : (
+        <List>
+          {tickets.map((ticket) => (
+            <ListItem key={ticket.ticketId}>
+              <ListItemText
+                primary={`Utente: ${ticket.username || 'Utente sconosciuto'}`}
+                secondary={`Biglietto ID: ${ticket.ticketId} - Data: ${new Date(ticket.timestamp).toLocaleString()}`}
+              />
+              <IconButton onClick={() => handleCancelTicket(ticket.ticketId)}>
                 <DeleteIcon />
-              </IconButton>
-              <IconButton onClick={() => handleViewTickets(event.object.id)}>
-                <PeopleIcon />
               </IconButton>
             </ListItem>
           ))}
         </List>
+      )}
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleDownloadPDF} color="primary" variant="contained">
+        Scarica PDF
+      </Button>
+      <Button onClick={handleDownloadExcel} color="secondary" variant="contained">
+        Scarica Excel
+      </Button>
+    </DialogActions>
+  </Dialog>
+</Container>
 
-        {previewImage && (
-          <Card sx={{ mt: 2, mb: 2 }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={previewImage}
-              alt="Anteprima Immagine"
-            />
-          </Card>
-        )}
-
-        <TextField
-          label="Nome Evento"
-          fullWidth
-          value={newEvent.name}
-          onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
-          sx={{ mt: 2 }}
-        />
-        <TextField
-          label="Data Evento"
-          type="datetime-local"
-          fullWidth
-          value={newEvent.date}
-          onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-          sx={{ mt: 2 }}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          label="Luogo"
-          fullWidth
-          value={newEvent.location}
-          onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
-          sx={{ mt: 2 }}
-        />
-        <TextField
-          label="Prezzo (€)"
-          type="number"
-          fullWidth
-          value={newEvent.price}
-          onChange={(e) => setNewEvent({ ...newEvent, price: e.target.value })}
-          sx={{ mt: 2 }}
-        />
-        <TextField
-          label="Biglietti Totali"
-          type="number"
-          fullWidth
-          value={newEvent.totalTickets}
-          onChange={(e) =>
-            setNewEvent({ ...newEvent, totalTickets: e.target.value, availableTickets: e.target.value })
-          }
-          sx={{ mt: 2 }}
-        />
-        <TextField
-          label="URL Foto Evento"
-          fullWidth
-          value={newEvent.photoUrl}
-          onChange={(e) => setNewEvent({ ...newEvent, photoUrl: e.target.value })}
-          sx={{ mt: 2 }}
-          InputProps={{
-            endAdornment: (
-              <IconButton component="label">
-                <AddPhotoAlternateIcon />
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={(e) => handleImageUpload(e.target.files[0])}
-                />
-              </IconButton>
-            ),
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-          onClick={() => {
-            if (editingIndex !== null) {
-              updateEvent(newEvent.id, newEvent);
-            } else {
-              createEvent(newEvent);
-            }
-          }}
-        >
-          {editingIndex !== null ? 'Aggiorna Evento' : 'Crea Evento'}
-        </Button>
-      </Box>
-
-      {/* Dialogo per i biglietti */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Biglietti per l'evento</DialogTitle>
-        <DialogContent>
-          {loadingTickets ? (
-            <CircularProgress />
-          ) : (
-            <List>
-             {tickets.map((ticket) => (
-  <ListItem key={ticket.ticketId}>
-    <ListItemText
-      primary={`Utente: ${ticket.username || 'Utente sconosciuto'}`}
-      secondary={`Biglietto ID: ${ticket.ticketId} - Data: ${new Date(ticket.timestamp).toLocaleString()}`}
-    />
-    <IconButton onClick={() => handleCancelTicket(ticket.ticketId)}>
-      <DeleteIcon />
-    </IconButton>
-  </ListItem>
-))}
-
-            </List>
-          )}
-        </DialogContent>
-        <DialogActions>
-        <Button onClick={handleDownloadPDF} color="primary" variant="contained">
-          Scarica PDF
-        </Button>
-        <Button onClick={handleDownloadExcel} color="secondary" variant="contained">
-          Scarica Excel
-        </Button>
-      </DialogActions>
-      </Dialog>
-    </Container>
   );
 };
 
