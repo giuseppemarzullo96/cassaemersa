@@ -92,7 +92,7 @@ const Settings = () => {
         sx={{ 
           display: 'flex', 
           justifyContent: 'center', 
-          gap: 3, 
+          gap: '10px', 
           mb: 4,
           padding: '10px',
           backgroundColor: '#f5f5f5', 
@@ -202,7 +202,8 @@ const Settings = () => {
           justifyContent: 'center', 
           alignItems: 'center',
           maxWidth: '-webkit-fill-available',
-          mt: 2, mb: 6 
+          mt: 2, mb: 6, 
+          p:0,
         }} elevation={0}>
           <EventManagement />
         </Paper>

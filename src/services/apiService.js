@@ -1,8 +1,8 @@
 import axios from 'axios';
 
- const BASE_URL = 'http://localhost:5030/api';
+/* const BASE_URL = 'http://localhost:5030/api';*/ 
 
-/*const BASE_URL = 'https://backend-cassaemersa-789784471101.us-central1.run.app/api';*/ 
+const BASE_URL = 'https://backend-cassaemersa-789784471101.us-central1.run.app/api';
 
 export const getProducts = async () => {
   const response = await axios.get(`${BASE_URL}/products`);

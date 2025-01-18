@@ -114,7 +114,7 @@ const ProductHourSelling = () => {
           borderRadius: '30px',
           p: 4,
           boxShadow: 1,
-          height: '600px',
+          height: '5',
           overflow: 'hidden',
         }}
       >

@@ -28,7 +28,7 @@ const QrReader = () => {
         return;
       }
 
-      const cameraId = cameras[0].id; // Usa la prima fotocamera disponibile
+      const cameraId = cameras[2].id; // Usa la prima fotocamera disponibile
       setCameraError(null);
 
       await html5QrCode.start(

@@ -86,7 +86,6 @@ const AccessLogChart = () => {
         variant="h5"
         sx={{
           mb: 2,
-          fontWeight: 'bold',
           textAlign: 'center',
           fontSize: isMobile ? '1.5rem' : '2rem', // Dimensione testo per mobile/desktop
         }}
@@ -97,7 +96,6 @@ const AccessLogChart = () => {
         style={{
           maxWidth: isMobile ? '100%' : '80%', // Limita larghezza
           maxHeight: '500px', // Limita altezza
-          margin: '0 auto', // Centra il grafico
         }}
       >
         <Bar

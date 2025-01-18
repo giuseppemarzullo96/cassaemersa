@@ -62,7 +62,7 @@ const TopSellingHours = () => {
           borderRadius: '30px',
           p: 4,
           boxShadow: 1,
-          height: '600px',
+          height: '5',
           overflow: 'hidden', }}>
         <Typography variant="h5" gutterBottom>
           Orari con Maggiori Vendite

@@ -176,16 +176,16 @@ const EventManagement = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 4, mb: 4 }}>
+    <Container maxWidth="1" sx={{ mt: 4, mb: 4 }}>
   <Box 
     sx={{ 
       backgroundColor: '#f5f5f5', 
       borderRadius: '30px', 
-      p: 4, 
+      p: 2, 
       boxShadow: 1,
       display: 'flex', 
       flexDirection: 'column', 
-      gap: 2 
+      gap: 2
     }}
   >
     <Typography variant="h6" gutterBottom textAlign="center">
@@ -321,9 +321,17 @@ const EventManagement = () => {
   </Box>
 
   {/* Dialog per biglietti */}
-  <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
+  <Dialog sx={{ 
+      p: 2, 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center',
+      gap: 2
+    }}
+    
+    open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
     <DialogTitle>Biglietti per l'evento</DialogTitle>
-    <DialogContent>
+    <DialogContent  >
       {loadingTickets ? (
         <CircularProgress />
       ) : (
