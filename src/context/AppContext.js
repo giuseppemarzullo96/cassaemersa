@@ -1,12 +1,17 @@
 import React, { createContext, useState, useEffect, useMemo } from 'react'; 
-import { getProducts, getMoneyNotes, getMaxProduction, getAllRawMaterials, getUserTickets } from '../services/apiService'; // Importa getMaxProduction
-import UserTickets from '../components/UserTickets';
+import { 
+  getProducts, 
+  getMoneyNotes, 
+  getMaxProduction, 
+  getAllRawMaterials, 
+  getUserTickets 
+} from '../services/apiService';
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
-  const [maxProduction, setMaxProduction] = useState([]); // Per memorizzare maxQuantity
+  const [maxProduction, setMaxProduction] = useState([]);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [moneyNotes, setMoneyNotes] = useState([]);
   const [receivedNotes, setReceivedNotes] = useState([]);
@@ -17,32 +22,30 @@ export const AppProvider = ({ children }) => {
   const [rawMaterials, setRawMaterials] = useState([]);
   const [initialStock, setInitialStock] = useState([]);
   const [initialRawMaterials, setInitialRawMaterials] = useState([]);
-  const [UserTickets, setUserTickets] = useState([]);
-  
+  const [userTickets, setUserTickets] = useState([]);
 
-   // Funzione che setta lo stock iniziale sia di prodotti che di materie
+  // Funzione per caricare i dati iniziali
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
         const productsData = await getProducts();
         const rawMaterialsData = await getAllRawMaterials();
-        const UserTickets = await getUserTickets();
+        const ticketsData = await getUserTickets();
+        const moneyNotesData = await getMoneyNotes();
+
+        setMoneyNotes(moneyNotesData)
         setProducts(productsData);
         setRawMaterials(rawMaterialsData);
-        setUserTickets(UserTickets);
-  
-        // Salva lo stock iniziale
+        setUserTickets(ticketsData);
         setInitialStock(productsData.map((p) => ({ id: p.id, stock: p.stock })));
         setInitialRawMaterials(rawMaterialsData.map((rm) => ({ id: rm.id, stock: rm.stock })));
       } catch (error) {
         console.error('Errore durante il caricamento dei dati:', error);
       }
     };
-  
+
     fetchInitialData();
   }, []);
-
-
 
   const refreshLatestTransaction = () => {
     setReloadTransaction((prev) => !prev);
@@ -60,34 +63,7 @@ export const AppProvider = ({ children }) => {
 
   const change = useMemo(() => receivedTotal - total, [receivedTotal, total]);
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        setLoading(true);
-        const [productsData, moneyNotesData, maxProductionData, rawMaterialsData] = await Promise.all([
-          getProducts(),
-          getMoneyNotes(),
-          getMaxProduction(), // Ottieni maxQuantity dall'API
-          getAllRawMaterials(),
-          setUserTickets(),
-        ]);
-
-        setProducts(productsData || []);
-        setMoneyNotes(moneyNotesData || []);
-        setMaxProduction(maxProductionData || []);
-        setRawMaterials (rawMaterialsData || []);
-
-      } catch (err) {
-        setError('Errore durante il recupero dei dati. Riprova più tardi.');
-        console.error('Errore API:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchInitialData();
-  }, []);
-
+  // Aggiunta del prodotto selezionato e gestione dello stock
   const addProduct = (product) => {
     setSelectedProducts((prev) => {
       const existingProduct = prev.find((p) => p.id === product.id);
@@ -97,19 +73,30 @@ export const AppProvider = ({ children }) => {
           return prev;
         }
         return prev.map((p) =>
-          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
+          p.id === product.id
+            ? { ...p, quantity: p.quantity + 1 }
+            : p
         );
       }
-  
+
       if (product.stock <= 0) {
         alert('Stock esaurito per questo prodotto.');
         return prev;
       }
-  
+
       return [...prev, { ...product, quantity: 1 }];
     });
-  
-    // Decrementa le materie prime
+
+    // Aggiorna lo stock e incrementa `QuantitySold`
+    setProducts((prevProducts) =>
+      prevProducts.map((p) =>
+        p.id === product.id
+          ? { ...p, stock: p.stock - 1, quantitySold: (p.quantitySold || 0) + 1 }
+          : p
+      )
+    );
+
+    // Aggiorna le materie prime
     setRawMaterials((prevRawMaterials) => {
       const updatedRawMaterials = prevRawMaterials.map((rm) => {
         const requiredMaterial = product.rawMaterials.find(
@@ -160,8 +147,8 @@ export const AppProvider = ({ children }) => {
         initialStock,
         setInitialStock,
         initialRawMaterials,
+        userTickets,
         setUserTickets,
-        UserTickets,
       }}
     >
       {children}

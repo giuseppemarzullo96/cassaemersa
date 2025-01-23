@@ -142,6 +142,7 @@ const Settings = () => {
           flexDirection: 'column', 
           justifyContent: 'center', 
           alignItems: 'center',
+          minWidth: 1,
           maxWidth: '-webkit-fill-available',
           mt: 2, mb: 6 
         }} elevation={0}>
@@ -183,6 +184,7 @@ const Settings = () => {
           flexDirection: 'column', 
           justifyContent: 'center', 
           alignItems: 'center',
+          minWidth: 1,
           maxWidth: '-webkit-fill-available',
           mt: 2, mb: 6 
         }} elevation={0}>
@@ -201,6 +203,7 @@ const Settings = () => {
           flexDirection: 'column', 
           justifyContent: 'center', 
           alignItems: 'center',
+          minWidth: 1,
           maxWidth: '-webkit-fill-available',
           mt: 2, mb: 6, 
           p:0,

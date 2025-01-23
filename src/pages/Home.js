@@ -97,7 +97,7 @@ const Home = () => {
       )}
 
       {activeTab === 1 && (
-        <Paper sx={{ width: '100%' }} elevation={0}>
+        <Paper sx={{ width: 1 }} elevation={0}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TopSellingProducts />
@@ -105,7 +105,7 @@ const Home = () => {
             <Grid item xs={12} md={6}>
               <MaxProduction />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={12}>
               <RawMaterialDashboard />
             </Grid>
           </Grid>
@@ -113,7 +113,7 @@ const Home = () => {
       )}
 
       {activeTab === 2 && (
-        <Paper sx={{ width: '100%' }} elevation={0}>
+        <Paper sx={{ width: 1 }} elevation={0}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TopSellingHours />
@@ -129,7 +129,7 @@ const Home = () => {
       )}
 
       {activeTab === 3 && (
-         <Paper sx={{ width: '100%' }} elevation={0}>
+         <Paper sx={{ width: 1 }} elevation={0}>
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center', p: 3 }}>
       <QrReader />
       <AccessLog />

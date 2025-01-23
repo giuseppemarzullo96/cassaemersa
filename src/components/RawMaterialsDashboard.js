@@ -55,11 +55,11 @@ const RawMaterialsDashboard = () => {
                 <Typography>Costo: €{material.cost.toFixed(2)} / {material.unit}</Typography>
                 <Box mt={2}>
                   <Typography variant="body2" color="textSecondary">
-                    Stock: {material.stock}
+                    Stock: {material.stock.toFixed(1)}
                   </Typography>
                   <LinearProgress
                     variant="determinate"
-                    value={(material.stock / 100) * 100} // Supponiamo che 100 sia il massimo
+                    value={(material.stock / 1000) * 100} // Supponiamo che 100 sia il massimo
                     sx={{
                       height: 10,
                       borderRadius: 5,

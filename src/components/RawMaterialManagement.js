@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, IconButton, TextField, Button, Typography, Paper, Container, Box } from '@mui/material';
+import { 
+  List, 
+  ListItem, 
+  ListItemText, 
+  IconButton, 
+  TextField, 
+  Button, 
+  Typography, 
+  Container, 
+  Box 
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -10,6 +20,7 @@ const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials,
   const [newRawMaterialUnit, setNewRawMaterialUnit] = useState('');
   const [newRawMaterialStock, setNewRawMaterialStock] = useState('');
   const [editingIndex, setEditingIndex] = useState(null);
+  const [liters, setLiters] = useState(''); // Aggiunto per il calcolo dei litri
 
   const handleSaveMaterial = async () => {
     if (!newRawMaterialName || !newRawMaterialCost || !newRawMaterialUnit || !newRawMaterialStock) {
@@ -34,7 +45,6 @@ const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials,
         alert('Materia prima creata con successo!');
       }
 
-      // Reset form e aggiorna la lista
       setNewRawMaterialId('');
       setNewRawMaterialName('');
       setNewRawMaterialCost('');
@@ -70,73 +80,104 @@ const RawMaterialManagement = ({ rawMaterials, setRawMaterials, getRawMaterials,
     }
   };
 
+  const handleConvertLitersToOunces = () => {
+    if (!liters) {
+      alert('Inserisci un valore in litri da convertire.');
+      return;
+    }
+
+    const ounces = parseFloat(liters) * 33.814; // Conversione litri -> once
+    const updatedStock = (parseFloat(newRawMaterialStock) || 0) + ounces; // Somma allo stock esistente
+    setNewRawMaterialStock(updatedStock.toFixed(1)); // Imposta il nuovo valore dello stock
+    setNewRawMaterialUnit('once'); // Imposta l'unità su "once"
+  };
+
   return (
-<Container maxWidth="tm" sx={{ mt: 4, mb:4}}>
-        <Box
-    sx={{
-      backgroundColor: '#f5f5f5',
-      borderRadius: '30px',
-      p: 4,
-      boxShadow: 1,
-    }}
-  >
-      <Typography variant="h6" gutterBottom>
-        Gestione Materie Prime
-      </Typography>
-      <List>
-        {rawMaterials.map((material, index) => (
-          <ListItem key={index}>
-            <ListItemText primary={`${material.name} - Costo: €${material.cost.toFixed(2)} / ${material.unit} - Stock: ${material.stock}`} />
-            <IconButton onClick={() => handleEditMaterial(index, material)}>
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={() => handleDeleteMaterial(index)}>
-              <DeleteIcon />
-            </IconButton>
-          </ListItem>
-        ))}
-      </List>
-      <TextField
-        label="ID Materia Prima (opzionale)"
-        fullWidth
-        value={newRawMaterialId}
-        onChange={(e) => setNewRawMaterialId(e.target.value)}
-        sx={{ mt: 2 }}
-        disabled={editingIndex !== null}
-      />
-      <TextField
-        label="Nome Materia Prima"
-        fullWidth
-        value={newRawMaterialName}
-        onChange={(e) => setNewRawMaterialName(e.target.value)}
-        sx={{ mt: 2 }}
-      />
-      <TextField
-        label="Costo (€)"
-        type="number"
-        fullWidth
-        value={newRawMaterialCost}
-        onChange={(e) => setNewRawMaterialCost(e.target.value)}
-        sx={{ mt: 2 }}
-      />
-      <TextField
-        label="Unità"
-        fullWidth
-        value={newRawMaterialUnit}
-        onChange={(e) => setNewRawMaterialUnit(e.target.value)}
-        sx={{ mt: 2 }}
-      />
-      <TextField
-        label="Stock"
-        type="number"
-        fullWidth
-        value={newRawMaterialStock}
-        onChange={(e) => setNewRawMaterialStock(e.target.value)}
-        sx={{ mt: 2 }}
-      />
-      <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveMaterial}>
-        {editingIndex !== null ? 'Aggiorna Materia Prima' : 'Aggiungi Materia Prima'}
-      </Button>
+    <Container maxWidth='1' sx={{ mt: 4, mb: 4 }}>
+      <Box
+        sx={{
+          backgroundColor: '#f5f5f5',
+          borderRadius: '30px',
+          p: 4,
+          boxShadow: 1,
+        }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Gestione Materie Prime
+        </Typography>
+        <List>
+          {rawMaterials.map((material, index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={`${material.name} - Costo: €${material.cost.toFixed(2)} / ${material.unit} - Stock: ${material.stock.toFixed(1)}`}
+              />
+              <IconButton onClick={() => handleEditMaterial(index, material)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => handleDeleteMaterial(index)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
+          ))}
+        </List>
+        <TextField
+          label="ID Materia Prima (opzionale)"
+          fullWidth
+          value={newRawMaterialId}
+          onChange={(e) => setNewRawMaterialId(e.target.value)}
+          sx={{ mt: 2 }}
+          disabled={editingIndex !== null}
+        />
+        <TextField
+          label="Nome Materia Prima"
+          fullWidth
+          value={newRawMaterialName}
+          onChange={(e) => setNewRawMaterialName(e.target.value)}
+          sx={{ mt: 2 }}
+        />
+        <TextField
+          label="Costo (€)"
+          type="number"
+          fullWidth
+          value={newRawMaterialCost}
+          onChange={(e) => setNewRawMaterialCost(e.target.value)}
+          sx={{ mt: 2 }}
+        />
+        <TextField
+          label="Litri (da convertire)"
+          type="number"
+          fullWidth
+          value={liters}
+          onChange={(e) => setLiters(e.target.value)}
+          sx={{ mt: 2 }}
+        />
+        <Button
+          variant="contained"
+          color="secondary"
+          fullWidth
+          sx={{ mt: 2 }}
+          onClick={handleConvertLitersToOunces}
+        >
+          Calcola Once
+        </Button>
+        <TextField
+          label="Unità (once)"
+          fullWidth
+          value={newRawMaterialUnit}
+          onChange={(e) => setNewRawMaterialUnit(e.target.value)}
+          sx={{ mt: 2 }}
+        />
+        <TextField
+          label="Stock"
+          type="number"
+          fullWidth
+          value={newRawMaterialStock}
+          onChange={(e) => setNewRawMaterialStock(e.target.value)}
+          sx={{ mt: 2 }}
+        />
+        <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }} onClick={handleSaveMaterial}>
+          {editingIndex !== null ? 'Aggiorna Materia Prima' : 'Aggiungi Materia Prima'}
+        </Button>
       </Box>
     </Container>
   );

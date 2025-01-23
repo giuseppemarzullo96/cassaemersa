@@ -5,16 +5,24 @@ import axios from 'axios';
 const BASE_URL = 'https://backend-cassaemersa-789784471101.us-central1.run.app/api';
 
 export const getProducts = async () => {
-  const response = await axios.get(`${BASE_URL}/products`);
-  return response.data;
+  try {
+    const response = await axios.get(`${BASE_URL}/products`);
+    console.log('Fetched Products:', response.data); // Log della risposta
+    return response.data;
+  } catch (error) {
+    console.error('Errore durante il recupero dei prodotti:', error);
+    throw error; // Rilancia l'errore per gestirlo nel chiamante
+  }
 };
 
 export const createProduct = async (product) => {
+  console.log('Creating Product:', product); // Log del prodotto
   const response = await axios.post(`${BASE_URL}/products`, product);
   return response.data;
 };
 
 export const updateProduct = async (index, product) => {
+  console.log('Updating Product:', { index, product }); // Log dei dati
   const response = await axios.put(`${BASE_URL}/products/${index}`, product);
   return response.data;
 };
