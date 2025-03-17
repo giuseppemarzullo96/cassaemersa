@@ -310,3 +310,35 @@ I0317 11:23:38.041732   34556 installsdk.go:76] Running command: C:\Program File
 
 [info] Functions can be deployed with firebase deploy.
 
+[info] +  Wrote functions/package.json 
+[info] +  Wrote functions/.eslintrc.js 
+[info] +  Wrote functions/tsconfig.json 
+[info] +  Wrote functions/tsconfig.dev.json 
+[info] +  Wrote functions/src/index.ts 
+[info] +  Wrote functions/.gitignore 
+[info] 
+[info] i  genkit: Installing Genkit CLI version 1.2.0
+ 
+[info] i  aiplatform: ensuring required API aiplatform.googleapis.com is enabled... 
+[debug] [2025-03-17T10:28:18.822Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:28:18.822Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:28:18.822Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com [none]
+[debug] [2025-03-17T10:28:18.822Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:28:20.064Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com 200
+[debug] [2025-03-17T10:28:20.064Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com [omitted]
+[warn] !  aiplatform: missing required API aiplatform.googleapis.com. Enabling now... 
+[debug] [2025-03-17T10:28:20.065Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:28:20.065Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:28:20.065Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com:enable [none]
+[debug] [2025-03-17T10:28:20.065Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com:enable x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:28:21.301Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com:enable 200
+[debug] [2025-03-17T10:28:21.301Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com:enable [omitted]
+[debug] [2025-03-17T10:28:31.314Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:28:31.314Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:28:31.315Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com [none]
+[debug] [2025-03-17T10:28:31.315Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:28:32.627Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com 200
+[debug] [2025-03-17T10:28:32.627Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/aiplatform.googleapis.com [omitted]
+[info] +  aiplatform: required API aiplatform.googleapis.com is enabled 
+[info] i  genkit: Installing NPM packages for genkit 
+[info] +  genkit: Successfully installed NPM packages 
