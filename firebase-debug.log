@@ -1,0 +1,312 @@
+[debug] [2025-03-17T10:20:12.233Z] ----------------------------------------------------------------------
+[debug] [2025-03-17T10:20:12.236Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Giuseppe.PUBBLIPOINT\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-03-17T10:20:12.236Z] CLI Version:   13.34.0
+[debug] [2025-03-17T10:20:12.236Z] Platform:      win32
+[debug] [2025-03-17T10:20:12.236Z] Node Version:  v22.1.0
+[debug] [2025-03-17T10:20:12.237Z] Time:          Mon Mar 17 2025 11:20:12 GMT+0100 (Ora standard dell’Europa centrale)
+[debug] [2025-03-17T10:20:12.237Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-17T10:20:12.240Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-03-17T10:20:12.450Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-17T10:20:12.450Z] > authorizing via signed-in user (giuseppemarzullo96@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Giuseppe.PUBBLIPOINT\Documents\GitHub\cassaemersa
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[debug] [2025-03-17T10:20:12.772Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-03-17T10:20:12.772Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-03-17T10:20:33.266Z] Using project from CLI flag: cassaemersav3
+[debug] [2025-03-17T10:20:33.267Z] Checked if tokens are valid: false, expires at: 1737192296311
+[debug] [2025-03-17T10:20:33.267Z] Checked if tokens are valid: false, expires at: 1737192296311
+[debug] [2025-03-17T10:20:33.267Z] > refreshing access token with scopes: []
+[debug] [2025-03-17T10:20:33.268Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-03-17T10:20:33.268Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-03-17T10:20:33.398Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-03-17T10:20:33.398Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-03-17T10:20:33.404Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/cassaemersav3 [none]
+[debug] [2025-03-17T10:20:33.735Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/cassaemersav3 200
+[debug] [2025-03-17T10:20:33.735Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/cassaemersav3 {"projectId":"cassaemersav3","projectNumber":"782121226971","displayName":"emersa-cassa","name":"projects/cassaemersav3","resources":{"hostingSite":"cassaemersav3","realtimeDatabaseInstance":"cassaemersav3-default-rtdb"},"state":"ACTIVE","etag":"1_a0e73744-29a5-4a18-b470-e7fb9a0e96dd"}
+[info] i  Using project cassaemersav3 (emersa-cassa) 
+[info] 
+=== Dataconnect Setup
+[debug] [2025-03-17T10:20:33.741Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:33.741Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:33.741Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/cassaemersav3/billingInfo [none]
+[debug] [2025-03-17T10:20:34.113Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/cassaemersav3/billingInfo 200
+[debug] [2025-03-17T10:20:34.113Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/cassaemersav3/billingInfo {"name":"projects/cassaemersav3/billingInfo","projectId":"cassaemersav3","billingAccountName":"billingAccounts/016736-A198EB-B93620","billingEnabled":true}
+[info] i  dataconnect: ensuring required API firebasedataconnect.googleapis.com is enabled... 
+[debug] [2025-03-17T10:20:34.114Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:34.114Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:34.114Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-03-17T10:20:34.114Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:20:34.575Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-03-17T10:20:34.575Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com [omitted]
+[warn] !  dataconnect: missing required API firebasedataconnect.googleapis.com. Enabling now... 
+[debug] [2025-03-17T10:20:34.576Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:34.576Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:34.576Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com:enable [none]
+[debug] [2025-03-17T10:20:34.577Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com:enable x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:20:35.333Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com:enable 200
+[debug] [2025-03-17T10:20:35.333Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com:enable [omitted]
+[debug] [2025-03-17T10:20:45.336Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:45.336Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:45.336Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-03-17T10:20:45.336Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:20:46.280Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-03-17T10:20:46.280Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firebasedataconnect.googleapis.com [omitted]
+[info] +  dataconnect: required API firebasedataconnect.googleapis.com is enabled 
+[info] i  dataconnect: ensuring required API sqladmin.googleapis.com is enabled... 
+[debug] [2025-03-17T10:20:46.283Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:46.283Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:46.283Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com [none]
+[debug] [2025-03-17T10:20:46.283Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:20:46.906Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com 200
+[debug] [2025-03-17T10:20:46.906Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com [omitted]
+[warn] !  dataconnect: missing required API sqladmin.googleapis.com. Enabling now... 
+[debug] [2025-03-17T10:20:46.907Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:46.907Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:46.907Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com:enable [none]
+[debug] [2025-03-17T10:20:46.907Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com:enable x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:20:48.067Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com:enable 200
+[debug] [2025-03-17T10:20:48.067Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com:enable [omitted]
+[debug] [2025-03-17T10:20:58.079Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:58.079Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:58.079Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com [none]
+[debug] [2025-03-17T10:20:58.079Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:20:59.046Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com 200
+[debug] [2025-03-17T10:20:59.046Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/sqladmin.googleapis.com [omitted]
+[info] +  dataconnect: required API sqladmin.googleapis.com is enabled 
+[info] i  dataconnect: ensuring required API compute.googleapis.com is enabled... 
+[debug] [2025-03-17T10:20:59.049Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:59.049Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:20:59.049Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:20:59.049Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:00.185Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:21:00.185Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[warn] !  dataconnect: missing required API compute.googleapis.com. Enabling now... 
+[debug] [2025-03-17T10:21:00.186Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:00.186Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:00.186Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com:enable [none]
+[debug] [2025-03-17T10:21:00.186Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com:enable x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:01.219Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com:enable 200
+[debug] [2025-03-17T10:21:01.219Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com:enable [omitted]
+[debug] [2025-03-17T10:21:11.224Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:11.224Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:11.224Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:21:11.224Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:12.512Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:21:12.512Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[info] i  dataconnect: waiting for API compute.googleapis.com to activate... 
+[debug] [2025-03-17T10:21:22.523Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:22.523Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:22.523Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:21:22.523Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:23.684Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:21:23.684Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[info] i  dataconnect: waiting for API compute.googleapis.com to activate... 
+[debug] [2025-03-17T10:21:33.691Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:33.691Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:33.691Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:21:33.691Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:34.958Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:21:34.959Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[info] i  dataconnect: waiting for API compute.googleapis.com to activate... 
+[debug] [2025-03-17T10:21:44.973Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:44.973Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:44.973Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:21:44.973Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:46.222Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:21:46.222Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[info] i  dataconnect: waiting for API compute.googleapis.com to activate... 
+[debug] [2025-03-17T10:21:56.232Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:56.232Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:21:56.232Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:21:56.232Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:21:56.971Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:21:56.971Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[info] i  dataconnect: waiting for API compute.googleapis.com to activate... 
+[debug] [2025-03-17T10:22:06.982Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:22:06.982Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:22:06.982Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [none]
+[debug] [2025-03-17T10:22:06.983Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:22:08.220Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com 200
+[debug] [2025-03-17T10:22:08.220Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/compute.googleapis.com [omitted]
+[info] +  dataconnect: required API compute.googleapis.com is enabled 
+[debug] [2025-03-17T10:22:08.223Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:22:08.223Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:22:08.223Z] >>> [apiv2][query] GET https://firebasedataconnect.googleapis.com/v1/projects/cassaemersav3/locations/-/services [none]
+[debug] [2025-03-17T10:22:09.431Z] <<< [apiv2][status] GET https://firebasedataconnect.googleapis.com/v1/projects/cassaemersav3/locations/-/services 200
+[debug] [2025-03-17T10:22:09.431Z] <<< [apiv2][body] GET https://firebasedataconnect.googleapis.com/v1/projects/cassaemersav3/locations/-/services {}
+[debug] [2025-03-17T10:23:00.066Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:00.066Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:00.066Z] >>> [apiv2][query] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances [none]
+[debug] [2025-03-17T10:23:01.739Z] <<< [apiv2][status] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances 200
+[debug] [2025-03-17T10:23:01.739Z] <<< [apiv2][body] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances {}
+[debug] [2025-03-17T10:23:03.817Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:03.817Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:03.817Z] >>> [apiv2][query] GET https://firebasedataconnect.googleapis.com/v1/projects/cassaemersav3/locations [none]
+[debug] [2025-03-17T10:23:04.714Z] <<< [apiv2][status] GET https://firebasedataconnect.googleapis.com/v1/projects/cassaemersav3/locations 200
+[debug] [2025-03-17T10:23:04.715Z] <<< [apiv2][body] GET https://firebasedataconnect.googleapis.com/v1/projects/cassaemersav3/locations {"locations":[{"name":"projects/cassaemersav3/locations/asia-east1","locationId":"asia-east1","displayName":"Taiwan"},{"name":"projects/cassaemersav3/locations/asia-east2","locationId":"asia-east2","displayName":"Hong Kong"},{"name":"projects/cassaemersav3/locations/asia-northeast1","locationId":"asia-northeast1","displayName":"Tokyo"},{"name":"projects/cassaemersav3/locations/asia-northeast2","locationId":"asia-northeast2","displayName":"Osaka"},{"name":"projects/cassaemersav3/locations/asia-northeast3","locationId":"asia-northeast3","displayName":"Seoul"},{"name":"projects/cassaemersav3/locations/asia-south1","locationId":"asia-south1","displayName":"Mumbai"},{"name":"projects/cassaemersav3/locations/asia-southeast1","locationId":"asia-southeast1","displayName":"Singapore"},{"name":"projects/cassaemersav3/locations/asia-southeast2","locationId":"asia-southeast2","displayName":"Jakarta"},{"name":"projects/cassaemersav3/locations/australia-southeast1","locationId":"australia-southeast1","displayName":"Sydney"},{"name":"projects/cassaemersav3/locations/australia-southeast2","locationId":"australia-southeast2","displayName":"Melbourne"},{"name":"projects/cassaemersav3/locations/europe-central2","locationId":"europe-central2","displayName":"Warsaw"},{"name":"projects/cassaemersav3/locations/europe-north1","locationId":"europe-north1","displayName":"Finland"},{"name":"projects/cassaemersav3/locations/europe-southwest1","locationId":"europe-southwest1","displayName":"Madrid"},{"name":"projects/cassaemersav3/locations/europe-west1","locationId":"europe-west1","displayName":"Belgium"},{"name":"projects/cassaemersav3/locations/europe-west2","locationId":"europe-west2","displayName":"London"},{"name":"projects/cassaemersav3/locations/europe-west3","locationId":"europe-west3","displayName":"Frankfurt"},{"name":"projects/cassaemersav3/locations/europe-west4","locationId":"europe-west4","displayName":"Netherlands"},{"name":"projects/cassaemersav3/locations/europe-west6","locationId":"europe-west6","displayName":"Zurich"},{"name":"projects/cassaemersav3/locations/europe-west8","locationId":"europe-west8","displayName":"Milan"},{"name":"projects/cassaemersav3/locations/europe-west9","locationId":"europe-west9","displayName":"Paris"},{"name":"projects/cassaemersav3/locations/me-west1","locationId":"me-west1","displayName":"Tel Aviv"},{"name":"projects/cassaemersav3/locations/northamerica-northeast1","locationId":"northamerica-northeast1","displayName":"Montréal"},{"name":"projects/cassaemersav3/locations/northamerica-northeast2","locationId":"northamerica-northeast2","displayName":"Toronto"},{"name":"projects/cassaemersav3/locations/southamerica-east1","locationId":"southamerica-east1","displayName":"São Paulo"},{"name":"projects/cassaemersav3/locations/southamerica-west1","locationId":"southamerica-west1","displayName":"Santiago"},{"name":"projects/cassaemersav3/locations/us-central1","locationId":"us-central1","displayName":"Iowa"},{"name":"projects/cassaemersav3/locations/us-east1","locationId":"us-east1","displayName":"South Carolina"},{"name":"projects/cassaemersav3/locations/us-east4","locationId":"us-east4","displayName":"Northern Virginia"},{"name":"projects/cassaemersav3/locations/us-south1","locationId":"us-south1","displayName":"Dallas"},{"name":"projects/cassaemersav3/locations/us-west1","locationId":"us-west1","displayName":"Oregon"},{"name":"projects/cassaemersav3/locations/us-west2","locationId":"us-west2","displayName":"Los Angeles"},{"name":"projects/cassaemersav3/locations/us-west3","locationId":"us-west3","displayName":"Salt Lake City"},{"name":"projects/cassaemersav3/locations/us-west4","locationId":"us-west4","displayName":"Las Vegas"}]}
+[debug] [2025-03-17T10:23:17.273Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:17.273Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:17.273Z] >>> [apiv2][query] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc/databases [none]
+[debug] [2025-03-17T10:23:17.546Z] <<< [apiv2][status] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc/databases 404
+[debug] [2025-03-17T10:23:17.546Z] <<< [apiv2][body] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc/databases {"error":{"code":404,"message":"Not Found","errors":[{"message":"Not Found","domain":"global","reason":"notFound"}]}}
+[debug] [2025-03-17T10:23:17.547Z] [dataconnect] Cannot list databases during init: FirebaseError: Request to https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc/databases had HTTP Error: 404, Not Found
+[info] +  Wrote dataconnect\dataconnect.yaml 
+[info] +  Wrote dataconnect\schema\schema.gql 
+[info] +  Wrote dataconnect\connector\connector.yaml 
+[info] +  Wrote dataconnect\connector\queries.gql 
+[info] +  Wrote dataconnect\connector\mutations.gql 
+[debug] [2025-03-17T10:23:24.768Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:24.768Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:24.768Z] >>> [apiv2][query] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc [none]
+[debug] [2025-03-17T10:23:25.034Z] <<< [apiv2][status] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc 404
+[debug] [2025-03-17T10:23:25.034Z] <<< [apiv2][body] GET https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc {"error":{"code":404,"message":"The Cloud SQL instance does not exist.","errors":[{"message":"The Cloud SQL instance does not exist.","domain":"global","reason":"instanceDoesNotExist"}]}}
+[warn] !  dataconnect: The no-cost Cloud SQL trial instance does not support customer managed encryption keys.
+If you'd like to use a CMEK to encrypt your data, first create a CMEK encrypted instance (https://cloud.google.com/sql/docs/postgres/configure-cmek#createcmekinstance).
+Then, edit your `dataconnect.yaml` file to use the encrypted instance and redeploy. 
+[info] i  dataconnect: CloudSQL instance 'cassaemersa-fdc' not found.Creating it now.
+This instance is provided under the terms of the Data Connect no-cost trial https://firebase.google.com/pricing
+Monitor the progress at https://console.cloud.google.com/sql/instances/cassaemersa-fdc/overview?project=cassaemersav3 
+[debug] [2025-03-17T10:23:25.037Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:25.037Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:25.037Z] >>> [apiv2][query] POST https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances [none]
+[debug] [2025-03-17T10:23:25.037Z] >>> [apiv2][body] POST https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances {"name":"cassaemersa-fdc","region":"europe-central2","databaseVersion":"POSTGRES_15","settings":{"tier":"db-f1-micro","edition":"ENTERPRISE","ipConfiguration":{"authorizedNetworks":[]},"enableGoogleMlIntegration":false,"databaseFlags":[{"name":"cloudsql.iam_authentication","value":"on"}],"storageAutoResize":false,"userLabels":{"firebase-data-connect":"ft"},"insightsConfig":{"queryInsightsEnabled":true,"queryPlansPerMinute":5,"queryStringLength":1024}}}
+[debug] [2025-03-17T10:23:29.075Z] <<< [apiv2][status] POST https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances 200
+[debug] [2025-03-17T10:23:29.075Z] <<< [apiv2][body] POST https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances {"kind":"sql#operation","targetLink":"https://sqladmin.googleapis.com/v1/projects/cassaemersav3/instances/cassaemersa-fdc","status":"PENDING","user":"giuseppemarzullo96@gmail.com","insertTime":"2025-03-17T10:23:54.847Z","operationType":"CREATE","name":"08fda2b1-bf4d-4338-80ff-e9c300000046","targetId":"cassaemersa-fdc","selfLink":"https://sqladmin.googleapis.com/v1/projects/cassaemersav3/operations/08fda2b1-bf4d-4338-80ff-e9c300000046","targetProject":"cassaemersav3"}
+[info] i  dataconnect: Cloud SQL instance creation started - it should be ready shortly. Database and users will be created on your next deploy. 
+[info] +  Detected WEB app in directory C:\Users\Giuseppe.PUBBLIPOINT\Documents\GitHub\cassaemersa 
+[info] i  Wrote new config to C:\Users\Giuseppe.PUBBLIPOINT\Documents\GitHub\cassaemersa\dataconnect\connector/connector.yaml 
+[info] i  dataconnect: downloading dataconnect-emulator-1.8.5.exe... {"metadata":{"emulator":{"name":"dataconnect"},"message":"downloading dataconnect-emulator-1.8.5.exe..."}}
+[debug] [2025-03-17T10:23:34.209Z] >>> [apiv2][query] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.8.5 
+[debug] [2025-03-17T10:23:34.482Z] <<< [apiv2][status] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.8.5 200
+[debug] [2025-03-17T10:23:34.482Z] <<< [apiv2][body] GET https://storage.googleapis.com/firemat-preview-drop/emulator/dataconnect-emulator-windows-v1.8.5 [stream]
+[info] I0317 11:23:37.902634   34556 codegen.go:82] [connector "default" javascriptSdk] Generating sources into "C:\\Users\\Giuseppe.PUBBLIPOINT\\Documents\\GitHub\\cassaemersa\\dataconnect-generated\\js\\default-connector"
+I0317 11:23:38.022027   34556 generate.go:40] Generated all sources. Writing them to disk...
+I0317 11:23:38.033444   34556 collector.go:107] connector "default" javascriptSdk wrote into "C:\\Users\\Giuseppe.PUBBLIPOINT\\Documents\\GitHub\\cassaemersa\\dataconnect-generated\\js\\default-connector"
+Generated sources: index.cjs.js [154B] README.md [2800B] react\index.d.ts [228B] react\index.cjs.js [0B] react\esm\index.esm.js [0B] index.d.ts [246B] esm\package.json [17B] react\package.json [468B] react\esm\package.json [17B] react\README.md [5443B] esm\index.esm.js [118B] package.json [895B] 
+I0317 11:23:38.041732   34556 installsdk.go:76] Running command: C:\Program Files\nodejs\npm.cmd install file:dataconnect-generated\js\default-connector
+
+[info] i  Generated SDK code for default 
+[info] +  If you'd like to add more generated SDKs to your app your later, run firebase init dataconnect:sdk again 
+[info] 
+=== Firestore Setup
+[debug] [2025-03-17T10:23:58.467Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:58.467Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:58.467Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firestore.googleapis.com [none]
+[debug] [2025-03-17T10:23:58.467Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firestore.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:23:59.450Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firestore.googleapis.com 200
+[debug] [2025-03-17T10:23:59.450Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/firestore.googleapis.com [omitted]
+[debug] [2025-03-17T10:23:59.450Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:59.450Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:59.450Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default) [none]
+[debug] [2025-03-17T10:23:59.698Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default) 200
+[debug] [2025-03-17T10:23:59.698Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default) {"name":"projects/cassaemersav3/databases/(default)","uid":"df9df19e-4660-4508-adc9-2b5687fc4ac0","createTime":"2025-01-08T15:40:30.573467Z","updateTime":"2025-01-08T15:40:30.573467Z","locationId":"eur3","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2025-03-17T09:24:25.522945Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"e","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","etag":"IJ2BkIrzkIwDMLewodjbgowD"}
+[debug] [2025-03-17T10:23:59.698Z] database_type: FIRESTORE_NATIVE
+[debug] [2025-03-17T10:23:59.698Z] database_type: FIRESTORE_NATIVE
+[debug] [2025-03-17T10:23:59.698Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-17T10:23:59.698Z] > authorizing via signed-in user (giuseppemarzullo96@gmail.com)
+[debug] [2025-03-17T10:23:59.698Z] [iam] checking project cassaemersav3 for permissions ["firebase.projects.get"]
+[debug] [2025-03-17T10:23:59.699Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:59.699Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:23:59.699Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions [none]
+[debug] [2025-03-17T10:23:59.699Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:23:59.699Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-03-17T10:24:00.500Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions 200
+[debug] [2025-03-17T10:24:00.500Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions {"permissions":["firebase.projects.get"]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2025-03-17T10:24:00.505Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:00.505Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:00.505Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/cassaemersav3/releases pageSize=10&pageToken=
+[debug] [2025-03-17T10:24:01.318Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/cassaemersav3/releases 200
+[debug] [2025-03-17T10:24:01.318Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/cassaemersav3/releases {"releases":[{"name":"projects/cassaemersav3/releases/cloud.firestore","rulesetName":"projects/cassaemersav3/rulesets/cdea37ca-f5d7-4dcb-8af3-8734e8bdc2ae","createTime":"2025-01-08T15:40:36.783833Z","updateTime":"2025-01-08T15:40:59.436824Z"},{"name":"projects/cassaemersav3/releases/firebase.storage/cassaemersav3.firebasestorage.app","rulesetName":"projects/cassaemersav3/rulesets/3808d2c7-2418-4498-80ca-3a0e53efca7d","createTime":"2025-01-17T16:16:35.559421Z","updateTime":"2025-01-17T16:30:52.006267Z"}]}
+[debug] [2025-03-17T10:24:01.318Z] Found ruleset: projects/cassaemersav3/rulesets/cdea37ca-f5d7-4dcb-8af3-8734e8bdc2ae
+[debug] [2025-03-17T10:24:01.319Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:01.319Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:01.319Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/cassaemersav3/rulesets/cdea37ca-f5d7-4dcb-8af3-8734e8bdc2ae [none]
+[debug] [2025-03-17T10:24:01.998Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/cassaemersav3/rulesets/cdea37ca-f5d7-4dcb-8af3-8734e8bdc2ae 200
+[debug] [2025-03-17T10:24:01.998Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/cassaemersav3/rulesets/cdea37ca-f5d7-4dcb-8af3-8734e8bdc2ae [omitted]
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2025-03-17T10:24:52.017Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:52.017Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:52.017Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:52.017Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:52.017Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default)/collectionGroups/-/indexes [none]
+[debug] [2025-03-17T10:24:52.018Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* [none]
+[debug] [2025-03-17T10:24:52.235Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* 200
+[debug] [2025-03-17T10:24:52.236Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* {"fields":[{"name":"projects/cassaemersav3/databases/(default)/collectionGroups/__default__/fields/*","indexConfig":{"indexes":[{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"ASCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"DESCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","arrayConfig":"CONTAINS"}],"state":"READY"}]}}]}
+[debug] [2025-03-17T10:24:52.250Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default)/collectionGroups/-/indexes 200
+[debug] [2025-03-17T10:24:52.250Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/cassaemersav3/databases/(default)/collectionGroups/-/indexes {}
+[info] 
+=== Genkit Setup
+[debug] [2025-03-17T10:24:55.913Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-17T10:24:55.913Z] > authorizing via signed-in user (giuseppemarzullo96@gmail.com)
+[debug] [2025-03-17T10:24:55.913Z] [iam] checking project cassaemersav3 for permissions ["firebase.projects.get"]
+[debug] [2025-03-17T10:24:55.913Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:55.913Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:55.913Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions [none]
+[debug] [2025-03-17T10:24:55.913Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:24:55.913Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-03-17T10:24:56.679Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions 200
+[debug] [2025-03-17T10:24:56.679Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/cassaemersav3:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-03-17T10:24:56.679Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:56.679Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:56.679Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:56.679Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:56.680Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-03-17T10:24:56.680Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:24:56.681Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/runtimeconfig.googleapis.com [none]
+[debug] [2025-03-17T10:24:56.681Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:24:57.618Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/runtimeconfig.googleapis.com 200
+[debug] [2025-03-17T10:24:57.618Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2025-03-17T10:24:57.622Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com 200
+[debug] [2025-03-17T10:24:57.622Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2025-03-17T10:24:57.623Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:57.623Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:24:57.623Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com:enable [none]
+[debug] [2025-03-17T10:24:57.623Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com:enable x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:24:58.763Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com:enable 200
+[debug] [2025-03-17T10:24:58.763Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com:enable [omitted]
+[debug] [2025-03-17T10:25:08.766Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:25:08.766Z] Checked if tokens are valid: true, expires at: 1742210432398
+[debug] [2025-03-17T10:25:08.766Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-03-17T10:25:08.766Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/cassaemersav3
+[debug] [2025-03-17T10:25:09.716Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com 200
+[debug] [2025-03-17T10:25:09.716Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/cassaemersav3/services/cloudfunctions.googleapis.com [omitted]
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+

@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "cassaemersa"
+location: "europe-central2"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "cassaemersa-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]
